@@ -1,68 +1,118 @@
 import user_info from "../data/userdata";
 
 import { FaSquareXTwitter, FaLinkedin } from "react-icons/fa6";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { FaFacebook, FaInstagram, FaPhone } from "react-icons/fa";
+import { MdEmail, MdLocationOn } from "react-icons/md";
 
 function Contact() {
   const contactLinkClass =
-    "flex gap-4 text-zinc-700 dark:text-zinc-300 hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300";
+    "flex gap-4 text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-300";
 
   return (
     <section
       id="contact"
       className="mt-20 pt-12 px-6 lg:px-24 transition-colors duration-500"
+      style={{
+        backgroundColor: "var(--color-bg)",
+        color: "var(--color-text)",
+      }}
     >
       {/* =========== TITLE =========== */}
-      <h4 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-100">
+      <h4 className="text-4xl sm:text-5xl font-bold text-[var(--color-text)]">
         Let&apos;s Get in Touch:{" "}
-        <span className="text-red-800 dark:text-red-500">
+        <span className="text-[var(--color-accent)]">
           Ways to Connect with Me
         </span>
       </h4>
 
       {/* =========== DESCRIPTION =========== */}
-      <p className="mt-8 leading-7 text-base text-zinc-600 dark:text-zinc-300 font-light max-w-3xl">
+      <p className="mt-8 leading-7 text-base text-[var(--color-subtext)] font-light max-w-3xl">
         {user_info.contact.description}
       </p>
 
-      {/* =========== LINKS =========== */}
-      <div className="mt-12 space-y-4">
-        {/* Facebook */}
-        <a href={user_info.socials.facebook} className={contactLinkClass}>
-          <FaFacebook className="self-center text-xl text-red-800 dark:text-red-500" />
-          <span className="self-center">Follow on Facebook</span>
+      {/* =========== INFO CARDS =========== */}
+      <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Email Card */}
+        <a
+          href={`mailto:${user_info.main.email}`}
+          className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--card-hover)] transition-all duration-300 group"
+        >
+          <MdEmail className="text-3xl text-[var(--color-accent)] mb-3 group-hover:scale-110 transition-transform" />
+          <h5 className="font-semibold text-[var(--color-text)] mb-1">Email</h5>
+          <p className="text-sm text-[var(--color-subtext)]">{user_info.main.email}</p>
         </a>
 
-        {/* X / Twitter */}
-        <a href={user_info.socials.twitter} className={contactLinkClass}>
-          <FaSquareXTwitter className="self-center text-xl text-red-800 dark:text-red-500" />
-          <span className="self-center">Follow on X</span>
-        </a>
+        {/* Phone Card */}
+        {user_info.main.phone && (
+          <a
+            href={`tel:${user_info.main.phone}`}
+            className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--card-hover)] transition-all duration-300 group"
+          >
+            <FaPhone className="text-3xl text-[var(--color-accent)] mb-3 group-hover:scale-110 transition-transform" />
+            <h5 className="font-semibold text-[var(--color-text)] mb-1">Phone</h5>
+            <p className="text-sm text-[var(--color-subtext)]">{user_info.main.phone}</p>
+          </a>
+        )}
 
-        {/* Instagram */}
-        <a href={user_info.socials.instagram} className={contactLinkClass}>
-          <FaInstagram className="self-center text-xl text-red-800 dark:text-red-500" />
-          <span className="self-center">Follow on Instagram</span>
-        </a>
-
-        {/* LinkedIn */}
-        <a href={user_info.socials.linkedin} className={contactLinkClass}>
-          <FaLinkedin className="self-center text-xl text-red-800 dark:text-red-500" />
-          <span className="self-center">Follow on LinkedIn</span>
-        </a>
+        {/* Location Card */}
+        {user_info.main.address && (
+          <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] group">
+            <MdLocationOn className="text-3xl text-[var(--color-accent)] mb-3" />
+            <h5 className="font-semibold text-[var(--color-text)] mb-1">Location</h5>
+            <p className="text-sm text-[var(--color-subtext)]">{user_info.main.address}</p>
+          </div>
+        )}
       </div>
 
-      <hr className="mt-8 w-72 border-zinc-300 dark:border-zinc-700 transition-colors duration-300" />
+      {/* =========== SOCIAL LINKS =========== */}
+      <div className="mt-12">
+        <h5 className="text-lg font-semibold text-[var(--color-text)] mb-6">Follow Me</h5>
+        <div className="flex flex-wrap gap-4">
+          {/* Facebook */}
+          <a
+            href={user_info.socials.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)] text-[var(--color-text)] hover:text-white transition-all duration-300"
+            title="Facebook"
+          >
+            <FaFacebook className="text-xl" />
+          </a>
 
-      {/* =========== EMAIL =========== */}
-      <a
-        href={`mailto:${user_info.main.email}`}
-        className={`${contactLinkClass} mt-6`}
-      >
-        <MdEmail className="self-center text-xl text-red-800 dark:text-red-500" />
-        <span>{user_info.main.email}</span>
-      </a>
+          {/* X / Twitter */}
+          <a
+            href={user_info.socials.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)] text-[var(--color-text)] hover:text-white transition-all duration-300"
+            title="X / Twitter"
+          >
+            <FaSquareXTwitter className="text-xl" />
+          </a>
+
+          {/* Instagram */}
+          <a
+            href={user_info.socials.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)] text-[var(--color-text)] hover:text-white transition-all duration-300"
+            title="Instagram"
+          >
+            <FaInstagram className="text-xl" />
+          </a>
+
+          {/* LinkedIn */}
+          <a
+            href={user_info.socials.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)] text-[var(--color-text)] hover:text-white transition-all duration-300"
+            title="LinkedIn"
+          >
+            <FaLinkedin className="text-xl" />
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

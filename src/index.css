@@ -1,8 +1,5 @@
 /* src/index.css hoặc src/HomePage.css */
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* 🌞 Light mode mặc định */
 :root {
@@ -11,19 +8,24 @@
 
   /* --- Màu nền và chữ chính --- */
   --color-bg: #ffffff;
-  --color-bg-component: #f9fafb;
+  --color-bg-component: #f5f5f5;
   --color-card: #ffffff;
-  --color-text: #18181b;
-  --color-subtext: #3f3f46;
+  --color-text: #171717;
+  --color-subtext: #525252;
 
   /* --- Accent (màu chủ đạo, nút, link) --- */
   --color-accent: #b91c1c;
-  --color-accent-hover: #dc2626;
+  --color-accent-hover: #991b1b;
 
   /* --- Border và hiệu ứng --- */
-  --color-border: #d4d4d8;
-  --card-hover: #f3f4f6; /* Hover card sáng */
-  --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --color-border: #e5e5e5;
+  --card-hover: #f5f5f5;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* --- Input --- */
+  --color-input-bg: #fafafa;
+  --color-text-secondary: #404040;
 
   /* --- Transition --- */
   --transition-speed: 0.3s;
@@ -31,25 +33,31 @@
 
 /* 🌚 Dark mode */
 html.dark {
-  --color-bg: #000000;
-  --color-bg-component: #18181b;
-  --color-card: #18181b;
-  --color-text: #f4f4f5;
-  --color-subtext: #a1a1aa;
+  --color-bg: #0a0a0a;
+  --color-bg-component: #171717;
+  --color-card: #171717;
+  --color-text: #fafafa;
+  --color-subtext: #a3a3a3;
 
   --color-accent: #ef4444;
   --color-accent-hover: #f87171;
 
-  --color-border: #27272a;
-  --card-hover: #27272a;
-  --shadow-soft: 0 2px 6px rgba(255, 255, 255, 0.05);
+  --color-border: #262626;
+  --card-hover: #262626;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* --- Input --- */
+  --color-input-bg: #262626;
+  --color-text-secondary: #a3a3a3;
 }
 
 /* 🌐 Áp dụng toàn cục */
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color var(--transition-speed) ease,
+  transition:
+    background-color var(--transition-speed) ease,
     color var(--transition-speed) ease;
   overflow-x: hidden;
 }
@@ -63,11 +71,16 @@ body {
   transition: all var(--transition-speed) ease;
 }
 
-a {
+/* Link styles - không áp dụng cho buttons */
+a:not([class*="bg-"]):not([class*="btn"]):not([class*="border"]):not(
+    [class*="rounded"]
+  ) {
   color: var(--color-accent);
   transition: color var(--transition-speed) ease;
 }
-a:hover {
+a:not([class*="bg-"]):not([class*="btn"]):not([class*="border"]):not(
+    [class*="rounded"]
+  ):hover {
   color: var(--color-accent-hover);
 }
 
@@ -88,23 +101,11 @@ section {
 }
 
 .hero::before {
-  /* Nếu Hero có overlay mờ, ta điều chỉnh theo theme */
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-  opacity: 0.3;
+  background: transparent;
   pointer-events: none;
-  transition: opacity var(--transition-speed) ease;
-}
-
-html.dark .hero::before {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.1),
-    rgba(0, 0, 0, 0.2)
-  );
-  opacity: 0.4;
 }
 
 /* 🖼️ Ảnh nền Hero (nếu có) */
@@ -118,7 +119,7 @@ html.dark .hero::before {
 
 html.dark .hero img,
 html.dark .hero-bg {
-  filter: brightness(0.85);
+  filter: brightness(0.9);
 }
 
 /* 🎨 Thanh cuộn */
@@ -134,12 +135,371 @@ html.dark .hero-bg {
   background: var(--color-accent-hover);
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: var(--color-bg-component);
 }
 
-/* 🌓 Transition mượt cho toàn site khi đổi theme */
-* {
-  transition: background-color var(--transition-speed) ease,
-    border-color var(--transition-speed) ease,
-    color var(--transition-speed) ease, filter var(--transition-speed) ease;
+/* ==================== ANIMATIONS ==================== */
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Down */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Left */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade In Right */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Bounce In */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide Up */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Float Animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Pulse Glow */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--color-accent);
+  }
+  50% {
+    box-shadow:
+      0 0 20px var(--color-accent),
+      0 0 30px var(--color-accent);
+  }
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Animation Classes */
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 0.6s ease-out forwards;
+}
+
+.animate-fadeInLeft {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.animate-fadeInRight {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.8s ease-out forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Delay Classes */
+.delay-100 {
+  animation-delay: 0.1s;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+.delay-600 {
+  animation-delay: 0.6s;
+}
+.delay-700 {
+  animation-delay: 0.7s;
+}
+.delay-800 {
+  animation-delay: 0.8s;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(185, 28, 28, 0.4);
+}
+
+html.dark .hover-glow:hover {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--color-accent);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
+}
+
+html.dark .btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html.dark .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text Gradient */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-accent), #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar for specific containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-component) 25%,
+    var(--color-border) 50%,
+    var(--color-bg-component) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

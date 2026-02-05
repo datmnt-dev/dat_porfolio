@@ -1,11 +1,14 @@
 const info = {
     // ============ MAIN DETAILS ============
     main: {
-        name: "Mai Nguyen Tien Dat",
-        description: "Tôi là một lập trình viên phần mềm với niềm đam mê phát triển ứng dụng web hiện đại. Tôi có kinh nghiệm xây dựng các hệ thống web theo mô hình MVC, đặc biệt với JSP - Servlet - JDBC và SQL Server. Tôi luôn nỗ lực học hỏi công nghệ mới, phát triển kỹ năng lập trình và tạo ra các sản phẩm chất lượng, dễ mở rộng và bảo trì.",
-        role: "Full-Stack Developer (Web)",
+        name: "Mai Nguyễn Tiến Đạt",
+        description: "Là người tập trung vào giải quyết vấn đề bằng công nghệ, có tư duy logic và tinh thần cải tiến liên tục. Mong muốn làm việc trong môi trường năng động với các dự án có độ phức tạp cao, nơi tôi có thể áp dụng kiến thức lập trình, học hỏi từ đội ngũ kỹ sư giàu kinh nghiệm và đóng góp vào sự phát triển của sản phẩm. Hướng đến môi trường đề cao hiệu suất, giá trị cá nhân và kết quả thực tế.",
+        role: "Front-End Developer",
         photo: "/dat_img.jpg",
         email: "tiendatyyy2005@gmail.com",
+        phone: "0935124666",
+        birthday: "27/07/2005",
+        address: "FPT Plaza 2, Ngũ Hành Sơn, Đà Nẵng",
     },
 
     // ============ SOCIAL LINKS ============
@@ -17,124 +20,195 @@ const info = {
         facebook: "https://www.facebook.com/mai.dat.270705",
     },
 
+    // ============ SKILLS ============
+    skills: {
+        technical: [
+            { name: "HTML5 & CSS3", level: 75 },
+            { name: "JavaScript", level: 70 },
+            { name: "ReactJS", level: 70 },
+            { name: "TypeScript", level: 75 },
+            { name: "NodeJS & Express", level: 70 },
+            { name: "Tailwind CSS", level: 75 },
+            { name: "Java (JSP/Servlet)", level: 55 },
+            { name: "SQL Server / MongoDB", level: 70 },
+        ],
+        tools: [
+            "Git & GitHub",
+            "VS Code",
+            "Figma",
+            "Postman",
+            "Vite",
+        ],
+        methodologies: [
+            "Agile/Scrum",
+            "MVC Architecture",
+            "RESTful API Design",
+            "Test Driven Development (TDD)",
+            "Object-Oriented Programming (OOP)",
+        ],
+        soft: [
+            "Phân tích yêu cầu người dùng",
+            "Làm việc nhóm & Git workflow",
+            "Tư duy giải quyết vấn đề",
+            "Giao tiếp & thuyết trình",
+        ],
+    },
+
     // ============ PROJECTS ============
     projects: [
         {
-             title: "JobFinder",
-        description: "Một nền tảng kết nối người tìm việc và nhà tuyển dụng, được thiết kế theo mô hình MVC hiện đại. Ứng dụng cung cấp các tính năng như đăng tin tuyển dụng, tìm kiếm và lọc việc làm theo nhiều tiêu chí, quản lý tài khoản người dùng, cùng giao diện thân thiện và tối ưu trải nghiệm người dùng. Dự án giúp tôi rèn luyện kỹ năng phát triển full-stack, phối hợp nhóm trong môi trường Agile và sử dụng GitHub để quản lý mã nguồn hiệu quả.",
-        technologies: "ReactJS, Spring Boot, MySQL, HTML, CSS, JavaScript, RESTful API",
-        github: "https://github.com/SWPGr/fe-jobfinder",
-        link: "#"
+            title: "JobFinder",
+            description: "JobFinder là nền tảng web kết nối ứng viên và nhà tuyển dụng, hỗ trợ quản lý hồ sơ/CV, tìm kiếm và ứng tuyển việc làm, đăng tin tuyển dụng, theo dõi trạng thái ứng tuyển, phân quyền người dùng và quản trị hệ thống.",
+            technologies: "ReactJS, Tailwind CSS, Bootstrap, Framer Motion, Spring Boot, JWT Authentication, SQL Server, MySQL, Git, Postman, Figma",
+            github: "https://github.com/SWPGr/fe-jobfinder",
+            link: "#",
+            duration: "10/2024 - Hiện tại",
+            responsibilities: [
+                "Phát triển chức năng quản lý CV và hồ sơ người dùng cho ứng viên",
+                "Xây dựng tìm kiếm và lọc thông minh cho việc làm và ứng viên theo nhiều tiêu chí",
+                "Tích hợp Rich Text Editor cho mô tả công việc và nội dung hồ sơ",
+                "Triển khai upload & preview avatar, CV (PDF) cho người dùng",
+                "Quản lý trạng thái ứng tuyển và chức năng lưu việc làm",
+                "Thiết kế giao diện responsive, component tái sử dụng, cải thiện trải nghiệm người dùng",
+                "Xây dựng form xác thực & phân quyền (login/register) với kiểm tra dữ liệu đầu vào",
+                "Tối ưu UI với animation mượt bằng Framer Motion"
+            ]
         },
-         {
-        title: "Portfolio Website",
-        description: "Trang web Portfolio cá nhân được tôi thiết kế và phát triển nhằm giới thiệu bản thân, kỹ năng, dự án và quá trình học tập, làm việc. Giao diện được tối ưu hiện đại, thân thiện với người dùng và có khả năng mở rộng dễ dàng. Dự án không chỉ là sản phẩm cá nhân mà còn là một phần quan trọng trong hành trình học lập trình front-end và xây dựng thương hiệu cá nhân trực tuyến.",
-        technologies: "ReactJS, TypeScript, Vite, Tailwind CSS, Framer Motion, GitHub Pages/Render",
-        github: "https://github.com/dat-21/dat_porfolio",
-        link: "https://dat-portfolio.onrender.com"
-    },
-        // {
-        //     title: "Warehouse Management System",
-        //     description: "Ứng dụng quản lý kho hàng cho phép theo dõi hàng tồn kho, kiểm tra và thống kê hàng hóa.",
-        //     technologies: "Java, JDBC, SQL Server",
-        //     github: "#",
-        //     link: "#"
-        // },
-
-        // {
-        //     title: "English-Vietnamese Dictionary",
-        //     description: "Ứng dụng từ điển Anh - Việt đơn giản cho phép thêm, xóa, và dịch từ nhanh chóng.",
-        //     technologies: "Java, File I/O, HashMap",
-        //     github: "#",
-        //     link: "#"
-        // }
+        {
+            title: "Library Management System",
+            description: "Hệ thống quản lý thư viện số hóa các quy trình cốt lõi như quản lý sách, người dùng và mượn–trả, giúp thao tác nhanh hơn, dữ liệu nhất quán và giảm sai sót cho thủ thư/admin và người đọc.",
+            technologies: "ReactJS, TypeScript, Vite, Tailwind CSS, React Icons, Node.js, Express.js, MongoDB, Mongoose ODM, RESTful API, Git",
+            github: "https://github.com/dat-21/library-management-system",
+            link: "#",
+            duration: "2024",
+            responsibilities: [
+                "Xây dựng quản lý kho sách & trạng thái khả dụng",
+                "Phát triển quản lý người dùng và luồng mượn–trả end-to-end với theo dõi hạn trả",
+                "Chuẩn hóa business rules & validation cho dữ liệu mượn–trả",
+                "Cải thiện UI/UX: tìm kiếm nhanh, phản hồi rõ ràng cho người dùng",
+                "Xử lý edge cases để tăng độ ổn định và đảm bảo UI nhất quán với logic backend"
+            ]
+        },
+        {
+            title: "Portfolio Website",
+            description: "Trang web Portfolio cá nhân được thiết kế và phát triển nhằm giới thiệu bản thân, kỹ năng, dự án và quá trình học tập, làm việc. Giao diện được tối ưu hiện đại, thân thiện với người dùng và có khả năng mở rộng dễ dàng.",
+            technologies: "ReactJS, TypeScript, Vite, Tailwind CSS, Framer Motion, GitHub Pages/Render",
+            github: "https://github.com/dat-21/dat_porfolio",
+            link: "https://dat-portfolio.onrender.com",
+            duration: "2024 - Hiện tại",
+            responsibilities: [
+                "Thiết kế và phát triển giao diện responsive với Tailwind CSS",
+                "Tích hợp dark/light theme với CSS Variables",
+                "Xây dựng form liên hệ với email service",
+                "Tối ưu hiệu suất và SEO"
+            ]
+        }
     ],
 
     // ============ EDUCATION ============
     education: [
         {
-        school: "FPT University",
-        degree: "Bachelor of Software Engineering",
-        duration: "2020 - 2025",
-        image: "fpt.png",
-        descriptions: [
-            "Đã hoàn thành các học phần chuyên ngành bao gồm: Programming Fundamentals, Object-Oriented Programming, Database Systems, Data Structures & Algorithms, Java Web Application Development, Front-End Development with React, và Software Development Project.",
-            "Được đào tạo toàn diện về Software Engineering: từ phân tích yêu cầu (SWR302), kiểm thử phần mềm (SWT301), đến thiết kế giao diện người dùng (UI/UX Design - WDU203c).",
-            "Tham gia chương trình On-the-Job Training (OJT202), tích lũy kinh nghiệm làm việc thực tế.",
-            "Bổ sung các kỹ năng hỗ trợ như Academic Writing, Research Methods, và tiếng Nhật (JPD113, JPD123)."
-        ]
-    }
+            school: "FPT University – Đà Nẵng",
+            degree: "Bachelor of Information Technology - Software Engineering (BIT_SE)",
+            duration: "2023 - Nay",
+            image: "fpt.png",
+            descriptions: [
+                "Sinh viên hệ chính quy, chuyên ngành Software Engineering, được đào tạo theo mô hình gắn liền thực hành và dự án.",
+                "Đã hoàn thành nhiều học phần nền tảng về lập trình, cấu trúc dữ liệu, hệ điều hành, mạng máy tính và cơ sở dữ liệu.",
+                "Có kinh nghiệm phát triển ứng dụng Web với: Java Web (JSP/Servlet, JDBC, MVC), Front-end (HTML, CSS, JavaScript, ReactJS), Back-end (NodeJS, Express, MongoDB).",
+                "Tham gia các môn Software Engineering: phân tích yêu cầu, thiết kế hệ thống, kiểm thử phần mềm, kiến trúc phần mềm và quản lý dự án.",
+                "Có kiến thức và thực hành UI/UX Design, xây dựng wireframe, prototype và giao diện thân thiện người dùng.",
+                "Thực hiện đồ án môn học và dự án nhóm: quản lý người dùng, quản lý phòng, Job Finder, hệ thống CRUD, xác thực người dùng, phân trang, làm việc theo mô hình MVC.",
+                "Hoàn thành On-the-Job Training (OJT), làm quen môi trường làm việc thực tế, quy trình phát triển phần mềm và teamwork.",
+                "Sử dụng Git/GitHub trong quản lý mã nguồn và làm việc nhóm."
+            ],
+            technicalSkills: {
+                languages: ["Java", "JavaScript", "SQL"],
+                web: ["HTML", "CSS", "ReactJS", "JSP/Servlet"],
+                backend: ["NodeJS", "Express"],
+                database: ["SQL Server", "MongoDB"],
+                tools: ["Git", "MVC", "SDLC", "Agile/Scrum"]
+            }
+        }
     ],
 
     // ============ EXPERIENCE ============
     experience: [
         {
-        position: "Web Developer - Intern - Student",
-        company: "Dự án học tập & thực hành tại trường",
-        duration: "2023 - Hiện tại",
-        image: "fpt.png",
-        descriptions: [
-            "Tham gia các dự án học tập mô phỏng môi trường làm việc thực tế, đảm nhận vai trò phát triển và triển khai ứng dụng web.",
-            "Phát triển các hệ thống web theo mô hình MVC sử dụng JSP, Servlet, JDBC và SQL Server.",
-            "Được tiếp xúc và thực hành với các công nghệ hiện đại như ReactJS, MongoDB và Internet of Things (IoT).",
-            "Áp dụng kiến thức từ các môn chuyên ngành như Cấu trúc dữ liệu, Lập trình hướng đối tượng, Thiết kế Web, Kiểm thử phần mềm, Phân tích & Đặc tả yêu cầu phần mềm.",
-            "Rèn luyện kỹ năng UI/UX, thống kê, viết học thuật và kỹ năng mềm như giao tiếp, làm việc nhóm và tư duy phản biện.",
-            "Hiểu biết cơ bản về lập trình nhúng và phần cứng, mở rộng góc nhìn tổng thể giữa phần mềm và hệ thống."
-        ]
-    },
-    {
-        position: "Tham dự Code Camp tại FPT University",
-        company: "Chương trình đào tạo & trải nghiệm thực tế",
-        duration: "2025",
-        image: "fpt.png",
-        descriptions: [
-            "Tham dự Code Camp do trường tổ chức, tập trung vào phát triển phần mềm thực tế và teamwork trong môi trường mô phỏng doanh nghiệp.",
-            "Học hỏi thêm về tư duy thiết kế hệ thống, cải thiện kỹ năng lập trình và kỹ năng làm việc nhóm.",
-            "Được trải nghiệm quy trình làm việc Agile, tìm hiểu vai trò của GitHub, React và API trong phát triển ứng dụng web."
-        ]
-    },
-    {
-        position: "Front-end Web Developer",
-        company: "Dự án JobFinder",
-        duration: "2024 - 2025",
-        image: "jobfinder.ico",
-        descriptions: [
-            "Tham gia phát triển nền tảng JobFinder — một ứng dụng web kết nối nhà tuyển dụng và người tìm việc.",
-            "Thiết kế và phát triển các tính năng chính: đăng ký/đăng nhập người dùng với phân quyền, quản lý hồ sơ và CV, đăng tin tuyển dụng, tìm kiếm và lọc công việc nâng cao.",
-            "Phát triển các chức năng quản trị: quản lý job, phê duyệt bài đăng, gửi email thông báo, thống kê và báo cáo.",
-            "Xây dựng API RESTful, xác thực người dùng bằng JWT Authentication, tích hợp chat nội bộ theo thời gian thực.",
-            "Sử dụng ReactJS, Tailwind CSS ở frontend và Spring Boot ở backend theo kiến trúc RESTful, kết nối cơ sở dữ liệu MySQL/SQL Server.",
-            "Thiết kế giao diện UI/UX bằng Figma, triển khai Agile và sử dụng GitHub để quản lý mã nguồn và cộng tác nhóm hiệu quả."
-        ]
-    }
+            position: "Front-end Developer",
+            company: "Dự án JobFinder",
+            duration: "10/2024 - Hiện tại",
+            image: "jobfinder.ico",
+            descriptions: [
+                "Phát triển chức năng quản lý CV và hồ sơ người dùng cho ứng viên",
+                "Xây dựng tìm kiếm và lọc thông minh cho việc làm và ứng viên theo nhiều tiêu chí",
+                "Tích hợp Rich Text Editor cho mô tả công việc và nội dung hồ sơ",
+                "Triển khai upload & preview avatar, CV (PDF) cho người dùng",
+                "Quản lý trạng thái ứng tuyển và chức năng lưu việc làm",
+                "Thiết kế giao diện responsive, component tái sử dụng với ReactJS và Tailwind CSS",
+                "Xây dựng form xác thực & phân quyền (login/register) với kiểm tra dữ liệu đầu vào",
+                "Tối ưu UI với animation mượt bằng Framer Motion"
+            ]
+        },
+        {
+            position: "Full-stack Developer",
+            company: "Dự án Library Management System",
+            duration: "2024",
+            image: "fpt.png",
+            descriptions: [
+                "Xây dựng quản lý kho sách & trạng thái khả dụng",
+                "Phát triển quản lý người dùng và luồng mượn–trả end-to-end với theo dõi hạn trả",
+                "Chuẩn hóa business rules & validation cho dữ liệu mượn–trả",
+                "Cải thiện UI/UX: tìm kiếm nhanh, phản hồi rõ ràng cho người dùng",
+                "Xử lý edge cases để tăng độ ổn định và đảm bảo UI nhất quán với logic backend",
+                "Sử dụng ReactJS, TypeScript, Node.js, Express.js và MongoDB"
+            ]
+        },
+        {
+            position: "Web Developer - Student",
+            company: "FPT University – Đà Nẵng",
+            duration: "2023 - Hiện tại",
+            image: "fpt.png",
+            descriptions: [
+                "Tham gia các dự án học tập mô phỏng môi trường làm việc thực tế",
+                "Phát triển các hệ thống web theo mô hình MVC sử dụng JSP, Servlet, JDBC và SQL Server",
+                "Thực hành với các công nghệ hiện đại như ReactJS, NodeJS, MongoDB",
+                "Áp dụng kiến thức từ các môn: Cấu trúc dữ liệu, OOP, Thiết kế Web, Kiểm thử phần mềm",
+                "Rèn luyện kỹ năng UI/UX và các kỹ năng mềm như giao tiếp, làm việc nhóm",
+                "Hoàn thành On-the-Job Training (OJT), làm quen môi trường làm việc thực tế"
+            ]
+        }
     ],
 
     // ============ CERTIFICATES ============
     certificates: [
         {
-            title: "Agile Project Management Certificate",
-            description: "Chứng chỉ quản lý dự án theo mô hình Agile",
+            title: "IELTS 5.0",
+            description: "Chứng chỉ tiếng Anh quốc tế - Có thể đọc/viết tài liệu, email, nghe/nói trong các buổi họp và call với khách hàng",
             icon: "google",
-            link: "#"
+            link: "#",
+            year: "2022"
         },
         {
             title: "Git & GitHub Essentials",
-            description: "Hiểu và sử dụng Git, GitHub để quản lý mã nguồn",
+            description: "Thành thạo Git workflow, Pull Request, Code Review và quản lý mã nguồn",
             icon: "github",
-            link: "#"
+            link: "#",
+            year: "2023"
         },
         {
-            title: "Front-End Developer (React) Certificate",
-            description: "Chứng chỉ lập trình Front-End với React",
+            title: "Front-End Developer (React)",
+            description: "Chứng chỉ lập trình Front-End với ReactJS, Component-based Architecture",
             icon: "hackerrank",
-            link: "#"
+            link: "#",
+            year: "2024"
         }
     ],
 
     // ============ CONTACT ============
     contact: {
         title: "Liên hệ với tôi",
-        description: "Cảm ơn bạn đã quan tâm đến hồ sơ của tôi. Nếu bạn có bất kỳ câu hỏi hoặc muốn hợp tác, vui lòng gửi email cho tôi qua địa chỉ: mainguyentiendat@example.com. Tôi sẽ phản hồi trong thời gian sớm nhất.",
+        description: "Cảm ơn bạn đã quan tâm đến hồ sơ của tôi. Nếu bạn có bất kỳ câu hỏi hoặc muốn hợp tác, vui lòng gửi email cho tôi. Tôi sẽ phản hồi trong thời gian sớm nhất!",
     },
 
     // ============ FOOTER ============
