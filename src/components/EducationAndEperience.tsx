@@ -10,6 +10,7 @@ interface EducationData {
   degree: string;
   duration: string;
   image: string;
+  descriptions?: string[];
 }
 
 // Định nghĩa interface cho dữ liệu certificate
