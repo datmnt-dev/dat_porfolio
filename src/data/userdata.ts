@@ -23,14 +23,14 @@ const info = {
     // ============ SKILLS ============
     skills: {
         technical: [
-            { name: "HTML5 & CSS3", level: 75 },
-            { name: "JavaScript", level: 70 },
-            { name: "ReactJS", level: 70 },
+            { name: "HTML5 & CSS3", level: 85 },
+            { name: "JavaScript", level: 80 },
+            { name: "ReactJS", level: 80 },
             { name: "TypeScript", level: 75 },
-            { name: "NodeJS & Express", level: 70 },
-            { name: "Tailwind CSS", level: 75 },
-            { name: "Java (JSP/Servlet)", level: 55 },
-            { name: "SQL Server / MongoDB", level: 70 },
+            { name: "NodeJS & Express", level: 75 },
+            { name: "Tailwind CSS", level: 85 },
+            { name: "Java (JSP/Servlet)", level: 65 },
+            { name: "SQL Server / MongoDB", level: 75 },
         ],
         tools: [
             "Git & GitHub",
@@ -45,6 +45,7 @@ const info = {
             "RESTful API Design",
             "Test Driven Development (TDD)",
             "Object-Oriented Programming (OOP)",
+            "SDLC",
         ],
         soft: [
             "Phân tích yêu cầu người dùng",
@@ -80,7 +81,7 @@ const info = {
             technologies: "ReactJS, TypeScript, Vite, Tailwind CSS, React Icons, Node.js, Express.js, MongoDB, Mongoose ODM, RESTful API, Git",
             github: "https://github.com/dat-21/library-management-system",
             link: "#",
-            duration: "2024",
+            duration: "2025 - Hiện tại",
             responsibilities: [
                 "Xây dựng quản lý kho sách & trạng thái khả dụng",
                 "Phát triển quản lý người dùng và luồng mượn–trả end-to-end với theo dõi hạn trả",
@@ -109,18 +110,19 @@ const info = {
     education: [
         {
             school: "FPT University – Đà Nẵng",
-            degree: "Bachelor of Information Technology - Software Engineering (BIT_SE)",
-            duration: "2023 - Nay",
+            degree: "Cử nhân Công nghệ Thông tin – Kỹ thuật Phần mềm (BIT_SE)",
+            duration: "2023 - Hiện tại (Hệ Chính Quy)",
             image: "fpt.png",
             descriptions: [
-                "Sinh viên hệ chính quy, chuyên ngành Software Engineering, được đào tạo theo mô hình gắn liền thực hành và dự án.",
-                "Đã hoàn thành nhiều học phần nền tảng về lập trình, cấu trúc dữ liệu, hệ điều hành, mạng máy tính và cơ sở dữ liệu.",
-                "Có kinh nghiệm phát triển ứng dụng Web với: Java Web (JSP/Servlet, JDBC, MVC), Front-end (HTML, CSS, JavaScript, ReactJS), Back-end (NodeJS, Express, MongoDB).",
-                "Tham gia các môn Software Engineering: phân tích yêu cầu, thiết kế hệ thống, kiểm thử phần mềm, kiến trúc phần mềm và quản lý dự án.",
+                "Chuyên ngành Software Engineering, định hướng phát triển ứng dụng Web và phần mềm.",
+                "GPA đang tích lũy tốt (đến Kì 7).",
+                "Được đào tạo theo mô hình thực hành – dự án – teamwork gắn liền với môi trường doanh nghiệp thực tế.",
+                "Đã hoàn thành các học phần nền tảng cốt lõi: Lập trình hướng đối tượng (Java), Cấu trúc dữ liệu & Giải thuật, Cơ sở dữ liệu, Hệ điều hành, Mạng máy tính, Phát triển Web (Java Web, ReactJS, NodeJS).",
+                "Tham gia các môn học chuyên sâu về Software Engineering: phân tích yêu cầu, thiết kế hệ thống, kiểm thử phần mềm, kiến trúc phần mềm và quản lý dự án.",
                 "Có kiến thức và thực hành UI/UX Design, xây dựng wireframe, prototype và giao diện thân thiện người dùng.",
-                "Thực hiện đồ án môn học và dự án nhóm: quản lý người dùng, quản lý phòng, Job Finder, hệ thống CRUD, xác thực người dùng, phân trang, làm việc theo mô hình MVC.",
-                "Hoàn thành On-the-Job Training (OJT), làm quen môi trường làm việc thực tế, quy trình phát triển phần mềm và teamwork.",
-                "Sử dụng Git/GitHub trong quản lý mã nguồn và làm việc nhóm."
+                "Thực hiện đồ án môn học và dự án nhóm phức tạp: quản lý người dùng, quản lý phòng, Job Finder, hệ thống CRUD, xác thực người dùng, phân trang, làm việc theo mô hình MVC.",
+                "Hoàn thành On-the-Job Training (OJT), làm quen môi trường làm việc thực tế, quy trình phát triển phần mềm chuẩn và làm việc nhóm.",
+                "Sử dụng Git/GitHub thành thạo trong quản lý mã nguồn và Git workflow của đội nhóm."
             ],
             technicalSkills: {
                 languages: ["Java", "JavaScript", "SQL"],
@@ -153,7 +155,7 @@ const info = {
         {
             position: "Full-stack Developer",
             company: "Dự án Library Management System",
-            duration: "2024",
+            duration: "2025 - Hiện tại",
             image: "fpt.png",
             descriptions: [
                 "Xây dựng quản lý kho sách & trạng thái khả dụng",
@@ -176,6 +178,20 @@ const info = {
                 "Áp dụng kiến thức từ các môn: Cấu trúc dữ liệu, OOP, Thiết kế Web, Kiểm thử phần mềm",
                 "Rèn luyện kỹ năng UI/UX và các kỹ năng mềm như giao tiếp, làm việc nhóm",
                 "Hoàn thành On-the-Job Training (OJT), làm quen môi trường làm việc thực tế"
+            ]
+        }
+    ],
+
+    // ============ ACHIEVEMENTS ============
+    achievements: [
+        {
+            title: "Academic Achievement",
+            duration: "2025 - Hiện tại",
+            descriptions: [
+                "Tham gia và hoàn thành xuất sắc nhiều dự án học thuật Web nâng cao theo mô hình MVC và RESTful API.",
+                "Thực hiện thành công các dự án Web ứng dụng Full-stack sử dụng ReactJS, NodeJS trong môi trường học tập nhóm.",
+                "Hoàn thành xuất sắc khóa huấn luyện thực tế On-the-Job Training (OJT), nắm vững quy trình phát triển phần mềm chuyên nghiệp.",
+                "Đọc hiểu tài liệu kỹ thuật tiếng Anh tốt và có khả năng cộng tác nhóm hiệu quả qua Git workflow."
             ]
         }
     ],

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import type { AppContextType } from "../types/AppContext";
@@ -11,10 +11,14 @@ import Projects from "../components/sections/Project";
 import EducationAndExperience from "../components/EducationAndEperience";
 import Skills from "../components/Skills";
 import Contact from "../components/Contact";
-import ContactEmail from "../components/ContactEmail";
+import CommandPalette from "../components/CommandPalette";
+import MatrixRain from "../components/MatrixRain";
+
 const Homepage = () => {
   const { theme, switchTheme } = useContext<AppContextType>(AppContext);
   const location = useLocation();
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [isMatrixActive, setIsMatrixActive] = useState(false);
 
   useEffect(() => {
     if (window.HSStaticMethods) {
@@ -30,7 +34,10 @@ const Homepage = () => {
         color: "var(--color-text)",
       }}
     >
-      <Header switchTheme={switchTheme} />
+      <Header
+        switchTheme={switchTheme}
+        onOpenPalette={() => setIsPaletteOpen(true)}
+      />
       <div
         className="xl:w-[1200px] md:mx-auto h-full border-x"
         style={{
@@ -44,7 +51,6 @@ const Homepage = () => {
         <EducationAndExperience />
         <Skills />
         <Contact />
-        <ContactEmail />
 
         <hr
           className="mt-12 border"
@@ -53,8 +59,19 @@ const Homepage = () => {
         <Footer theme={theme} />
       </div>
       <BackToTop />
+
+      {/* Global Developer Modals */}
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+        onOpenMatrix={() => setIsMatrixActive(true)}
+      />
+
+      {isMatrixActive && (
+        <MatrixRain onClose={() => setIsMatrixActive(false)} />
+      )}
     </div>
   );
 };
 
-export default Homepage; 
+export default Homepage;

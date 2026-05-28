@@ -1,394 +1,319 @@
-import React from "react";
-import { FaLandmark, FaGraduationCap } from "react-icons/fa";
-import { FaBuildingUser } from "react-icons/fa6";
+import React, { useState } from "react";
+import { FaTerminal, FaCodeBranch, FaGraduationCap, FaBriefcase, FaCertificate, FaArrowRight, FaCode } from "react-icons/fa";
 import { PiCertificateFill } from "react-icons/pi";
 import user_info from "../data/userdata";
 
-// Định nghĩa interface cho dữ liệu education
-interface EducationData {
-  school: string;
-  degree: string;
+interface CommitNode {
+  hash: string;
+  type: "education" | "experience" | "achievement";
+  title: string; // school or company
+  subtitle: string; // degree or position
   duration: string;
-  image: string;
-  descriptions?: string[];
-}
-
-// Định nghĩa interface cho dữ liệu certificate
-interface CertificateData {
-  title: string;
-  description: string;
-  link: string;
-  icon: "google" | "github" | "hackerrank";
-}
-
-// Định nghĩa interface cho dữ liệu experience
-interface ExperienceData {
-  position: string;
-  company: string;
-  duration: string;
-  image: string;
+  image?: string;
   descriptions: string[];
+  branch: "main" | "feature/experience";
 }
 
-// Định nghĩa interface cho user_info
-interface UserInfo {
-  main: {
-    name: string;
-    description: string;
-    role: string;
-    photo: string;
-    email: string;
-  };
-  socials: {
-    twitter: string;
-    github: string;
-    linkedin: string;
-    instagram: string;
-    facebook: string;
-  };
-  projects: {
-    title: string;
-    description: string;
-    technologies: string;
-    github: string;
-    link: string;
-  }[];
-  education: EducationData[];
-  experience: ExperienceData[];
-  certificates: CertificateData[];
-  contact: {
-    title: string;
-    description: string;
-  };
-  footer: string;
-}
+const EducationAndExperience: React.FC = () => {
+  // Convert our data into chronological git commit nodes
+  const commitNodes: CommitNode[] = [
+    // 1. OJT & Student web dev (FPT)
+    {
+      hash: "8df20b1",
+      type: "experience",
+      title: "FPT University – Đà Nẵng",
+      subtitle: "Web Developer (Student)",
+      duration: "2023 - Hiện tại",
+      image: "fpt.png",
+      descriptions: user_info.experience[2].descriptions,
+      branch: "feature/experience"
+    },
+    // 2. FPT Education
+    {
+      hash: "ed5a07c",
+      type: "education",
+      title: "FPT University – Đà Nẵng",
+      subtitle: "Cử nhân Công nghệ Thông tin – Kỹ thuật Phần mềm (BIT_SE)",
+      duration: "2023 - Hiện tại (Hệ Chính Quy)",
+      image: "fpt.png",
+      descriptions: user_info.education[0].descriptions,
+      branch: "main"
+    },
+    // 3. Library system project
+    {
+      hash: "fa82c9e",
+      type: "experience",
+      title: "Library Management System",
+      subtitle: "Full-stack Developer",
+      duration: "2025 - Hiện tại",
+      image: "fpt.png",
+      descriptions: user_info.experience[1].descriptions,
+      branch: "feature/experience"
+    },
+    // 4. JobFinder project
+    {
+      hash: "c29d0f3",
+      type: "experience",
+      title: "Dự án JobFinder",
+      subtitle: "Front-end Developer",
+      duration: "10/2024 - Hiện tại",
+      image: "jobfinder.ico",
+      descriptions: user_info.experience[0].descriptions,
+      branch: "feature/experience"
+    },
+    // 5. Academic Achievement
+    {
+      hash: "ae3c8b9",
+      type: "achievement",
+      title: "Academic Achievement",
+      subtitle: "Thành tựu học tập & chuyên môn",
+      duration: "2025 - Hiện tại",
+      descriptions: user_info.achievements[0].descriptions,
+      branch: "main"
+    }
+  ];
 
-const EducationAndExperience = () => {
-  // Sử dụng user_info làm info
-  const info = user_info as UserInfo;
+  // Active commit node to display in "git show" terminal
+  const [selectedCommit, setSelectedCommit] = useState<CommitNode>(commitNodes[1]); // Default to FPT Edu
 
   return (
     <section
       id="education-and-experience"
-      className="py-16 px-4 lg:px-20 text-[var(--color-text)] transition-all duration-[var(--transition-speed)]"
-      style={{
-        backgroundColor: "var(--color-bg)",
-        color: "var(--color-text)",
-      }}
+      className="py-16 px-4 md:px-8 lg:px-16 bg-[var(--color-bg)] transition-colors duration-500 border-b border-[var(--color-border)]"
     >
-      {/* Section Header */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)] bg-opacity-10 text-[var(--color-accent)] text-sm font-medium mb-4">
-          <FaGraduationCap />
-          Background
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
+            <FaTerminal className="text-xs" />
+            <span>tiendat@portfolio:~$ git log --graph --oneline</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
+            Git <span className="text-[var(--color-accent)]">Timeline</span> & Experience
+          </h2>
+          <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
+            Nhấp vào từng Commit Node trên cây thư mục Git để xem chi tiết học tập & kinh nghiệm dưới dạng lệnh &quot;git show&quot;.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text)]">
-          Education & <span className="text-[var(--color-accent)]">Experience</span>
-        </h2>
-        <p className="mt-4 text-[var(--color-subtext)] max-w-2xl mx-auto">
-          Quá trình học tập và kinh nghiệm làm việc của tôi
-        </p>
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12">
-        {/* =========== EDUCATION =========== */}
-        <div className="w-full md:w-[50%]">
-          {/* =========== EDUCATION TITLE =========== */}
-          <h4
-            className="
-              text-xl font-bold flex gap-2 items-center mb-6
-              text-[var(--color-text)]
-            "
-          >
-            <FaLandmark className="text-xl text-[var(--color-accent)]" />
-            Education
-          </h4>
+        {/* Timeline Layout Grid */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Columns: Visual Git Graph Tree */}
+          <div className="lg:col-span-6 border border-[var(--color-border)] rounded-xl p-6 bg-[var(--color-bg-component)]">
+            <div className="flex items-center gap-2 mb-6 border-b border-[var(--color-border)] pb-3 select-none">
+              <FaCodeBranch className="text-[var(--color-accent)]" />
+              <span className="font-mono text-xs text-[var(--color-text)]">REPOS BRANCHING FLOW</span>
+            </div>
 
-          {/* =========== EDUCATION LIST =========== */}
-          {info.education.map((edu, index) => (
-            <div key={index}>
-              {/* =========== DURATION =========== */}
-              <div className="ps-2 my-2 first:mt-0 !mt-2">
-                <h3
-                  className="
-                  text-xs font-medium uppercase 
-                  text-[var(--color-subtext)]
-                "
-                >
-                  {edu.duration}
-                </h3>
-              </div>
+            {/* Tree Nodes List */}
+            <div className="relative font-mono text-xs pl-2 space-y-6">
+              
+              {commitNodes.map((node) => {
+                const isSelected = selectedCommit.hash === node.hash;
+                const isMainBranch = node.branch === "main";
 
-              <div className="flex gap-x-3 relative group rounded-lg">
-                <div
-                  className="
-                  relative last:after:hidden after:absolute after:top-0 after:bottom-0 
-                  after:start-3.5 after:w-px after:-translate-x-[0.5px] 
-                  after:bg-[var(--color-border)] 
-                  group-hover:after:bg-[var(--color-accent)]
-                "
-                >
-                  <div className="relative z-10 size-7 flex justify-center items-center">
-                    <div
-                      className="
-                      size-2 rounded-full 
-                      bg-[var(--color-bg)] 
-                      border-2 border-[var(--color-border)] 
-                      group-hover:border-[var(--color-accent)] 
-                      transition-colors duration-[var(--transition-speed)]
-                    "
-                    ></div>
-                  </div>
-                </div>
-
-                <div className="grow p-2 pb-8">
-                  {/* =========== IMAGE AND SCHOOL NAME =========== */}
-                  <h3
-                    className="
-                    flex items-center gap-x-2 font-semibold 
-                    text-[var(--color-text)]
-                  "
+                return (
+                  <div
+                    key={node.hash}
+                    onClick={() => setSelectedCommit(node)}
+                    className={`flex items-start gap-4 p-3 rounded-lg border cursor-pointer transition-all duration-300 ${
+                      isSelected
+                        ? "bg-zinc-100 dark:bg-zinc-900 border-[var(--color-accent)] shadow-sm"
+                        : "border-transparent hover:bg-zinc-100/50 dark:hover:bg-zinc-900/30"
+                    }`}
                   >
-                    <img
-                      className="w-9 h-9 rounded-full"
-                      src={edu.image}
-                      alt={`${edu.school} Logo`}
-                    />
-                    <div className="leading-5">
-                      {edu.school}
-                      {/* =========== DEGREE =========== */}
-                      <p
-                        className="
-                        font-normal text-xs 
-                        text-[var(--color-subtext)]
-                      "
-                      >
-                        {edu.degree}
+                    {/* Visual Git Lines indicator */}
+                    <div className="flex flex-col items-center select-none pt-0.5">
+                      <div className="flex gap-2.5">
+                        {/* Main Branch Line */}
+                        <div className="flex flex-col items-center">
+                          {isMainBranch ? (
+                            <div
+                              className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border-2 ${
+                                isSelected
+                                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white scale-110"
+                                  : "border-zinc-400 dark:border-zinc-600 bg-[var(--color-bg-component)]"
+                              }`}
+                            >
+                              <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                            </div>
+                          ) : (
+                            <div className="w-0.5 h-3.5 border-l-2 border-dashed border-zinc-400/40" />
+                          )}
+                        </div>
+
+                        {/* Experience Branch Line */}
+                        <div className="flex flex-col items-center">
+                          {!isMainBranch ? (
+                            <div
+                              className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border-2 ${
+                                isSelected
+                                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white scale-110"
+                                  : "border-cyan-500/70 bg-[var(--color-bg-component)]"
+                              }`}
+                            >
+                              <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                            </div>
+                          ) : (
+                            <div className="w-0.5 h-3.5 border-l-2 border-dashed border-zinc-400/40" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Commit Info details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-[10px] text-[var(--color-accent)] font-bold">
+                          commit {node.hash}
+                        </span>
+                        <span className={`text-[8px] px-1 rounded font-semibold ${
+                          isMainBranch
+                            ? "bg-green-500/10 text-green-500"
+                            : "bg-cyan-500/10 text-cyan-500"
+                        }`}>
+                          {node.branch}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 dark:text-zinc-500">
+                          ({node.duration})
+                        </span>
+                      </div>
+                      <h4 className="font-code font-bold text-xs text-[var(--color-text)] truncate">
+                        {node.subtitle}
+                      </h4>
+                      <p className="text-[10px] text-[var(--color-subtext)] truncate">
+                        {node.title}
                       </p>
                     </div>
-                  </h3>
 
-                  {/* =========== EDUCATION DESCRIPTIONS =========== */}
-                  {edu.descriptions && edu.descriptions.length > 0 && (
-                    <ul className="mt-3 space-y-2">
-                      {edu.descriptions.map((desc: string, i: number) => (
-                        <li className="flex space-x-3" key={i}>
-                          <svg
-                            className="flex-shrink-0 size-4 mt-0.5 text-[var(--color-accent)]"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          <span className="text-sm text-[var(--color-subtext)]">
-                            {desc}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+                  </div>
+                );
+              })}
+
+            </div>
+
+            {/* Certificates Subsection */}
+            <div className="mt-8 pt-6 border-t border-[var(--color-border)] select-none">
+              <h4 className="font-mono text-xs font-bold text-[var(--color-text)] mb-4 flex items-center gap-2">
+                <PiCertificateFill className="text-base text-[var(--color-accent)]" />
+                <span>CERTIFICATES & BADGES</span>
+              </h4>
+              <div className="grid gap-2.5">
+                {user_info.certificates.map((cert, index) => (
+                  <a
+                    key={index}
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-accent)] hover:shadow-xs transition-all group"
+                  >
+                    <div className="w-7 h-7 rounded-md bg-[var(--color-bg-component)] flex items-center justify-center text-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all text-xs flex-shrink-0">
+                      <FaCertificate />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-code font-bold text-[10px] text-[var(--color-text)] truncate">
+                          {cert.title}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">{cert.year}</span>
+                      </div>
+                      <p className="text-[9px] text-[var(--color-subtext)] truncate">
+                        {cert.description}
+                      </p>
+                    </div>
+                  </a>
+                ))}
               </div>
             </div>
-          ))}
 
-          {/* =========== CERTIFICATES TITLE =========== */}
-          <h4
-            className="
-            text-xl mt-6 font-bold flex gap-2 items-center
-            text-[var(--color-text)]
-          "
-          >
-            <PiCertificateFill className="text-2xl text-[var(--color-accent)]" />
-            Certificates
-          </h4>
-
-          {/* =========== CERTIFICATES LIST =========== */}
-          <div className="mt-4 space-y-3">
-            {info.certificates.map((cert, index) => (
-              <a
-                key={index}
-                href={cert.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                flex items-center gap-4 p-3 rounded-lg
-                border border-[var(--color-border)]
-                bg-[var(--color-card)]
-                hover:border-[var(--color-accent)]
-                hover:shadow-md
-                transition-all duration-300
-                group
-              "
-              >
-                {/* Certificate Icon */}
-                <div className="
-                w-10 h-10 rounded-full flex items-center justify-center
-                bg-[var(--color-bg-component)] 
-                group-hover:bg-[var(--color-accent)] 
-                transition-colors duration-300
-              ">
-                  {cert.icon === "google" && (
-                    <svg className="w-5 h-5 text-[var(--color-accent)] group-hover:text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                    </svg>
-                  )}
-                  {cert.icon === "github" && (
-                    <svg className="w-5 h-5 text-[var(--color-accent)] group-hover:text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                  )}
-                  {cert.icon === "hackerrank" && (
-                    <svg className="w-5 h-5 text-[var(--color-accent)] group-hover:text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0c1.285 0 9.75 4.886 10.392 6 .645 1.115.645 10.885 0 12S13.287 24 12 24s-9.75-4.885-10.395-6c-.641-1.115-.641-10.885 0-12C2.25 4.886 10.715 0 12 0zm2.295 6.799c-.141 0-.258.115-.258.258v3.875H9.963V6.908h.701c.141 0 .257-.115.257-.258 0-.094-.049-.176-.123-.221L9.223 4.896c-.072-.044-.164-.044-.236 0L7.41 6.429c-.073.044-.122.127-.122.221 0 .143.116.258.257.258h.702v10.083c0 .143.116.258.257.258h2.327c.141 0 .257-.115.257-.258v-3.875h4.074v3.875h-.701c-.141 0-.257.115-.257.258 0 .094.049.176.122.221l1.577 1.533c.072.044.164.044.236 0l1.577-1.533c.073-.044.122-.127.122-.221 0-.143-.116-.258-.257-.258h-.701V6.908c0-.143-.116-.258-.257-.258h-2.327z" />
-                    </svg>
-                  )}
-                </div>
-
-                {/* Certificate Info */}
-                <div className="flex-1">
-                  <h5 className="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
-                    {cert.title}
-                  </h5>
-                  <p className="text-xs text-[var(--color-subtext)]">
-                    {cert.description}
-                  </p>
-                </div>
-
-                {/* Arrow Icon */}
-                <svg
-                  className="w-5 h-5 text-[var(--color-subtext)] group-hover:text-[var(--color-accent)] transition-colors"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            ))}
           </div>
-        </div>
 
-        {/* =========== EXPERIENCE =========== */}
-        <div className="w-full md:w-[50%]">
-          {/* =========== EXPERIENCE TITLE =========== */}
-          <h4
-            className="
-            text-xl mb-6 font-bold flex gap-2 items-center
-            text-[var(--color-text)]
-          "
-          >
-            <FaBuildingUser className="text-2xl text-[var(--color-accent)]" />
-            Experience
-          </h4>
+          {/* Right Columns: Simulated Git Show Terminal Viewport */}
+          <div className="lg:col-span-6 flex flex-col h-full min-h-[440px]">
+            <div className="editor-window flex-1 flex flex-col border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-xl shadow-2xl relative overflow-hidden">
+              
+              {/* Terminal Title Bar */}
+              <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                <div className="flex gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+                </div>
+                <span className="text-[9px] font-mono text-[#8b949e] flex items-center gap-1.5">
+                  <FaTerminal /> bash --cmd &quot;git show {selectedCommit.hash}&quot;
+                </span>
+                <div className="w-6" />
+              </div>
 
-          <div className="md:max-h-[600px] md:overflow-y-auto scroll-smooth space-y-4 pr-2 custom-scrollbar">
-            {/* =========== EXPERIENCE LIST =========== */}
-            {info.experience.map((exp, index) => (
-              <div key={index}>
-                <div className="ps-2 my-2 first:mt-0 !mt-2">
-                  <h3
-                    className="
-                    text-xs font-medium uppercase 
-                    text-[var(--color-subtext)]
-                  "
-                  >
-                    {exp.duration}
-                  </h3>
+              {/* Terminal screen content (Git diff details) */}
+              <div className="flex-1 overflow-y-auto p-4 font-mono text-[10px] leading-5 select-text custom-scrollbar bg-[#05070c]">
+                
+                {/* Simulated cmd */}
+                <div className="mb-4">
+                  <span className="text-cyan-400">tiendat@portfolio:~$</span>{" "}
+                  <span className="text-white">git show {selectedCommit.hash}</span>
                 </div>
 
-                <div className="flex gap-x-3 relative group rounded-lg">
-                  <div
-                    className="
-                    relative last:after:hidden after:absolute after:top-0 after:bottom-0 
-                    after:start-3.5 after:w-px after:-translate-x-[0.5px] 
-                    after:bg-[var(--color-border)] 
-                    group-hover:after:bg-[var(--color-accent)]
-                  "
-                  >
-                    <div className="relative z-10 size-7 flex justify-center items-center">
-                      <div
-                        className="
-                        size-2 rounded-full 
-                        bg-[var(--color-bg)] 
-                        border-2 border-[var(--color-border)] 
-                        group-hover:border-[var(--color-accent)] 
-                        transition-colors duration-[var(--transition-speed)]
-                      "
-                      ></div>
+                {/* Git commit metadata */}
+                <div className="text-yellow-500 font-semibold mb-1">
+                  commit {selectedCommit.hash}b210e74ff983e200c01a2d59df4a32ef
+                </div>
+                <div>Author: Mai Nguyen Tien Dat &lt;tiendatyyy2005@gmail.com&gt;</div>
+                <div className="mb-2">Date:   {selectedCommit.duration}</div>
+                
+                <div className="text-sky-400 font-semibold pl-4 mb-3 border-l-2 border-sky-400/50">
+                  {selectedCommit.subtitle} @ {selectedCommit.title}
+                </div>
+
+                {/* Simulated file header diff */}
+                <div className="text-[#8b949e] mb-1">
+                  --- a/milestones/{selectedCommit.type === "education" ? "education" : "experience"}.md<br />
+                  +++ b/milestones/{selectedCommit.type === "education" ? "education" : "experience"}.md
+                </div>
+                <div className="text-blue-400 mb-2">@@ -0,0 +1,{selectedCommit.descriptions.length} @@</div>
+
+                {/* Commit Diff items (responsibilities/descriptions) */}
+                <div className="space-y-1.5">
+                  {selectedCommit.descriptions.map((desc, idx) => (
+                    <div
+                      key={idx}
+                      className="pl-2 py-1 rounded-sm diff-added flex items-start gap-2 text-green-400"
+                    >
+                      <span className="font-bold select-none text-green-500 flex-shrink-0">+</span>
+                      <span className="text-green-300/90 whitespace-normal leading-4">{desc}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Certificate node image */}
+                {selectedCommit.image && (
+                  <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center gap-3">
+                    <img
+                      src={`/${selectedCommit.image}`}
+                      alt="milestone logo"
+                      className="w-10 h-10 rounded-full border border-zinc-800 p-0.5 bg-white flex-shrink-0"
+                    />
+                    <div>
+                      <div className="text-zinc-500 font-semibold">Related Node</div>
+                      <div className="text-white text-[9px] font-bold">{selectedCommit.title}</div>
                     </div>
                   </div>
-
-                  <div className="grow p-2 pb-8">
-                    {/* =========== COMPANY NAME =========== */}
-                    <h3
-                      className="
-                      flex items-center gap-x-2 font-semibold 
-                      text-[var(--color-text)]
-                    "
-                    >
-                      <img
-                        className="w-9 h-9 rounded-full"
-                        src={exp.image}
-                        alt={`${exp.company} Logo`}
-                      />
-                      <div className="leading-5">
-                        {exp.company}
-                        {/* =========== POSITION =========== */}
-                        <p
-                          className="
-                          font-normal text-xs 
-                          text-[var(--color-subtext)]
-                        "
-                        >
-                          {exp.position}
-                        </p>
-                      </div>
-                    </h3>
-
-                    <ul className="list-disc list-inside text-[var(--color-text)] mt-2">
-                      {/* =========== DESCRIPTION LIST =========== */}
-                      {exp.descriptions.map((desc, i) => (
-                        <li className="flex space-x-3" key={i}>
-                          <svg
-                            className="
-                            flex-shrink-0 size-4 mt-0.5 
-                            text-[var(--color-accent)]
-                          "
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          <span className="text-sm text-[var(--color-subtext)] mt-1">
-                            {desc}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                )}
               </div>
-            ))}
+
+              {/* Terminal footer status */}
+              <div className="px-3 py-1 bg-[#161b22] border-t border-[#21262d] flex items-center justify-between text-[8px] text-[#8b949e] select-none">
+                <span>git commit diff tracker</span>
+                <span>ESC to clear log</span>
+              </div>
+
+            </div>
           </div>
+
         </div>
+
       </div>
     </section>
   );

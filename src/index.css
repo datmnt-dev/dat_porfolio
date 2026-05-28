@@ -1,128 +1,105 @@
-/* src/index.css hoặc src/HomePage.css */
 @import "tailwindcss";
 
-/* 🌞 Light mode mặc định */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 :root {
-  font-family: "Heebo", sans-serif;
+  font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
 
-  /* --- Màu nền và chữ chính --- */
-  --color-bg: #ffffff;
-  --color-bg-component: #f5f5f5;
+  /* --- Base Light Colors --- */
+  --color-bg: #f8fafc;
+  --color-bg-component: #f1f5f9;
   --color-card: #ffffff;
-  --color-text: #171717;
-  --color-subtext: #525252;
+  --color-text: #0f172a;
+  --color-subtext: #475569;
+  --color-border: #e2e8f0;
+  --color-input-bg: #f8fafc;
+  --color-text-secondary: #64748b;
+  
+  /* --- Default Accent: Cyan --- */
+  --color-accent: #0891b2;
+  --color-accent-hover: #0e7490;
+  --color-accent-glow: rgba(8, 145, 178, 0.15);
 
-  /* --- Accent (màu chủ đạo, nút, link) --- */
-  --color-accent: #b91c1c;
-  --color-accent-hover: #991b1b;
-
-  /* --- Border và hiệu ứng --- */
-  --color-border: #e5e5e5;
-  --card-hover: #f5f5f5;
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.12);
-
-  /* --- Input --- */
-  --color-input-bg: #fafafa;
-  --color-text-secondary: #404040;
-
-  /* --- Transition --- */
+  --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-medium: 0 8px 24px rgba(15, 23, 42, 0.08);
   --transition-speed: 0.3s;
 }
 
-/* 🌚 Dark mode */
+/* 🌚 Dark mode defaults */
 html.dark {
-  --color-bg: #0a0a0a;
-  --color-bg-component: #171717;
-  --color-card: #171717;
-  --color-text: #fafafa;
-  --color-subtext: #a3a3a3;
+  --color-bg: #030712;
+  --color-bg-component: #0b0f19;
+  --color-card: #0f172a;
+  --color-text: #f8fafc;
+  --color-subtext: #94a3b8;
+  --color-border: #1e293b;
+  --color-input-bg: #030712;
+  --color-text-secondary: #64748b;
+  
+  /* --- Default Accent Dark: Cyan --- */
+  --color-accent: #06b6d4;
+  --color-accent-hover: #22d3ee;
+  --color-accent-glow: rgba(6, 182, 212, 0.3);
 
-  --color-accent: #ef4444;
-  --color-accent-hover: #f87171;
-
-  --color-border: #262626;
-  --card-hover: #262626;
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.5);
-
-  /* --- Input --- */
-  --color-input-bg: #262626;
-  --color-text-secondary: #a3a3a3;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* 🌐 Áp dụng toàn cục */
+/* ==================== ACCENT THEMES ==================== */
+
+/* 🟢 Matrix Green */
+html.accent-green {
+  --color-accent: #059669;
+  --color-accent-hover: #047857;
+  --color-accent-glow: rgba(5, 150, 105, 0.15);
+}
+html.dark.accent-green {
+  --color-accent: #10b981;
+  --color-accent-hover: #34d399;
+  --color-accent-glow: rgba(16, 185, 129, 0.3);
+}
+
+/* 🟣 Cyberpunk Purple */
+html.accent-purple {
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
+  --color-accent-glow: rgba(124, 58, 237, 0.15);
+}
+html.dark.accent-purple {
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #a78bfa;
+  --color-accent-glow: rgba(139, 92, 246, 0.3);
+}
+
+/* 🟠 Retro Terminal Orange/Amber */
+html.accent-amber {
+  --color-accent: #d97706;
+  --color-accent-hover: #b45309;
+  --color-accent-glow: rgba(217, 119, 6, 0.15);
+}
+html.dark.accent-amber {
+  --color-accent: #f59e0b;
+  --color-accent-hover: #fbbf24;
+  --color-accent-glow: rgba(245, 158, 11, 0.3);
+}
+
+/* 🌐 Global Body Styles */
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition:
-    background-color var(--transition-speed) ease,
-    color var(--transition-speed) ease;
+  font-family: 'Inter', sans-serif;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
   overflow-x: hidden;
-}
-
-/* 📦 Card, Section, Button... sử dụng biến chung */
-.card {
-  background-color: var(--color-card);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-soft);
-  transition: all var(--transition-speed) ease;
-}
-
-/* Link styles - không áp dụng cho buttons */
-a:not([class*="bg-"]):not([class*="btn"]):not([class*="border"]):not(
-    [class*="rounded"]
-  ) {
-  color: var(--color-accent);
-  transition: color var(--transition-speed) ease;
-}
-a:not([class*="bg-"]):not([class*="btn"]):not([class*="border"]):not(
-    [class*="rounded"]
-  ):hover {
-  color: var(--color-accent-hover);
-}
-
-/* 🧭 Section spacing chuẩn */
-section {
-  scroll-margin-top: 80px;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: all var(--transition-speed) ease;
-}
-
-/* ✨ HERO FIX — Đảm bảo Hero không bị đè màu khi đổi theme */
-.hero {
   position: relative;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: all var(--transition-speed) ease;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: transparent;
-  pointer-events: none;
+/* Fira Code class for code editors/terminals */
+.font-code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
 }
 
-/* 🖼️ Ảnh nền Hero (nếu có) */
-.hero img,
-.hero-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: filter var(--transition-speed) ease;
-}
-
-html.dark .hero img,
-html.dark .hero-bg {
-  filter: brightness(0.9);
-}
-
-/* 🎨 Thanh cuộn */
+/* 🎨 Customized Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -138,368 +115,122 @@ html.dark .hero-bg {
   background: var(--color-bg-component);
 }
 
-/* ==================== ANIMATIONS ==================== */
-
-/* Fade In Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 🧭 Section spacing and transitions */
+section {
+  scroll-margin-top: 80px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: all var(--transition-speed) ease;
 }
 
-/* Fade In Up */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Glassmorphism panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: var(--shadow-soft);
 }
 
-/* Fade In Down */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+html.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(30, 41, 59, 0.8);
+  box-shadow: var(--shadow-soft);
 }
 
-/* Fade In Left */
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Fade In Right */
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Scale In */
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Bounce In */
-@keyframes bounceIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Slide Up */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Float Animation */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Pulse Glow */
-@keyframes pulseGlow {
-  0%,
-  100% {
-    box-shadow: 0 0 5px var(--color-accent);
-  }
-  50% {
-    box-shadow:
-      0 0 20px var(--color-accent),
-      0 0 30px var(--color-accent);
-  }
-}
-
-/* Shimmer */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-/* Animation Classes */
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fadeInDown {
-  animation: fadeInDown 0.6s ease-out forwards;
-}
-
-.animate-fadeInLeft {
-  animation: fadeInLeft 0.6s ease-out forwards;
-}
-
-.animate-fadeInRight {
-  animation: fadeInRight 0.6s ease-out forwards;
-}
-
-.animate-scaleIn {
-  animation: scaleIn 0.5s ease-out forwards;
-}
-
-.animate-bounceIn {
-  animation: bounceIn 0.8s ease-out forwards;
-}
-
-.animate-slideUp {
-  animation: slideUp 0.5s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulseGlow {
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Delay Classes */
-.delay-100 {
-  animation-delay: 0.1s;
-}
-.delay-200 {
-  animation-delay: 0.2s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
-}
-.delay-400 {
-  animation-delay: 0.4s;
-}
-.delay-500 {
-  animation-delay: 0.5s;
-}
-.delay-600 {
-  animation-delay: 0.6s;
-}
-.delay-700 {
-  animation-delay: 0.7s;
-}
-.delay-800 {
-  animation-delay: 0.8s;
-}
-
-/* Hover Effects */
-.hover-lift {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-5px);
+/* Code Editor Mockup Style */
+.editor-window {
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Fira Code', monospace;
   box-shadow: var(--shadow-medium);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.hover-scale {
-  transition: transform 0.3s ease;
-}
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-.hover-glow {
-  transition: box-shadow 0.3s ease;
-}
-.hover-glow:hover {
-  box-shadow: 0 0 20px rgba(185, 28, 28, 0.4);
+/* Git Timeline Connector styles */
+.git-node-active::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-accent);
+  animation: pulse-glow 2s infinite;
 }
 
-html.dark .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-}
-
-/* Button Styles */
-.btn-primary {
-  background-color: var(--color-accent);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+/* Matrix scanning line effect */
+.scanlines {
   position: relative;
   overflow: hidden;
 }
-
-.btn-primary::before {
+.scanlines::before {
   content: "";
+  display: block;
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s ease;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
 }
 
-.btn-primary:hover::before {
-  left: 100%;
+/* ==================== ANIMATIONS ==================== */
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 0.5;
+    box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
 }
 
-.btn-primary:hover {
-  background-color: var(--color-accent-hover);
+.animate-pulseGlow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Neon glow hover effect */
+.hover-neon {
+  transition: all 0.3s ease;
+}
+.hover-neon:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 15px var(--color-accent-glow);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
 }
 
-html.dark .btn-primary:hover {
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-}
-
-/* Glass Effect */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-html.dark .glass {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Text Gradient */
-.text-gradient {
-  background: linear-gradient(135deg, var(--color-accent), #f87171);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Custom Scrollbar for specific containers */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Loading Skeleton */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-bg-component) 25%,
-    var(--color-border) 50%,
-    var(--color-bg-component) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 4px;
-}
-
-/* Focus Styles */
-*:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* Selection */
+/* Selection styling */
 ::selection {
   background-color: var(--color-accent);
-  color: white;
+  color: #ffffff;
 }
 
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
+/* Custom code highlights */
+.syntax-keyword { color: #ff7b72; font-weight: 500; }
+.syntax-string { color: #a5d6ff; }
+.syntax-number { color: #79c0ff; }
+.syntax-comment { color: #8b949e; font-style: italic; }
+.syntax-tag { color: #7ee787; }
+.syntax-function { color: #d2a8ff; }
+.syntax-property { color: #79c0ff; }
 
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Custom diff lines */
+.diff-added {
+  background-color: rgba(46, 160, 67, 0.15);
+  border-left: 3px solid #2ea043;
+}
+.diff-removed {
+  background-color: rgba(248, 81, 73, 0.15);
+  border-left: 3px solid #f85149;
 }
