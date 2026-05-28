@@ -69,35 +69,42 @@ const Contact: React.FC = () => {
     ]);
   };
 
+  const handleCommand = (cmd: string) => {
+    const inputVal = cmd.trim();
+    if (!inputVal) return;
+
+    if (inputVal === "contact --send") {
+      setCliStep(1);
+      setCliLogs((prev) => [
+        ...prev.slice(0, -1),
+        `tiendat@portfolio:~$ ${inputVal}`,
+        "? Nhập tên của bạn: ",
+        "tiendat@portfolio:~$ "
+      ]);
+    } else if (inputVal === "clear") {
+      setCliLogs(["tiendat@portfolio:~$ "]);
+    } else if (inputVal === "help") {
+      appendCliLog(inputVal, [
+        "Commands:",
+        "  contact --send    Start the messaging wizard",
+        "  clear             Clear terminal screen",
+        "  exit              Switch back to graphical GUI mode"
+      ]);
+    } else if (inputVal === "exit") {
+      setActiveTab("gui");
+    } else {
+      appendCliLog(inputVal, [`bash: command not found: ${inputVal}`]);
+    }
+    setCliInput("");
+  };
+
   const handleCliSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const inputVal = cliInput.trim();
     if (!inputVal && cliStep === 0) return;
 
     if (cliStep === 0) {
-      if (inputVal === "contact --send") {
-        setCliStep(1);
-        setCliLogs((prev) => [
-          ...prev.slice(0, -1),
-          `tiendat@portfolio:~$ ${inputVal}`,
-          "? Nhập tên của bạn: ",
-          "tiendat@portfolio:~$ "
-        ]);
-      } else if (inputVal === "clear") {
-        setCliLogs(["tiendat@portfolio:~$ "]);
-      } else if (inputVal === "help") {
-        appendCliLog(inputVal, [
-          "Commands:",
-          "  contact --send    Start the messaging wizard",
-          "  clear             Clear terminal screen",
-          "  exit              Switch back to graphical GUI mode"
-        ]);
-      } else if (inputVal === "exit") {
-        setActiveTab("gui");
-      } else {
-        appendCliLog(inputVal, [`bash: command not found: ${inputVal}`]);
-      }
-      setCliInput("");
+      handleCommand(inputVal);
       return;
     }
 
