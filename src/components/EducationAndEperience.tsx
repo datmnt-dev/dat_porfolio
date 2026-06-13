@@ -101,7 +101,7 @@ const EducationAndExperience: React.FC = () => {
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Columns: Visual Git Graph Tree */}
-          <div className="lg:col-span-6 border border-[var(--color-border)] rounded-xl p-6 bg-[var(--color-bg-component)]">
+          <div className="lg:col-span-6 min-w-0 border border-[var(--color-border)] rounded-xl p-6 bg-[var(--color-bg-component)] overflow-hidden">
             <div className="flex items-center gap-2 mb-6 border-b border-[var(--color-border)] pb-3 select-none">
               <FaCodeBranch className="text-[var(--color-accent)]" />
               <span className="font-mono text-xs text-[var(--color-text)]">REPOS BRANCHING FLOW</span>
@@ -207,7 +207,7 @@ const EducationAndExperience: React.FC = () => {
                     href={cert.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-accent)] hover:shadow-xs transition-all group"
+                    className="flex items-center gap-3 p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-accent)] hover:shadow-xs transition-all group min-w-0 overflow-hidden"
                   >
                     <div className="w-7 h-7 rounded-md bg-[var(--color-bg-component)] flex items-center justify-center text-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all text-xs flex-shrink-0">
                       <FaCertificate />
@@ -219,7 +219,7 @@ const EducationAndExperience: React.FC = () => {
                         </span>
                         <span className="text-[9px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">{cert.year}</span>
                       </div>
-                      <p className="text-[9px] text-[var(--color-subtext)] truncate">
+                      <p className="text-[9px] text-[var(--color-subtext)] line-clamp-2 leading-snug">
                         {cert.description}
                       </p>
                     </div>
