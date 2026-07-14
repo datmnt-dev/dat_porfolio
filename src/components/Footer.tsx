@@ -17,12 +17,12 @@ function Footer({ theme }: FooterProps) {
     <footer className="p-4 text-center md:flex justify-between">
       <GitHubButton
         className="self-center"
-        href="https://github.com/dat-21/dat_porfolio"
+        href="https://github.com/datmnt-dev/dat_porfolio"
         data-color-scheme={theme}
         data-icon="octicon-star"
         data-size="large"
         data-show-count="true"
-        aria-label="Star dsbalico/dsfolio on GitHub"
+        aria-label="Star datmnt-dev/dat_porfolio on GitHub"
       >
         Star on Github
       </GitHubButton>

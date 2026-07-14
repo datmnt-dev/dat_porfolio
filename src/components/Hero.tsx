@@ -7,8 +7,10 @@ import type { AccentTheme } from "../types/AppContext";
 
 type EditorTab = "tiendat.json" | "skills.ts" | "experience.sh";
 
+const HERO_ROLES = ["Front-End Developer", "ReactJS Specialist", "Software Engineering Student"];
+
 const Hero = () => {
-  const { theme, accent, setAccent } = useContext(AppContext);
+  const { accent, setAccent } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<EditorTab>("tiendat.json");
   const [isExplorerOpen, setIsExplorerOpen] = useState(true);
@@ -36,13 +38,12 @@ const Hero = () => {
   }, [activeTab]);
 
   // Typing effect for terminal greeting
-  const roles = ["Front-End Developer", "ReactJS Specialist", "Software Engineering Student"];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [displayedRole, setDisplayedRole] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentRole = roles[currentRoleIndex];
+    const currentRole = HERO_ROLES[currentRoleIndex];
     const timeout = setTimeout(() => {
       if (!isDeleting) {
         if (displayedRole.length < currentRole.length) {
@@ -55,7 +56,7 @@ const Hero = () => {
           setDisplayedRole(currentRole.slice(0, displayedRole.length - 1));
         } else {
           setIsDeleting(false);
-          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+          setCurrentRoleIndex((prev) => (prev + 1) % HERO_ROLES.length);
         }
       }
     }, isDeleting ? 40 : 80);
@@ -307,13 +308,13 @@ const Hero = () => {
                   {activeTab === "tiendat.json" && (
                     <div>
                       <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">1</span><span className="syntax-keyword">{`{`}</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">2</span><span>  <span className="syntax-property">&quot;name&quot;</span>: <span className="syntax-string">&quot;${user_info.main.name}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">3</span><span>  <span className="syntax-property">&quot;role&quot;</span>: <span className="syntax-string">&quot;${user_info.main.role}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">4</span><span>  <span className="syntax-property">&quot;birthday&quot;</span>: <span className="syntax-string">&quot;${user_info.main.birthday}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">5</span><span>  <span className="syntax-property">&quot;address&quot;</span>: <span className="syntax-string">&quot;${user_info.main.address}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">6</span><span>  <span className="syntax-property">&quot;email&quot;</span>: <span className="syntax-string">&quot;${user_info.main.email}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">7</span><span>  <span className="syntax-property">&quot;phone&quot;</span>: <span className="syntax-string">&quot;${user_info.main.phone}&quot;</span>,</span></div>
-                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">8</span><span>  <span className="syntax-property">&quot;github&quot;</span>: <span className="syntax-string">&quot;${user_info.socials.github}&quot;</span></span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">2</span><span>  <span className="syntax-property">&quot;name&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.name)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">3</span><span>  <span className="syntax-property">&quot;role&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.role)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">4</span><span>  <span className="syntax-property">&quot;birthday&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.birthday)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">5</span><span>  <span className="syntax-property">&quot;address&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.address)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">6</span><span>  <span className="syntax-property">&quot;email&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.email)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">7</span><span>  <span className="syntax-property">&quot;phone&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.main.phone)}</span>,</span></div>
+                      <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">8</span><span>  <span className="syntax-property">&quot;github&quot;</span>: <span className="syntax-string">{JSON.stringify(user_info.socials.github)}</span></span></div>
                       <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">9</span><span className="syntax-keyword">{`}`}</span></div>
                     </div>
                   )}
@@ -324,7 +325,7 @@ const Hero = () => {
                       {user_info.skills.technical.map((s, idx) => (
                         <div key={idx} className="flex">
                           <span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx + 2}</span>
-                          <span>  {`{`} <span className="syntax-property">name</span>: <span className="syntax-string">&quot;{s.name}&quot;</span>, <span className="syntax-property">proficiency</span>: <span className="syntax-number">{s.level}%</span> {`}`},</span>
+                          <span>  {`{`} <span className="syntax-property">name</span>: <span className="syntax-string">{JSON.stringify(s.name)}</span>, <span className="syntax-property">proficiency</span>: <span className="syntax-number">{s.level}%</span> {`}`},</span>
                         </div>
                       ))}
                       <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">10</span>];</div>
@@ -333,7 +334,7 @@ const Hero = () => {
                       {user_info.skills.methodologies.map((m, idx) => (
                         <div key={idx} className="flex">
                           <span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx + 13}</span>
-                          <span>  <span className="syntax-string">&quot;{m}&quot;</span>,</span>
+                          <span>  <span className="syntax-string">{JSON.stringify(m)}</span>,</span>
                         </div>
                       ))}
                       <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">20</span>];</div>
@@ -348,9 +349,9 @@ const Hero = () => {
                       <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">4</span><span className="syntax-comment"># Active Milestones</span></div>
                       {user_info.experience.map((exp, idx) => (
                         <React.Fragment key={idx}>
-                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 5}</span><span><span className="syntax-keyword">load_experience</span> <span className="syntax-property">--company</span>=<span className="syntax-string">&quot;{exp.company}&quot;</span> \</span></div>
-                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 6}</span><span>    <span className="syntax-property">--role</span>=<span className="syntax-string">&quot;{exp.position}&quot;</span> \</span></div>
-                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 7}</span><span>    <span className="syntax-property">--duration</span>=<span className="syntax-string">&quot;{exp.duration}&quot;</span></span></div>
+                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 5}</span><span><span className="syntax-keyword">load_experience</span> <span className="syntax-property">--company</span>=<span className="syntax-string">{JSON.stringify(exp.company)}</span> \</span></div>
+                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 6}</span><span>    <span className="syntax-property">--role</span>=<span className="syntax-string">{JSON.stringify(exp.position)}</span> \</span></div>
+                          <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 7}</span><span>    <span className="syntax-property">--duration</span>=<span className="syntax-string">{JSON.stringify(exp.duration)}</span></span></div>
                           <div className="flex"><span className="text-zinc-600 select-none mr-4 w-5 text-right">{idx * 4 + 8}</span><span className="syntax-comment"># -------------------------------------</span></div>
                         </React.Fragment>
                       ))}

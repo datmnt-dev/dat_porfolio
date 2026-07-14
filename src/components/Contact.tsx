@@ -1,7 +1,5 @@
-import React, { useState, FormEvent, useContext } from "react";
-import { AppContext } from "../context/AppContext";
-import type { AppContextType } from "../types/AppContext";
-import { FaSquareXTwitter, FaLinkedin, FaFacebook, FaInstagram, FaPhone } from "react-icons/fa6";
+import React, { useState, FormEvent } from "react";
+import { FaGithub, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
 import { MdEmail, MdLocationOn, MdPhone, MdTerminal, MdSend } from "react-icons/md";
 import { FaTerminal } from "react-icons/fa";
 import { sendEmail } from "../services/emailService";
@@ -10,7 +8,6 @@ import user_info from "../data/userdata";
 type ContactMode = "gui" | "cli";
 
 const Contact: React.FC = () => {
-  const { theme } = useContext<AppContextType>(AppContext);
   const [activeTab, setActiveTab] = useState<ContactMode>("gui");
 
   // GUI Form State
@@ -279,7 +276,7 @@ const Contact: React.FC = () => {
                 href={`mailto:${user_info.main.email}`}
                 className="flex items-center gap-4 p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] hover:border-[var(--color-accent)] transition-all duration-300 group"
               >
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)] bg-opacity-10 text-[var(--color-accent)] flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-105 transition-transform border border-[var(--color-border)]" style={{ backgroundColor: "var(--color-accent-soft)", color: "var(--color-accent)" }}>
                   <MdEmail />
                 </div>
                 <div className="min-w-0">
@@ -296,7 +293,7 @@ const Contact: React.FC = () => {
                   href={`tel:${user_info.main.phone}`}
                   className="flex items-center gap-4 p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] hover:border-[var(--color-accent)] transition-all duration-300 group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)] bg-opacity-10 text-[var(--color-accent)] flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-105 transition-transform border border-[var(--color-border)]" style={{ backgroundColor: "var(--color-accent-soft)", color: "var(--color-accent)" }}>
                     <MdPhone />
                   </div>
                   <div className="min-w-0">
@@ -311,7 +308,7 @@ const Contact: React.FC = () => {
               {/* Location */}
               {user_info.main.address && (
                 <div className="flex items-center gap-4 p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)]">
-                  <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)] bg-opacity-10 text-[var(--color-accent)] flex items-center justify-center text-lg flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 border border-[var(--color-border)]" style={{ backgroundColor: "var(--color-accent-soft)", color: "var(--color-accent)" }}>
                     <MdLocationOn />
                   </div>
                   <div className="min-w-0">
@@ -336,7 +333,7 @@ const Contact: React.FC = () => {
                   className="w-9 h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-accent)] hover:text-white hover:border-[var(--color-accent)] flex items-center justify-center text-[var(--color-text)] transition-all duration-300"
                   title="GitHub"
                 >
-                  <FaSquareXTwitter size={18} />
+                  <FaGithub size={18} />
                 </a>
                 <a
                   href={user_info.socials.linkedin}

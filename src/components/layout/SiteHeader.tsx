@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
-import type { AppContextType, AccentTheme } from "../../types/AppContext";
+import type { AccentTheme } from "../../types/AppContext";
 import { CgDarkMode } from "react-icons/cg";
 import { HiMenu, HiX } from "react-icons/hi";
 import { FaDownload, FaSearch } from "react-icons/fa";

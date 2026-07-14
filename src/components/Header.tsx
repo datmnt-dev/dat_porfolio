@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import type { AppContextType } from "../types/AppContext";
 import { CgDarkMode } from "react-icons/cg";
 import { HiMenu, HiX } from "react-icons/hi";
-import { FaHome, FaProjectDiagram, FaGraduationCap, FaCode, FaEnvelope, FaDownload, FaSearch, FaTerminal } from "react-icons/fa";
+import { FaHome, FaProjectDiagram, FaGraduationCap, FaCode, FaEnvelope, FaDownload, FaSearch } from "react-icons/fa";
 import user_info from "../data/userdata";
 
 interface HeaderProps {
@@ -116,12 +116,13 @@ const Header: React.FC<HeaderProps> = ({ switchTheme, onOpenPalette }) => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`px-3.5 py-1.5 rounded-lg font-mono text-xs transition-all duration-300 flex items-center gap-2 ${
+                  className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all duration-300 flex items-center gap-2 ${
                     activeSection === item.id
                       ? "bg-[var(--color-accent)] text-white shadow-md shadow-[var(--color-accent-glow)]"
                       : "text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:bg-opacity-10 hover:text-[var(--color-accent)]"
                   }`}
                 >
+                  <span className="text-[11px] flex-shrink-0">{item.icon}</span>
                   {item.label}
                 </button>
               ))}
@@ -230,7 +231,13 @@ const Header: React.FC<HeaderProps> = ({ switchTheme, onOpenPalette }) => {
                     : "text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:bg-opacity-10"
                 }`}
               >
-                <span className="text-sm text-[var(--color-accent)]">$</span>
+                <span
+                  className={`text-sm flex-shrink-0 ${
+                    activeSection === item.id ? "text-white" : "text-[var(--color-accent)]"
+                  }`}
+                >
+                  {item.icon}
+                </span>
                 {item.label}
               </button>
             ))}

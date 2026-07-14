@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaTerminal, FaCodeBranch, FaGraduationCap, FaBriefcase, FaCertificate, FaArrowRight, FaCode } from "react-icons/fa";
+import { FaTerminal, FaCodeBranch, FaCertificate } from "react-icons/fa";
 import { PiCertificateFill } from "react-icons/pi";
 import user_info from "../data/userdata";
 

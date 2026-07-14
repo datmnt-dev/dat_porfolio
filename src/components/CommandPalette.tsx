@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { FaSearch, FaKeyboard, FaTerminal, FaPalette, FaMoon, FaSun, FaDownload, FaEye } from "react-icons/fa";
-import type { AccentTheme } from "../types/AppContext";
 
 interface CommandPaletteProps {
   isOpen: boolean;

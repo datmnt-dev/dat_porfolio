@@ -97,7 +97,7 @@ const info = {
 
     socials: {
         twitter: "https://x.com/Mai_dat27",
-        github: "https://github.com/dat-21",
+        github: "https://github.com/datmnt-dev",
         linkedin: "https://www.linkedin.com/in/mai-nguy%E1%BB%85n-ti%E1%BA%BFn-%C4%91%E1%BA%A1t-662a112b6/",
         instagram: "https://www.instagram.com/daw.27.7/",
         facebook: "https://www.facebook.com/mai.dat.270705",
@@ -196,7 +196,7 @@ const info = {
                 "MongoDB",
                 "REST API",
             ],
-            github: "https://github.com/dat-21/library-management-system",
+            github: "https://github.com/datmnt-dev/library_management_system",
             link: "#",
             duration: "2025 - Hiện tại",
             cover: "/fpt.png",
@@ -235,7 +235,7 @@ const info = {
                 "React Router 7",
                 "Resend",
             ],
-            github: "https://github.com/dat-21/dat_porfolio",
+            github: "https://github.com/datmnt-dev/dat_porfolio",
             link: "https://dat-portfolio.onrender.com",
             duration: "2024 - Hiện tại",
             cover: "/dat_img.jpg",

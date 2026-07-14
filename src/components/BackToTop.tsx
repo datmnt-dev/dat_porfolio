@@ -23,7 +23,7 @@ const BackToTop: React.FC = () => {
     return (
         <button
             onClick={scrollToTop}
-            className={`fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg transition-all duration-300 ${isVisible
+            className={`fixed bottom-5 right-5 z-50 p-3 sm:bottom-8 sm:right-8 sm:p-4 rounded-full shadow-lg border border-white/15 transition-all duration-300 ${isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-10 pointer-events-none"
                 }`}
@@ -33,7 +33,7 @@ const BackToTop: React.FC = () => {
             }}
             aria-label="Back to Top"
         >
-            <FaArrowUp className="text-lg" />
+            <FaArrowUp className="text-base sm:text-lg" />
         </button>
     );
 };

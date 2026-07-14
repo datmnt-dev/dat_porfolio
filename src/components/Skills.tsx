@@ -33,7 +33,7 @@ const Skills: React.FC = () => {
   ]);
 
   const skillItemClass =
-    "inline-flex items-center justify-between gap-x-2 py-3.5 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-zinc-100/20 dark:hover:bg-zinc-900/30 transition-all font-mono text-[11px] select-none";
+    "inline-flex items-center justify-start gap-x-2 py-3.5 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-zinc-100/20 dark:hover:bg-zinc-900/30 transition-all font-mono text-[11px] select-none min-w-0";
 
   const sectionTitleClass = "text-sm font-mono font-bold mb-4 flex items-center gap-2 text-[var(--color-text)] select-none uppercase tracking-wider";
 
@@ -140,8 +140,8 @@ const Skills: React.FC = () => {
                     key={index}
                     className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono"
                   >
-                    <div className="flex justify-between mb-1.5 text-xs text-[var(--color-text)]">
-                      <span className="font-bold">{skill.name}</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1.5 text-xs text-[var(--color-text)]">
+                      <span className="font-bold min-w-0 break-words">{skill.name}</span>
                       <span className="text-[var(--color-accent)] font-semibold">
                         {getCliProgress(skill.level)}
                       </span>
