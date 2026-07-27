@@ -19,6 +19,20 @@ const SiteLayout = () => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [location.pathname]);
 
+  // Listen to custom events from other pages (like Playground)
+  useEffect(() => {
+    const handleOpenPalette = () => setIsPaletteOpen(true);
+    const handleActivateMatrix = () => setIsMatrixActive(true);
+
+    window.addEventListener("open-command-palette", handleOpenPalette);
+    window.addEventListener("activate-matrix-rain", handleActivateMatrix);
+
+    return () => {
+      window.removeEventListener("open-command-palette", handleOpenPalette);
+      window.removeEventListener("activate-matrix-rain", handleActivateMatrix);
+    };
+  }, []);
+
   return (
     <div
       className="min-h-screen flex flex-col transition-colors duration-300"
