@@ -7,6 +7,42 @@ import user_info from "../data/userdata";
 
 type ContactMode = "gui" | "cli";
 
+const CONTACT_LIMITS = {
+  nameMin: 2,
+  nameMax: 80,
+  subjectMax: 120,
+  messageMin: 10,
+  messageMax: 2000,
+};
+
+const validateContactForm = (data: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) => {
+  const name = data.name.trim();
+  const subject = data.subject.trim();
+  const message = data.message.trim();
+
+  if (name.length < CONTACT_LIMITS.nameMin) {
+    return `Name must be at least ${CONTACT_LIMITS.nameMin} characters.`;
+  }
+
+  if (subject.length > CONTACT_LIMITS.subjectMax) {
+    return `Subject must be ${CONTACT_LIMITS.subjectMax} characters or less.`;
+  }
+
+  if (
+    message.length < CONTACT_LIMITS.messageMin ||
+    message.length > CONTACT_LIMITS.messageMax
+  ) {
+    return `Message must be between ${CONTACT_LIMITS.messageMin} and ${CONTACT_LIMITS.messageMax} characters.`;
+  }
+
+  return null;
+};
+
 const Contact: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ContactMode>("gui");
 
@@ -42,6 +78,13 @@ const Contact: React.FC = () => {
 
   const handleGuiSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const validationError = validateContactForm(formData);
+    if (validationError) {
+      setGuiStatus(`❌ ${validationError}`);
+      return;
+    }
+
     setGuiStatus("Sending...");
     setIsLoading(true);
 
@@ -51,7 +94,7 @@ const Contact: React.FC = () => {
       setGuiStatus("✅ Message sent successfully!");
       setFormData({ name: "", email: "", subject: "", message: "" });
     } else {
-      setGuiStatus("❌ Failed to send message. Please check connection.");
+      setGuiStatus(`❌ ${result.message}`);
     }
     setIsLoading(false);
   };
@@ -410,6 +453,8 @@ const Contact: React.FC = () => {
                           onChange={handleGuiChange}
                           placeholder="Your Name"
                           required
+                          minLength={CONTACT_LIMITS.nameMin}
+                          maxLength={CONTACT_LIMITS.nameMax}
                           className="w-full p-2.5 rounded-lg border border-[#21262d] bg-[#070b12] text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
                         />
                       </div>
@@ -432,6 +477,7 @@ const Contact: React.FC = () => {
                         value={formData.subject}
                         onChange={handleGuiChange}
                         placeholder="Subject"
+                        maxLength={CONTACT_LIMITS.subjectMax}
                         className="w-full p-2.5 rounded-lg border border-[#21262d] bg-[#070b12] text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
                       />
                     </div>
@@ -443,6 +489,8 @@ const Contact: React.FC = () => {
                         rows={4}
                         placeholder="Write your message here..."
                         required
+                        minLength={CONTACT_LIMITS.messageMin}
+                        maxLength={CONTACT_LIMITS.messageMax}
                         className="w-full p-2.5 rounded-lg border border-[#21262d] bg-[#070b12] text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] focus:border-transparent transition-all resize-none"
                       />
                     </div>
