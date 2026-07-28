@@ -81,7 +81,7 @@ const info = {
     stats: [
         { label: "Năm học CNTT", value: "3+" },
         { label: "Repos công khai", value: "21" },
-        { label: "Sản phẩm chính", value: "11" },
+        { label: "Sản phẩm chính", value: "12" },
         { label: "Công nghệ", value: "20+" },
     ],
 
@@ -205,6 +205,56 @@ const info = {
             repositories: [
                 { label: "Frontend", url: "https://github.com/SWPGr/fe-jobfinder" },
                 { label: "Backend", url: "https://github.com/SWPGr/be-jobfinder" },
+            ],
+        },
+        {
+            slug: "myroomie",
+            title: "MyRoomie",
+            tagline: "Nền tảng tìm phòng trọ và bạn cùng phòng thông minh",
+            description:
+                "Ứng dụng web/mobile hỗ trợ sinh viên và người đi làm tại Đà Nẵng tìm phòng trọ và roommate phù hợp theo lối sống, ngân sách và sở thích. Sản phẩm có booking, chat thời gian thực, eKYC, thông báo, referral, credits và quản trị.",
+            longDescription:
+                "MyRoomie gồm SPA React 19, API ASP.NET Core .NET 8 dùng Firestore và SignalR, cùng AI service FastAPI cho eKYC bằng OCR CCCD và nhận diện khuôn mặt. Tôi đóng góp theo nhiều phase của team: system foundation, chat/notification mobile, performance QA, Android release, API-contract resilience, production readiness và mobile runtime recovery.",
+            technologies:
+                "React 19, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router, i18next, Firebase, SignalR, Leaflet, ASP.NET Core .NET 8, Cloud Firestore, JWT, FastAPI, PaddleOCR, InsightFace, Capacitor",
+            techStack: [
+                "React 19",
+                "TypeScript",
+                "Tailwind CSS",
+                "ASP.NET Core 8",
+                "Firestore",
+                "SignalR",
+                "FastAPI",
+                "Capacitor",
+            ],
+            github: "https://github.com/dat-21/MyRoomie",
+            link: "#",
+            duration: "2026",
+            cover: "/myroomie-logo.png",
+            accent: "from-teal-500 to-cyan-500",
+            status: "in-progress" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: true,
+            responsibilities: [
+                "Xây dựng và hoàn thiện nền tảng hệ thống theo phase foundation của dự án",
+                "Phát triển luồng chat SignalR, thông báo và trải nghiệm mobile cho người thuê/chủ trọ",
+                "Cải thiện performance, code splitting và QA cho ứng dụng mobile chạy qua Capacitor",
+                "Chuẩn bị Android release: kiểm thử runtime, network handling và production checklist",
+                "Củng cố API contract, phân loại lỗi client và khả năng phục hồi khi backend/network gặp sự cố",
+                "Tham gia hardening production và UX recovery trên mobile qua các pull request của team",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Contributor" },
+                { label: "Kiến trúc", value: "React + .NET + AI" },
+                { label: "Nền tảng", value: "Web + Android" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "55%", color: "#3178c6" },
+                { name: "C# / .NET", percent: "30%", color: "#512bd4" },
+                { name: "Python AI", percent: "15%", color: "#3776ab" },
+            ],
+            repositories: [
+                { label: "Source code", url: "https://github.com/dat-21/MyRoomie" },
             ],
         },
         {
