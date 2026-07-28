@@ -68,7 +68,7 @@ const Home = () => {
         <div className="absolute -top-24 right-0 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-20 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-10 blur-[120px] pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 lg:px-8 pt-12 pb-20 grid lg:grid-cols-[1.2fr,1fr] gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 lg:px-8 pt-12 pb-20 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left */}
           <div>
             <div className="reveal chip">
@@ -90,7 +90,7 @@ const Home = () => {
             </div>
 
             <p className="reveal reveal-3 mt-6 text-base sm:text-lg text-[var(--color-subtext)] leading-relaxed max-w-xl">
-              {user_info.main.shortBio} Tập trung vào React, TypeScript và những trải nghiệm web nhỏ-mà-tinh-tế.
+              {user_info.main.shortBio}
             </p>
 
             <div className="reveal reveal-4 mt-9 flex flex-wrap items-center gap-3">
@@ -135,10 +135,10 @@ const Home = () => {
           </div>
 
           {/* Right — visual */}
-          <div className="reveal reveal-3 relative">
+          <div className="reveal reveal-3 relative w-full max-w-sm mx-auto lg:ml-auto lg:mr-0">
             <div className="absolute -inset-6 rounded-[3rem] opacity-40 blur-3xl" style={{ background: "var(--gradient-accent)" }} />
-            <div className="relative card-surface p-6 sm:p-7">
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
+            <div className="relative card-surface p-5 sm:p-6">
+              <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0" style={{ background: "var(--gradient-accent)" }} />
                 <img
                   src={user_info.main.photo}
@@ -146,9 +146,9 @@ const Home = () => {
                   className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 inset-x-0 p-5">
+                <div className="absolute bottom-0 inset-x-0 p-4">
                   <div className="text-white/90 text-xs font-code">@{user_info.socials.github.split("/").pop()}</div>
-                  <div className="text-white font-display font-bold text-2xl mt-1">{user_info.main.name}</div>
+                  <div className="text-white font-display font-bold text-xl mt-1">{user_info.main.name}</div>
                   <div className="text-white/80 text-xs mt-1">{user_info.main.location}</div>
                 </div>
               </div>

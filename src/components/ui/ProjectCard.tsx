@@ -15,18 +15,17 @@ const statusLabel: Record<Project["status"], string> = {
 
 const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
   return (
-    <Link
-      to={`/projects/${project.slug}`}
-      className="group card-surface p-6 flex flex-col h-full reveal"
+    <article
+      className="group card-surface p-5 flex flex-col h-full reveal"
       style={{ animationDelay: `${0.05 + index * 0.06}s` }}
     >
-      <div className="relative h-40 mb-5 rounded-xl overflow-hidden bg-[var(--color-bg-component)]">
+      <div className="relative h-32 mb-4 rounded-xl overflow-hidden bg-[var(--color-bg-component)]">
         <div
           className={`absolute inset-0 bg-gradient-to-br ${project.accent} opacity-90`}
         />
         <div className="absolute inset-0 bg-grid opacity-30" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-2xl bg-black/30 backdrop-blur-sm grid place-items-center overflow-hidden border border-white/20">
+          <div className="w-16 h-16 rounded-xl bg-black/30 backdrop-blur-sm grid place-items-center overflow-hidden border border-white/20">
             <img
               src={project.cover}
               alt={project.title}
@@ -45,9 +44,12 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="font-display font-bold text-lg group-hover:text-[var(--color-accent)] transition">
+          <Link
+            to={`/projects/${project.slug}`}
+            className="font-display font-bold text-lg group-hover:text-[var(--color-accent)] transition"
+          >
             {project.title}
-          </h3>
+          </Link>
           <FaArrowRight className="text-[var(--color-accent)] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition text-sm" />
         </div>
         <p className="text-xs text-[var(--color-accent)] font-code mt-0.5">{project.tagline}</p>
@@ -94,7 +96,7 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </article>
   );
 };
 

@@ -16,6 +16,8 @@ const Projects = () => {
     { value: "all", label: "Tất cả" },
     { value: "fullstack", label: "Full-stack" },
     { value: "frontend", label: "Front-end" },
+    { value: "mobile", label: "Mobile" },
+    { value: "ai", label: "AI" },
     { value: "tooling", label: "Công cụ / Khác" },
   ];
 

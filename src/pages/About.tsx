@@ -38,11 +38,11 @@ const About = () => {
 
       {/* BIO */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-[1fr,1.4fr] gap-10 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
           {/* Photo + facts */}
-          <div className="reveal">
-            <div className="card-surface p-5">
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
+          <div className="reveal max-w-sm mx-auto lg:mx-0">
+            <div className="card-surface p-4">
+              <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0" style={{ background: "var(--gradient-accent)" }} />
                 <img
                   src={user_info.main.photo}
