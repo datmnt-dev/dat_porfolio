@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaCodeBranch, FaCircle, FaPlus, FaMinus } from "react-icons/fa";
 import { VscGitPullRequest } from "react-icons/vsc";
-import user_info from "../data/userdata";
+import user_info, { ProjectLanguage } from "../data/userdata";
 
 const statusLabel = {
   "in-progress": "In progress",
@@ -20,30 +20,12 @@ const ProjectDetail = () => {
     return <Navigate to="/404" replace />;
   }
 
-  // Define language bar colors (mock distributions for developer UI)
-  const getLanguageColors = () => {
-    if (project.title.toLowerCase().includes("jobfinder")) {
-      return [
-        { name: "TypeScript", percent: "55%", color: "#3178c6" },
-        { name: "Tailwind CSS", percent: "25%", color: "#38bdf8" },
-        { name: "Spring Boot", percent: "20%", color: "#6db33f" }
-      ];
-    }
-    if (project.title.toLowerCase().includes("library")) {
-      return [
-        { name: "TypeScript", percent: "60%", color: "#3178c6" },
-        { name: "Node.js", percent: "25%", color: "#339933" },
-        { name: "MongoDB", percent: "15%", color: "#47a248" }
-      ];
-    }
-    return [
-      { name: "React 19", percent: "50%", color: "#61dafb" },
-      { name: "TypeScript", percent: "30%", color: "#3178c6" },
-      { name: "Tailwind 4", percent: "20%", color: "#38bdf8" }
-    ];
-  };
-
-  const languages = getLanguageColors();
+  const fallbackLanguages: ProjectLanguage[] = [
+    { name: "TypeScript", percent: "50%", color: "#3178c6" },
+    { name: "React", percent: "30%", color: "#61dafb" },
+    { name: "CSS", percent: "20%", color: "#38bdf8" },
+  ];
+  const languages = project.languageBreakdown ?? fallbackLanguages;
 
   return (
     <div className="py-10 max-w-7xl mx-auto px-4 lg:px-8">
@@ -60,10 +42,10 @@ const ProjectDetail = () => {
       <div className="relative rounded-3xl overflow-hidden mb-10 card-surface border border-[var(--color-border)]">
         <div className={`absolute inset-0 bg-gradient-to-br ${project.accent} opacity-90`} />
         <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="relative p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-8 z-10">
+        <div className="relative p-6 md:p-8 lg:p-10 flex flex-col md:flex-row items-center gap-6 z-10">
           
           {/* Cover image wrap */}
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl bg-black/30 backdrop-blur-sm grid place-items-center overflow-hidden border border-white/20 shadow-xl flex-shrink-0">
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-black/30 backdrop-blur-sm grid place-items-center overflow-hidden border border-white/20 shadow-xl flex-shrink-0">
             <img
               src={project.cover}
               alt={project.title}
@@ -93,7 +75,7 @@ const ProjectDetail = () => {
       </div>
 
       {/* Main content grid */}
-      <div className="grid lg:grid-cols-[1.4fr,1fr] gap-8 items-start">
+      <div className="grid lg:grid-cols-2 gap-8 items-start">
         
         {/* Left Side: Description, Responsibilities, highlights */}
         <div className="space-y-6">
@@ -275,6 +257,26 @@ const ProjectDetail = () => {
                 <FaExternalLinkAlt size={12} />
                 <span>npm start (Xem Live Demo)</span>
               </a>
+            )}
+            {project.repositories && project.repositories.length > 0 && (
+              <div className="pt-3 border-t border-[var(--color-border)]">
+                <p className="mb-2 text-[10px] uppercase tracking-wider font-code text-[var(--color-subtext)]">
+                  Repositories liên quan
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.repositories.map((repository) => (
+                    <a
+                      key={repository.url}
+                      href={repository.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tag hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                    >
+                      {repository.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
             )}
             {(!project.link || project.link === "#") && (!project.github || project.github === "#") && (
               <p className="text-[10px] text-center font-mono text-[var(--color-subtext)] italic">

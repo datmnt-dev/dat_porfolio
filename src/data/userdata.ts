@@ -3,7 +3,18 @@
 // =============================================================
 
 export type ProjectStatus = "in-progress" | "completed" | "archived";
-export type ProjectCategory = "web" | "fullstack" | "frontend" | "tooling";
+export type ProjectCategory = "web" | "fullstack" | "frontend" | "mobile" | "ai" | "tooling";
+
+export interface ProjectLanguage {
+    name: string;
+    percent: string;
+    color: string;
+}
+
+export interface ProjectRepository {
+    label: string;
+    url: string;
+}
 
 export interface Project {
     slug: string;
@@ -23,6 +34,8 @@ export interface Project {
     featured: boolean;
     responsibilities: string[];
     highlights?: { label: string; value: string }[];
+    languageBreakdown?: ProjectLanguage[];
+    repositories?: ProjectRepository[];
 }
 
 export interface BlogPost {
@@ -52,9 +65,9 @@ const info = {
         description:
             "Là người tập trung vào giải quyết vấn đề bằng công nghệ, có tư duy logic và tinh thần cải tiến liên tục. Mong muốn làm việc trong môi trường năng động với các dự án có độ phức tạp cao, nơi tôi có thể áp dụng kiến thức lập trình, học hỏi từ đội ngũ kỹ sư giàu kinh nghiệm và đóng góp vào sự phát triển của sản phẩm. Hướng đến môi trường đề cao hiệu suất, giá trị cá nhân và kết quả thực tế.",
         shortBio:
-            "Front-End Developer tập trung vào xây dựng giao diện hiện đại, hiệu năng cao và trải nghiệm người dùng tinh tế.",
-        role: "Front-End Developer",
-        roles: ["Front-End Developer", "ReactJS Specialist", "Software Engineering Student"],
+            "Full-stack Developer tập trung vào React, TypeScript và những sản phẩm web/mobile có trải nghiệm rõ ràng, dữ liệu đáng tin cậy.",
+        role: "Full-stack Developer",
+        roles: ["Front-End Developer", "Full-stack Developer", "Software Engineering Student"],
         photo: "/dat_img.jpg",
         email: "tiendatyyy2005@gmail.com",
         phone: "0935124666",
@@ -67,9 +80,9 @@ const info = {
 
     stats: [
         { label: "Năm học CNTT", value: "3+" },
-        { label: "Dự án đã build", value: "10+" },
-        { label: "Công nghệ", value: "15+" },
-        { label: "Coffees/day", value: "∞" },
+        { label: "Repos công khai", value: "21" },
+        { label: "Sản phẩm chính", value: "11" },
+        { label: "Công nghệ", value: "20+" },
     ],
 
     values: [
@@ -113,8 +126,11 @@ const info = {
             { name: "Tailwind CSS", level: 85 },
             { name: "Java (JSP/Servlet)", level: 65 },
             { name: "SQL Server / MongoDB", level: 75 },
+            { name: "Flutter / Firebase", level: 65 },
+            { name: "React Native / Expo", level: 65 },
+            { name: "Python / FastAPI", level: 60 },
         ],
-        tools: ["Git & GitHub", "VS Code", "Figma", "Postman", "Vite"],
+        tools: ["Git & GitHub", "VS Code", "Figma", "Postman", "Vite", "Docker", "Firebase", "Cloudinary"],
         methodologies: [
             "Agile/Scrum",
             "MVC Architecture",
@@ -153,7 +169,7 @@ const info = {
                 "Figma",
             ],
             github: "https://github.com/SWPGr/fe-jobfinder",
-            link: "#",
+            link: "https://fe-jobfinder.vercel.app",
             duration: "10/2024 - Hiện tại",
             cover: "/jobfinder.ico",
             accent: "from-cyan-500 to-indigo-500",
@@ -161,6 +177,11 @@ const info = {
             category: "fullstack" as ProjectCategory,
             featured: true,
             responsibilities: [
+                "Phát triển dashboard cho admin và job seeker, cùng các trang chi tiết ứng viên",
+                "Bổ sung luồng chặn người dùng, trang blocked và notification cho các vai trò liên quan",
+                "Xây dựng các phần employer dashboard và điều chỉnh giao diện quản trị",
+                "Cộng tác ở cả frontend React và backend Spring Boot trong repository của team",
+                "Đóng góp 141 commits ở frontend và 25 commits ở backend theo thống kê GitHub công khai",
                 "Phát triển chức năng quản lý CV và hồ sơ người dùng cho ứng viên",
                 "Xây dựng tìm kiếm và lọc thông minh cho việc làm và ứng viên theo nhiều tiêu chí",
                 "Tích hợp Rich Text Editor cho mô tả công việc và nội dung hồ sơ",
@@ -172,8 +193,152 @@ const info = {
             ],
             highlights: [
                 { label: "Vai trò", value: "Front-end Lead" },
-                { label: "Team size", value: "5 thành viên" },
+                { label: "Team", value: "7 contributors" },
                 { label: "Tech", value: "React + Spring Boot" },
+                { label: "GitHub", value: "166 commits" },
+            ],
+            languageBreakdown: [
+                { name: "JavaScript", percent: "55%", color: "#f7df1e" },
+                { name: "Tailwind CSS", percent: "25%", color: "#38bdf8" },
+                { name: "Spring Boot", percent: "20%", color: "#6db33f" },
+            ],
+            repositories: [
+                { label: "Frontend", url: "https://github.com/SWPGr/fe-jobfinder" },
+                { label: "Backend", url: "https://github.com/SWPGr/be-jobfinder" },
+            ],
+        },
+        {
+            slug: "threadlearn",
+            title: "ThreadLearn",
+            tagline: "Nền tảng học lập trình đa luồng tích hợp AI",
+            description:
+                "Sản phẩm học lập trình tương tác có coding IDE, khóa học, quiz, gamification, leaderboard, thảo luận và phân tích code bằng AI. Tôi đóng góp cho cả frontend Next.js và backend NestJS trong một team 5 người.",
+            longDescription:
+                "Frontend dùng Next.js 15, React 19, Zustand, TanStack Query, React Hook Form/Zod và Socket.IO. Backend NestJS dùng MongoDB, Redis, JWT, Socket.IO, Swagger và lớp validation/guard tập trung. Các contribution công khai của tôi gồm Monaco Code Editor với live JavaScript sandbox và AI stream, entitlement khóa học premium, reconciliation PayOS, quiz availability, lesson notes/discussions và curriculum seed data.",
+            technologies:
+                "Next.js 15, React 19, TypeScript, Tailwind CSS, Zustand, TanStack Query, Socket.IO, NestJS, MongoDB, Redis, JWT, Swagger, PayOS",
+            techStack: ["Next.js 15", "React 19", "TypeScript", "Zustand", "NestJS", "MongoDB", "Redis", "Socket.IO"],
+            github: "https://github.com/ThreadLearn/ThreadLearn_WEB_FE",
+            link: "https://thread-learn-web-fe.vercel.app",
+            duration: "05/2026 - Hiện tại",
+            cover: "/fpt.png",
+            accent: "from-violet-500 to-cyan-500",
+            status: "in-progress" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: true,
+            responsibilities: [
+                "Tích hợp Monaco Code Editor, live JavaScript sandbox và luồng AI server stream cho Code Lab",
+                "Hoàn thiện entitlement subscription/premium access và reconciliation callback thanh toán PayOS",
+                "Cải thiện luồng quiz, điều kiện truy cập khóa học và UI khóa nội dung premium",
+                "Bổ sung lesson discussions ẩn danh, ghi chú nhiều mục trên mỗi lesson và dữ liệu curriculum",
+                "Đóng góp 157 commits ở frontend và 78 commits ở backend theo thống kê GitHub công khai",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Contributor" },
+                { label: "Team", value: "5 contributors" },
+                { label: "GitHub", value: "235 commits" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "70%", color: "#3178c6" },
+                { name: "React / Next", percent: "20%", color: "#61dafb" },
+                { name: "CSS", percent: "10%", color: "#38bdf8" },
+            ],
+            repositories: [
+                { label: "Frontend", url: "https://github.com/ThreadLearn/ThreadLearn_WEB_FE" },
+                { label: "Backend", url: "https://github.com/ThreadLearn/ThreadLearn_WEB_BE" },
+            ],
+        },
+        {
+            slug: "agrilink-vietnam",
+            title: "AgriLink Vietnam",
+            tagline: "Hệ sinh thái thương mại điện tử nông sản",
+            description:
+                "Nền tảng số kết nối nông dân, hợp tác xã, người mua, doanh nghiệp, nhà cung cấp, cơ quan nhà nước và logistics. Tôi đóng góp cho frontend Next.js và backend NestJS của team.",
+            longDescription:
+                "AgriLink có marketplace, dashboard theo 7 vai trò, lô hàng hợp tác xã, lịch thu hoạch, market prices, QR traceability, reviews, ads và audit logs. Frontend dùng Next.js 15/Tailwind 4; backend NestJS 10 dùng TypeORM, PostgreSQL, JWT, Swagger và Docker. Contribution công khai của tôi tập trung vào marketplace filters, wishlist/notifications, responsive/CI, product/certification flows, TypeORM composition, auth hardening và ranh giới profiles/admin.",
+            technologies:
+                "Next.js 15, TypeScript, Tailwind CSS 4, NestJS 10, TypeORM, PostgreSQL, JWT, Swagger, Docker, Recharts",
+            techStack: ["Next.js 15", "TypeScript", "Tailwind 4", "NestJS 10", "TypeORM", "PostgreSQL", "Swagger", "Docker"],
+            github: "https://github.com/AgriLinkVN/agrilink-frontend",
+            link: "#",
+            duration: "05/2026 - Hiện tại",
+            cover: "https://raw.githubusercontent.com/AgriLinkVN/agrilink-frontend/develop/public/logo.png",
+            accent: "from-emerald-500 to-lime-500",
+            status: "in-progress" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: true,
+            responsibilities: [
+                "Hoàn thiện marketplace filters, cải tiến responsive và SEO/image polish cho luồng sản phẩm",
+                "Refactor query layer cho notifications và wishlist, đồng thời cải thiện seller/certification flows",
+                "Thiết lập frontend CI quality gate, xử lý lint và chuẩn bị checklist deploy",
+                "Củng cố TypeORM composition, persistence boundaries cho users/auth/profiles/admin và login email/phone",
+                "Đóng góp 37 commits ở frontend và 102 commits ở backend theo thống kê GitHub công khai",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Contributor" },
+                { label: "Người dùng", value: "7 roles" },
+                { label: "GitHub", value: "139 commits" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "70%", color: "#3178c6" },
+                { name: "Next.js", percent: "15%", color: "#111827" },
+                { name: "PostgreSQL", percent: "15%", color: "#336791" },
+            ],
+            repositories: [
+                { label: "Frontend", url: "https://github.com/AgriLinkVN/agrilink-frontend" },
+                { label: "Backend", url: "https://github.com/AgriLinkVN/agrilink-backend" },
+            ],
+        },
+        {
+            slug: "music-web",
+            title: "Music Web Platform",
+            tagline: "Nền tảng nghe nhạc full-stack có AI search",
+            description:
+                "Nền tảng nghe nhạc gồm ứng dụng React, API Node.js, dịch vụ semantic search bằng FastAPI và shared contracts. Sản phẩm có player, playlist, lịch sử nghe, quản trị nội dung, phân quyền và chatbot AI.",
+            longDescription:
+                "Frontend được tổ chức theo feature với React 19, TypeScript, Zustand và TanStack Query. Backend triển khai xác thực JWT, quản lý bài hát/album/playlist, upload Cloudinary và API cho admin. Dịch vụ AI tách riêng, dùng embedding, Redis cache, FAISS vector store, Docker và bộ test pytest cho luồng semantic search.",
+            technologies:
+                "React 19, TypeScript, Zustand, TanStack Query, Tailwind CSS, Node.js, Express, MongoDB, JWT, Cloudinary, FastAPI, FAISS, Redis, Docker",
+            techStack: [
+                "React 19",
+                "TypeScript",
+                "Zustand",
+                "Node.js",
+                "MongoDB",
+                "FastAPI",
+                "FAISS",
+                "Docker",
+            ],
+            github: "https://github.com/datmnt-dev/Music_Web_FE",
+            link: "#",
+            duration: "2026",
+            cover: "/jobfinder.ico",
+            accent: "from-rose-500 to-violet-500",
+            status: "in-progress" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: true,
+            responsibilities: [
+                "Xây dựng giao diện nghe nhạc với player, queue, thư viện, playlist và các trạng thái loading/error",
+                "Tổ chức API layer, query hooks và state management cho xác thực, bài hát, lịch sử nghe và chatbot",
+                "Phát triển backend theo controller, service, repository và validation tách lớp",
+                "Tích hợp JWT, phân quyền User/Moderator/Admin, Cloudinary và quản lý metadata audio",
+                "Triển khai dịch vụ semantic search độc lập với FastAPI, embeddings, Redis cache và FAISS",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Developer" },
+                { label: "Kiến trúc", value: "Web + API + AI service" },
+                { label: "AI", value: "Semantic search" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "55%", color: "#3178c6" },
+                { name: "Python", percent: "25%", color: "#3776ab" },
+                { name: "CSS", percent: "20%", color: "#38bdf8" },
+            ],
+            repositories: [
+                { label: "Frontend", url: "https://github.com/datmnt-dev/Music_Web_FE" },
+                { label: "Backend", url: "https://github.com/datmnt-dev/Music_Web_BE" },
+                { label: "AI Search", url: "https://github.com/datmnt-dev/Music_Web_AI" },
+                { label: "Shared contracts", url: "https://github.com/datmnt-dev/melody-contracts" },
             ],
         },
         {
@@ -183,7 +348,7 @@ const info = {
             description:
                 "Hệ thống quản lý thư viện số hóa các quy trình cốt lõi như quản lý sách, người dùng và mượn–trả, giúp thao tác nhanh hơn, dữ liệu nhất quán và giảm sai sót cho thủ thư/admin và người đọc.",
             longDescription:
-                "Library Management thay thế bảng tính Excel rời rạc bằng một hệ thống web full-stack. Thủ thư có dashboard quản lý kho sách, người dùng và lịch sử mượn-trả với cảnh báo quá hạn. Người đọc tra cứu nhanh, tự gia hạn và xem lịch sử của mình. Backend tách services rõ ràng, validation tập trung và xử lý edge cases được kiểm thử thủ công kỹ.",
+                "Library Management là hệ thống web full-stack với frontend React và backend TypeScript. Source code thể hiện các module xác thực, sách, người dùng, mượn-trả, upload, email, rate limiting và validation được tách rõ theo controller, service và route.",
             technologies:
                 "ReactJS, TypeScript, Vite, Tailwind CSS, React Icons, Node.js, Express.js, MongoDB, Mongoose ODM, RESTful API, Git",
             techStack: [
@@ -215,6 +380,190 @@ const info = {
                 { label: "Vai trò", value: "Full-stack" },
                 { label: "Database", value: "MongoDB" },
                 { label: "Pattern", value: "REST + MVC" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "65%", color: "#3178c6" },
+                { name: "React", percent: "20%", color: "#61dafb" },
+                { name: "MongoDB", percent: "15%", color: "#47a248" },
+            ],
+        },
+        {
+            slug: "storeflow",
+            title: "StoreFlow",
+            tagline: "Ứng dụng quản lý sản phẩm, giỏ hàng & đơn hàng",
+            description:
+                "Ứng dụng Flutter đa nền tảng cho Android, iOS, Web và Windows. Hỗ trợ danh mục sản phẩm, giỏ hàng, đặt hàng, phân quyền Customer/Manager/Admin và thống kê doanh thu.",
+            longDescription:
+                "StoreFlow dùng Firebase Authentication và Cloud Firestore. Luồng điều hướng thay đổi theo vai trò với StatefulShellRoute; người dùng mua sắm, quản lý giỏ và lịch sử đơn hàng, trong khi Manager/Admin quản lý kho, thống kê và quyền. Codebase có design tokens, các trạng thái loading/empty/error và component tái sử dụng cho sản phẩm, đơn hàng và số lượng.",
+            technologies:
+                "Flutter, Dart, Firebase Authentication, Cloud Firestore, StatefulShellRoute, Android, iOS, Web, Windows",
+            techStack: ["Flutter", "Dart", "Firebase Auth", "Cloud Firestore", "Role-based access", "Material Design"],
+            github: "https://github.com/datmnt-dev/product_management_cart_app",
+            link: "#",
+            duration: "2026",
+            cover: "/fpt.png",
+            accent: "from-emerald-500 to-teal-500",
+            status: "completed" as ProjectStatus,
+            category: "mobile" as ProjectCategory,
+            featured: true,
+            responsibilities: [
+                "Xây dựng luồng đăng ký, đăng nhập và điều hướng theo vai trò Customer, Manager và Admin",
+                "Phát triển quản lý sản phẩm, giỏ hàng, checkout, lịch sử đơn và thống kê doanh thu",
+                "Tích hợp Firebase Authentication, Cloud Firestore và cấu hình đa nền tảng",
+                "Tạo design system nhỏ gồm màu sắc, typography, spacing, motion và các component dùng lại",
+                "Thiết kế trạng thái loading, empty, error và dialog xác nhận cho các thao tác chính",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Mobile Developer" },
+                { label: "Nền tảng", value: "Android, iOS, Web, Windows" },
+                { label: "Backend", value: "Firebase" },
+            ],
+            languageBreakdown: [
+                { name: "Dart", percent: "85%", color: "#0175c2" },
+                { name: "Firebase", percent: "15%", color: "#ffca28" },
+            ],
+        },
+        {
+            slug: "face-auth-ai",
+            title: "Face Auth AI",
+            tagline: "Xác thực người dùng qua camera và nhận diện khuôn mặt",
+            description:
+                "Prototype full-stack cho đăng ký, đăng nhập và xác thực khuôn mặt. Frontend React sử dụng webcam, kết nối tới backend Python có database, models và utilities riêng.",
+            longDescription:
+                "Dự án tách frontend Vite/React khỏi backend Python để xử lý dữ liệu xác thực. Source tree gồm WebcamCapture, API client ở phía client và các module database, models, utils ở server, thể hiện rõ luồng nhận hình ảnh từ camera tới dịch vụ xác thực.",
+            technologies:
+                "React 19, TypeScript, Vite, react-webcam, Python, API integration, Database",
+            techStack: ["React 19", "TypeScript", "Vite", "react-webcam", "Python", "Authentication"],
+            github: "https://github.com/datmnt-dev/face_Auth_AI",
+            link: "#",
+            duration: "2026",
+            cover: "/dat_img.jpg",
+            accent: "from-cyan-500 to-blue-600",
+            status: "in-progress" as ProjectStatus,
+            category: "ai" as ProjectCategory,
+            featured: false,
+            responsibilities: [
+                "Xây dựng màn hình React nhận hình ảnh trực tiếp từ webcam",
+                "Tách API client khỏi component giao diện để kết nối backend xác thực",
+                "Tổ chức backend Python theo các module main, database, models và utilities",
+                "Khảo sát luồng xác thực sinh trắc học cho trải nghiệm đăng nhập không cần nhập mật khẩu",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Developer" },
+                { label: "Input", value: "Webcam" },
+                { label: "Mục tiêu", value: "Face verification" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "50%", color: "#3178c6" },
+                { name: "Python", percent: "50%", color: "#3776ab" },
+            ],
+        },
+        {
+            slug: "product-management-mobile",
+            title: "Product Management Mobile",
+            tagline: "Ứng dụng Expo quản lý sản phẩm và đơn hàng",
+            description:
+                "Ứng dụng React Native/Expo quản lý sản phẩm, giỏ hàng, checkout, wishlist, người dùng và doanh thu. Dữ liệu được lưu cục bộ với SQLite, đi kèm xác thực và các màn hình quản trị.",
+            longDescription:
+                "Ứng dụng có các màn hình cho home, chi tiết sản phẩm, giỏ hàng, thanh toán, đơn hàng, hồ sơ, analytics, revenue và quản lý người dùng. Kiến trúc tách component, service, hook, context, navigation và type để luồng CRUD dễ mở rộng.",
+            technologies:
+                "React Native, Expo, TypeScript, Expo SQLite, React Navigation, AsyncStorage, Image Picker",
+            techStack: ["React Native", "Expo", "TypeScript", "SQLite", "React Navigation", "AsyncStorage"],
+            github: "https://github.com/datmnt-dev/MMA301_PE",
+            link: "#",
+            duration: "2026",
+            cover: "/fpt.png",
+            accent: "from-orange-500 to-pink-500",
+            status: "completed" as ProjectStatus,
+            category: "mobile" as ProjectCategory,
+            featured: false,
+            responsibilities: [
+                "Phát triển các màn hình sản phẩm, giỏ hàng, checkout, đơn hàng và wishlist",
+                "Xây dựng dashboard, analytics, revenue và quản lý người dùng cho admin",
+                "Tổ chức dữ liệu local với Expo SQLite cùng các service CRUD theo domain",
+                "Tạo component tái sử dụng cho tìm kiếm, sản phẩm, đơn hàng, skeleton và toast",
+                "Quản lý phiên người dùng bằng AuthContext, navigation stack và AsyncStorage",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Mobile Developer" },
+                { label: "Data", value: "SQLite local" },
+                { label: "Runtime", value: "Expo" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "80%", color: "#3178c6" },
+                { name: "SQLite", percent: "20%", color: "#003b57" },
+            ],
+        },
+        {
+            slug: "store-management-api",
+            title: "Store Management API",
+            tagline: "REST API TypeScript cho sản phẩm và tài khoản",
+            description:
+                "Backend Express/TypeScript cho quản lý sản phẩm và người dùng. Có xác thực JWT, upload ảnh bằng Multer, MongoDB/Mongoose và kiểm thử API với Jest, Supertest cùng MongoDB Memory Server.",
+            longDescription:
+                "Codebase được tách theo router, controller, service, model, middleware và test. Các module riêng cho auth, product, upload và database giúp dự án phù hợp để luyện kiến trúc backend có validation, authorization và kiểm thử tích hợp.",
+            technologies:
+                "TypeScript, Node.js, Express 5, MongoDB, Mongoose, JWT, bcrypt, Multer, Jest, Supertest",
+            techStack: ["TypeScript", "Express", "MongoDB", "JWT", "Multer", "Jest", "Supertest"],
+            github: "https://github.com/datmnt-dev/NodeJS_ASM01",
+            link: "#",
+            duration: "2025",
+            cover: "/jobfinder.ico",
+            accent: "from-indigo-500 to-cyan-500",
+            status: "completed" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: false,
+            responsibilities: [
+                "Thiết kế REST API cho xác thực, sản phẩm và upload ảnh",
+                "Áp dụng JWT, bcrypt, middleware phân quyền và Mongoose models",
+                "Tách controller và service để cô lập HTTP layer khỏi business logic",
+                "Viết kiểm thử API bằng Jest, Supertest và MongoDB Memory Server",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Backend Developer" },
+                { label: "Auth", value: "JWT + bcrypt" },
+                { label: "Testing", value: "Jest + Supertest" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "75%", color: "#3178c6" },
+                { name: "MongoDB", percent: "15%", color: "#47a248" },
+                { name: "Tests", percent: "10%", color: "#c21325" },
+            ],
+        },
+        {
+            slug: "simple-quiz",
+            title: "Simple Quiz",
+            tagline: "Quản lý bộ câu hỏi và quiz theo mô hình client-server",
+            description:
+                "Ứng dụng quiz gồm frontend Vite/React và backend Express/MongoDB. Giao diện có khu vực quản lý quiz và câu hỏi; server tách route, controller, model cho hai domain này.",
+            longDescription:
+                "Dự án là bài thực hành full-stack tập trung vào mô hình CRUD: client gọi API riêng, backend triển khai Question và Quiz models cùng controller/route tương ứng. Đây là bước thực hành nền tảng cho việc tách frontend và REST API.",
+            technologies:
+                "React, Vite, JavaScript, Node.js, Express 5, MongoDB, Mongoose, REST API",
+            techStack: ["React", "Vite", "JavaScript", "Express", "MongoDB", "Mongoose"],
+            github: "https://github.com/datmnt-dev/SimpleQuiz",
+            link: "#",
+            duration: "2026",
+            cover: "/fpt.png",
+            accent: "from-amber-500 to-rose-500",
+            status: "completed" as ProjectStatus,
+            category: "fullstack" as ProjectCategory,
+            featured: false,
+            responsibilities: [
+                "Xây dựng giao diện quản lý quiz và câu hỏi bằng React",
+                "Thiết kế API Express cho các thao tác CRUD quiz và question",
+                "Mô hình hóa dữ liệu với MongoDB và Mongoose",
+                "Tách frontend/backend để thực hành luồng gọi REST API end-to-end",
+            ],
+            highlights: [
+                { label: "Vai trò", value: "Full-stack Developer" },
+                { label: "Domain", value: "Quiz + Questions" },
+                { label: "Pattern", value: "REST CRUD" },
+            ],
+            languageBreakdown: [
+                { name: "JavaScript", percent: "70%", color: "#f7df1e" },
+                { name: "React", percent: "15%", color: "#61dafb" },
+                { name: "MongoDB", percent: "15%", color: "#47a248" },
             ],
         },
         {
@@ -254,6 +603,15 @@ const info = {
                 { label: "Vai trò", value: "Solo Dev" },
                 { label: "Pages", value: "10+" },
                 { label: "Theme", value: "Dark/Light + 4 accents" },
+            ],
+            languageBreakdown: [
+                { name: "TypeScript", percent: "55%", color: "#3178c6" },
+                { name: "React 19", percent: "30%", color: "#61dafb" },
+                { name: "Tailwind 4", percent: "15%", color: "#38bdf8" },
+            ],
+            repositories: [
+                { label: "Portfolio frontend", url: "https://github.com/datmnt-dev/dat_porfolio" },
+                { label: "Mail API", url: "https://github.com/datmnt-dev/portfolio-mail-api" },
             ],
         },
     ] as Project[],
