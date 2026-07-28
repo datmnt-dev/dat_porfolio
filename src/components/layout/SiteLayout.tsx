@@ -7,6 +7,7 @@ import SiteFooter from "./SiteFooter";
 import BackToTop from "../BackToTop";
 import CommandPalette from "../CommandPalette";
 import MatrixRain from "../MatrixRain";
+import InteractiveCursorGlow from "../ui/InteractiveCursorGlow";
 
 const SiteLayout = () => {
   const { switchTheme } = useContext<AppContextType>(AppContext);
@@ -35,17 +36,18 @@ const SiteLayout = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col transition-colors duration-300"
+      className="min-h-screen flex flex-col transition-colors duration-300 relative overflow-hidden"
       style={{
         backgroundColor: "var(--color-bg)",
         color: "var(--color-text)",
       }}
     >
+      <InteractiveCursorGlow />
       <SiteHeader
         switchTheme={switchTheme}
         onOpenPalette={() => setIsPaletteOpen(true)}
       />
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full relative z-10">
         <Outlet />
       </main>
       <SiteFooter />

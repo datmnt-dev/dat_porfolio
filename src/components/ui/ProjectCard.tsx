@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import type { Project } from "../../data/userdata";
+import SpotlightCard from "./SpotlightCard";
 
 interface Props {
   project: Project;
@@ -15,8 +16,8 @@ const statusLabel: Record<Project["status"], string> = {
 
 const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
   return (
-    <article
-      className="group card-surface p-5 flex flex-col h-full reveal"
+    <SpotlightCard
+      className="group p-5 flex flex-col h-full hover:-translate-y-1 transition-all duration-300"
       style={{ animationDelay: `${0.05 + index * 0.06}s` }}
     >
       <div className="relative h-32 mb-4 rounded-xl overflow-hidden bg-[var(--color-bg-component)]">
@@ -96,7 +97,7 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
           </div>
         </div>
       </div>
-    </article>
+    </SpotlightCard>
   );
 };
 
