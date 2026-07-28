@@ -16,6 +16,9 @@ import { AppContext } from "../context/AppContext";
 import type { AccentTheme } from "../types/AppContext";
 import ProjectCard from "../components/ui/ProjectCard";
 import SectionHeader from "../components/ui/SectionHeader";
+import ScrollReveal from "../components/ui/ScrollReveal";
+import SpotlightCard from "../components/ui/SpotlightCard";
+import Magnetic from "../components/ui/Magnetic";
 
 const valueIcons: Record<string, React.ReactNode> = {
   sparkle: <HiSparkles />,
@@ -94,21 +97,27 @@ const Home = () => {
             </p>
 
             <div className="reveal reveal-4 mt-9 flex flex-wrap items-center gap-3">
-              <Link to="/projects" className="btn-primary">
-                Xem dự án
-                <FaArrowRight className="text-xs" />
-              </Link>
-              <Link to="/contact" className="btn-ghost">
-                Liên hệ ngay
-              </Link>
-              <a
-                href="/CV_MaiNguyenTienDat.pdf"
-                download
-                className="btn-ghost"
-              >
-                <FaDownload className="text-xs" />
-                CV PDF
-              </a>
+              <Magnetic>
+                <Link to="/projects" className="btn-primary">
+                  Xem dự án
+                  <FaArrowRight className="text-xs" />
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <Link to="/contact" className="btn-ghost">
+                  Liên hệ ngay
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <a
+                  href="/CV_MaiNguyenTienDat.pdf"
+                  download
+                  className="btn-ghost"
+                >
+                  <FaDownload className="text-xs" />
+                  CV PDF
+                </a>
+              </Magnetic>
             </div>
 
             {/* Socials */}
@@ -120,15 +129,16 @@ const Home = () => {
                   { href: user_info.socials.linkedin, Icon: FaLinkedin },
                   { href: user_info.socials.facebook, Icon: FaFacebook },
                 ].map(({ href, Icon }, i) => (
-                  <a
-                    key={i}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 grid place-items-center rounded-xl border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
-                  >
-                    <Icon className="text-sm" />
-                  </a>
+                  <Magnetic key={i}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 grid place-items-center rounded-xl border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+                    >
+                      <Icon className="text-sm" />
+                    </a>
+                  </Magnetic>
                 ))}
               </div>
             </div>
@@ -137,7 +147,7 @@ const Home = () => {
           {/* Right — visual */}
           <div className="reveal reveal-3 relative w-full max-w-sm mx-auto lg:ml-auto lg:mr-0">
             <div className="absolute -inset-6 rounded-[3rem] opacity-40 blur-3xl" style={{ background: "var(--gradient-accent)" }} />
-            <div className="relative card-surface p-5 sm:p-6">
+            <SpotlightCard className="p-5 sm:p-6 hover:-translate-y-1 transition-all duration-300">
               <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0" style={{ background: "var(--gradient-accent)" }} />
                 <img
@@ -196,18 +206,20 @@ const Home = () => {
                   })}
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </section>
 
       {/* WHAT I DO */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
-        <SectionHeader
-          eyebrow="What I do"
-          title="Ba mảng mình tập trung nhất"
-          description="Mình thích build những thứ giải quyết bài toán thật. Mạnh nhất ở front-end, đủ tự tin với back-end và đang nghiêm túc đầu tư cho design."
-        />
+        <ScrollReveal>
+          <SectionHeader
+            eyebrow="What I do"
+            title="Ba mảng mình tập trung nhất"
+            description="Mình thích build những thứ giải quyết bài toán thật. Mạnh nhất ở front-end, đủ tự tin với back-end và đang nghiêm túc đầu tư cho design."
+          />
+        </ScrollReveal>
         <div className="grid md:grid-cols-3 gap-5">
           {[
             {
@@ -232,130 +244,140 @@ const Home = () => {
               cta: "Biết thêm",
             },
           ].map((c, i) => (
-            <div
-              key={c.title}
-              className="card-surface p-7 reveal flex flex-col"
-              style={{ animationDelay: `${0.1 + i * 0.08}s` }}
-            >
-              <div
-                className="w-12 h-12 rounded-2xl grid place-items-center text-white text-xl"
-                style={{ background: "var(--gradient-accent)" }}
-              >
-                {c.icon}
-              </div>
-              <h3 className="mt-5 font-display font-bold text-lg">{c.title}</h3>
-              <p className="mt-2 text-sm text-[var(--color-subtext)] leading-relaxed flex-1">
-                {c.text}
-              </p>
-              <Link
-                to={c.link}
-                className="mt-5 inline-flex items-center gap-2 text-sm text-[var(--color-accent)] hover:gap-3 transition-all"
-              >
-                {c.cta} <FaArrowRight className="text-xs" />
-              </Link>
-            </div>
+            <ScrollReveal key={c.title} delay={i * 100}>
+              <SpotlightCard className="p-7 flex flex-col h-full hover:-translate-y-1 transition-all duration-300">
+                <div
+                  className="w-12 h-12 rounded-2xl grid place-items-center text-white text-xl"
+                  style={{ background: "var(--gradient-accent)" }}
+                >
+                  {c.icon}
+                </div>
+                <h3 className="mt-5 font-display font-bold text-lg">{c.title}</h3>
+                <p className="mt-2 text-sm text-[var(--color-subtext)] leading-relaxed flex-1">
+                  {c.text}
+                </p>
+                <Link
+                  to={c.link}
+                  className="mt-5 inline-flex items-center gap-2 text-sm text-[var(--color-accent)] hover:gap-3 transition-all w-fit"
+                >
+                  {c.cta} <FaArrowRight className="text-xs" />
+                </Link>
+              </SpotlightCard>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* FEATURED PROJECTS */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
-        <SectionHeader
-          eyebrow="Featured work"
-          title="Một vài dự án nổi bật"
-          description="Các dự án mình đầu tư thời gian nhất — mỗi cái có một góc thú vị riêng để chia sẻ."
-          action={
-            <Link to="/projects" className="btn-ghost !text-xs">
-              Tất cả dự án
-              <FaArrowRight className="text-xs" />
-            </Link>
-          }
-        />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <ScrollReveal>
+          <SectionHeader
+            eyebrow="Featured work"
+            title="Một vài dự án nổi bật"
+            description="Các dự án mình đầu tư thời gian nhất — mỗi cái có một góc thú vị riêng để chia sẻ."
+            action={
+              <Magnetic>
+                <Link to="/projects" className="btn-ghost !text-xs">
+                  Tất cả dự án
+                  <FaArrowRight className="text-xs" />
+                </Link>
+              </Magnetic>
+            }
+          />
+        </ScrollReveal>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
           {featured.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} index={i} />
+            <ScrollReveal key={p.slug} delay={i * 100}>
+              <ProjectCard project={p} index={i} />
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* VALUES */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
-        <SectionHeader
-          eyebrow="How I work"
-          title="Những giá trị mình giữ"
-          description="Đây không phải khẩu hiệu — đây là cách mình thực sự ra quyết định khi code."
-          align="center"
-        />
+        <ScrollReveal>
+          <SectionHeader
+            eyebrow="How I work"
+            title="Những giá trị mình giữ"
+            description="Đây không phải khẩu hiệu — đây là cách mình thực sự ra quyết định khi code."
+            align="center"
+          />
+        </ScrollReveal>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {user_info.values.map((v, i) => (
-            <div
-              key={v.title}
-              className="card-surface p-6 reveal text-center"
-              style={{ animationDelay: `${0.1 + i * 0.07}s` }}
-            >
-              <div
-                className="w-12 h-12 mx-auto rounded-2xl grid place-items-center text-2xl text-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-              >
-                {valueIcons[v.icon] ?? <HiSparkles />}
-              </div>
-              <h4 className="mt-4 font-display font-bold">{v.title}</h4>
-              <p className="mt-2 text-xs text-[var(--color-subtext)] leading-relaxed">{v.description}</p>
-            </div>
+            <ScrollReveal key={v.title} delay={i * 80}>
+              <SpotlightCard className="p-6 text-center h-full hover:-translate-y-1 transition-all duration-300">
+                <div
+                  className="w-12 h-12 mx-auto rounded-2xl grid place-items-center text-2xl text-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+                >
+                  {valueIcons[v.icon] ?? <HiSparkles />}
+                </div>
+                <h4 className="mt-4 font-display font-bold">{v.title}</h4>
+                <p className="mt-2 text-xs text-[var(--color-subtext)] leading-relaxed">{v.description}</p>
+              </SpotlightCard>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* LATEST POSTS */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
-        <SectionHeader
-          eyebrow="From the blog"
-          title="Mình viết những gì mình học"
-          description="Note ngắn về kỹ thuật, kiến trúc và những bài học rút ra từ dự án thật."
-          action={
-            <Link to="/blog" className="btn-ghost !text-xs">
-              Tất cả bài viết <FaArrowRight className="text-xs" />
-            </Link>
-          }
-        />
-        <div className="grid md:grid-cols-2 gap-5">
+        <ScrollReveal>
+          <SectionHeader
+            eyebrow="From the blog"
+            title="Mình viết những gì mình học"
+            description="Note ngắn về kỹ thuật, kiến trúc và những bài học rút ra từ dự án thật."
+            action={
+              <Magnetic>
+                <Link to="/blog" className="btn-ghost !text-xs">
+                  Tất cả bài viết <FaArrowRight className="text-xs" />
+                </Link>
+              </Magnetic>
+            }
+          />
+        </ScrollReveal>
+        <div className="grid md:grid-cols-2 gap-5 mt-8">
           {latestPosts.map((p, i) => (
-            <Link
-              key={p.slug}
-              to={`/blog/${p.slug}`}
-              className="card-surface p-6 group reveal"
-              style={{ animationDelay: `${0.1 + i * 0.08}s` }}
-            >
-              <div className="flex items-center gap-2 flex-wrap mb-3">
-                {p.tags.map((t) => (
-                  <span key={t} className="tag">{t}</span>
-                ))}
-                <span className="text-[10px] text-[var(--color-subtext)] ml-auto font-code">
-                  {p.readMinutes} min read
-                </span>
-              </div>
-              <h3 className="font-display font-bold text-xl group-hover:text-[var(--color-accent)] transition">
-                {p.title}
-              </h3>
-              <p className="mt-2 text-sm text-[var(--color-subtext)] line-clamp-2 leading-relaxed">
-                {p.excerpt}
-              </p>
-              <div className="mt-4 flex items-center justify-between text-xs">
-                <span className="text-[var(--color-subtext)] font-code">{p.date}</span>
-                <span className="inline-flex items-center gap-1 text-[var(--color-accent)] group-hover:gap-2 transition-all">
-                  Đọc tiếp <FaArrowRight className="text-[10px]" />
-                </span>
-              </div>
-            </Link>
+            <ScrollReveal key={p.slug} delay={i * 100}>
+              <Link
+                to={`/blog/${p.slug}`}
+                className="block h-full group"
+              >
+                <SpotlightCard className="p-6 h-full hover:-translate-y-1 transition-all duration-300">
+                  <div className="flex items-center gap-2 flex-wrap mb-3">
+                    {p.tags.map((t) => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                    <span className="text-[10px] text-[var(--color-subtext)] ml-auto font-code">
+                      {p.readMinutes} min read
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-xl group-hover:text-[var(--color-accent)] transition">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-[var(--color-subtext)] line-clamp-2 leading-relaxed">
+                    {p.excerpt}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-xs">
+                    <span className="text-[var(--color-subtext)] font-code">{p.date}</span>
+                    <span className="inline-flex items-center gap-1 text-[var(--color-accent)] group-hover:gap-2 transition-all">
+                      Đọc tiếp <FaArrowRight className="text-[10px]" />
+                    </span>
+                  </div>
+                </SpotlightCard>
+              </Link>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
-        <div className="relative card-surface overflow-hidden p-10 sm:p-14 text-center">
-          <div className="absolute inset-0 opacity-15" style={{ background: "var(--gradient-accent)" }} />
-          <div className="absolute inset-0 bg-grid opacity-30" />
-          <div className="relative">
+        <ScrollReveal>
+          <SpotlightCard className="p-10 sm:p-14 text-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-15" style={{ background: "var(--gradient-accent)" }} />
+            <div className="absolute inset-0 bg-grid opacity-30" />
             <HiSparkles className="text-3xl text-[var(--color-accent)] mx-auto" />
             <h2 className="mt-4 font-display font-extrabold text-3xl sm:text-4xl">
               Build cùng nhau cái gì đó <span className="text-gradient">tử tế</span> nhé?
@@ -364,15 +386,19 @@ const Home = () => {
               Mình đang mở cho intern, junior position hoặc các dự án freelance front-end. Trao đổi qua email luôn nhé.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Link to="/contact" className="btn-primary">
-                Liên hệ ngay <FaArrowRight className="text-xs" />
-              </Link>
-              <a href={`mailto:${user_info.main.email}`} className="btn-ghost">
-                {user_info.main.email}
-              </a>
+              <Magnetic>
+                <Link to="/contact" className="btn-primary">
+                  Liên hệ ngay <FaArrowRight className="text-xs" />
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <a href={`mailto:${user_info.main.email}`} className="btn-ghost">
+                  {user_info.main.email}
+                </a>
+              </Magnetic>
             </div>
-          </div>
-        </div>
+          </SpotlightCard>
+        </ScrollReveal>
       </section>
     </div>
   );
