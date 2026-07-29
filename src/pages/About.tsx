@@ -4,6 +4,8 @@ import { HiSparkles, HiOutlineBookOpen, HiOutlineUserGroup, HiOutlineShieldCheck
 import user_info from "../data/userdata";
 import PageHero from "../components/ui/PageHero";
 import SectionHeader from "../components/ui/SectionHeader";
+import ScrollReveal from "../components/ui/ScrollReveal";
+import SpotlightCard from "../components/ui/SpotlightCard";
 
 const valueIcons: Record<string, React.ReactNode> = {
   sparkle: <HiSparkles />,
@@ -40,7 +42,7 @@ const About = () => {
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           {/* Photo + facts */}
-          <div className="reveal max-w-sm mx-auto lg:mx-0">
+          <ScrollReveal className="max-w-sm mx-auto lg:mx-0">
             <div className="card-surface p-4">
               <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0" style={{ background: "var(--gradient-accent)" }} />
@@ -57,31 +59,33 @@ const About = () => {
                 <FactRow Icon={FaLanguage} label="Ngôn ngữ" value={user_info.main.languages.join(", ")} />
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Story */}
-          <div className="reveal reveal-2 prose-custom">
-            <h2>Xin chào, mình là Đạt 👋</h2>
-            <p>{user_info.main.description}</p>
-            <p>
-              Mình bắt đầu code khi học cấp ba — không phải vì điểm cao, mà vì lần đầu thấy thứ mình viết
-              ra <em>chạy được</em>. Cảm giác đó vẫn còn đến hôm nay, mỗi lần một component mới lên đúng vị trí.
-            </p>
-            <h3>Mình hợp với ai?</h3>
-            <ul>
-              <li>Team coi user là trung tâm, không phải feature count.</li>
-              <li>Đồng nghiệp sẵn sàng review code thẳng thắn và pair lúc cần.</li>
-              <li>Product có độ phức tạp đủ để mình phải đọc — không phải copy-paste là xong.</li>
-            </ul>
-            <h3>Ngoài giờ làm</h3>
-            <p>
-              Mình đọc về kiến trúc front-end, thử Figma plugins, và thỉnh thoảng viết note kỹ thuật trên
-              <Link to="/blog"> blog</Link>. Cuối tuần mình hay ngồi cà phê ở Đà Nẵng, mở VS Code, làm side-project nhỏ.
-            </p>
-            <blockquote>
-              "Ship something small, ship it often, ship it with care." — phương châm cá nhân.
-            </blockquote>
-          </div>
+          <ScrollReveal delay={80}>
+            <div className="prose-custom">
+              <h2>Xin chào, mình là Đạt 👋</h2>
+              <p>{user_info.main.description}</p>
+              <p>
+                Mình bắt đầu code khi học cấp ba — không phải vì điểm cao, mà vì lần đầu thấy thứ mình viết
+                ra <em>chạy được</em>. Cảm giác đó vẫn còn đến hôm nay, mỗi lần một component mới lên đúng vị trí.
+              </p>
+              <h3>Mình hợp với ai?</h3>
+              <ul>
+                <li>Team coi user là trung tâm, không phải feature count.</li>
+                <li>Đồng nghiệp sẵn sàng review code thẳng thắn và pair lúc cần.</li>
+                <li>Product có độ phức tạp đủ để mình phải đọc — không phải copy-paste là xong.</li>
+              </ul>
+              <h3>Ngoài giờ làm</h3>
+              <p>
+                Mình đọc về kiến trúc front-end, thử Figma plugins, và thỉnh thoảng viết note kỹ thuật trên
+                <Link to="/blog"> blog</Link>. Cuối tuần mình hay ngồi cà phê ở Đà Nẵng, mở VS Code, làm side-project nhỏ.
+              </p>
+              <blockquote>
+                "Ship something small, ship it often, ship it with care." — phương châm cá nhân.
+              </blockquote>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -94,17 +98,15 @@ const About = () => {
         />
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {user_info.values.map((v, i) => (
-            <div
-              key={v.title}
-              className="card-surface p-6 reveal"
-              style={{ animationDelay: `${0.08 + i * 0.06}s` }}
-            >
-              <div className="w-12 h-12 rounded-2xl grid place-items-center text-2xl text-[var(--color-accent)] bg-[var(--color-accent-soft)]">
-                {valueIcons[v.icon] ?? <HiSparkles />}
-              </div>
-              <h4 className="mt-4 font-display font-bold">{v.title}</h4>
-              <p className="mt-2 text-sm text-[var(--color-subtext)] leading-relaxed">{v.description}</p>
-            </div>
+            <ScrollReveal key={v.title} delay={i * 70}>
+              <SpotlightCard className="p-6 h-full">
+                <div className="w-12 h-12 rounded-2xl grid place-items-center text-2xl text-[var(--color-accent)] bg-[var(--color-accent-soft)]">
+                  {valueIcons[v.icon] ?? <HiSparkles />}
+                </div>
+                <h4 className="mt-4 font-display font-bold">{v.title}</h4>
+                <p className="mt-2 text-sm text-[var(--color-subtext)] leading-relaxed">{v.description}</p>
+              </SpotlightCard>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -112,26 +114,37 @@ const About = () => {
       {/* TIMELINE TEASER */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 gap-5">
-          <Link to="/experience" className="card-surface p-7 group reveal">
-            <div className="text-[var(--color-accent)] text-xs font-code uppercase tracking-wider">/experience</div>
-            <h3 className="mt-2 font-display font-bold text-2xl">Học vấn & dự án thật</h3>
-            <p className="mt-2 text-sm text-[var(--color-subtext)]">
-              Timeline đầy đủ — từ JSP/Servlet đến React full-stack, kèm những thứ mình học được ở mỗi chặng.
-            </p>
-            <div className="mt-5 inline-flex items-center gap-2 text-sm text-[var(--color-accent)] group-hover:gap-3 transition-all">
-              Xem timeline <FaArrowRight className="text-xs" />
-            </div>
-          </Link>
-          <Link to="/skills" className="card-surface p-7 group reveal reveal-1">
-            <div className="text-[var(--color-accent)] text-xs font-code uppercase tracking-wider">/skills</div>
-            <h3 className="mt-2 font-display font-bold text-2xl">Stack chi tiết</h3>
-            <p className="mt-2 text-sm text-[var(--color-subtext)]">
-              Breakdown rõ ràng theo nhóm: front-end, back-end, tools, methodologies — cùng mức độ tự tin.
-            </p>
-            <div className="mt-5 inline-flex items-center gap-2 text-sm text-[var(--color-accent)] group-hover:gap-3 transition-all">
-              Xem skills <FaArrowRight className="text-xs" />
-            </div>
-          </Link>
+          {[
+            {
+              to: "/experience",
+              label: "/experience",
+              title: "Học vấn & dự án thật",
+              description:
+                "Timeline đầy đủ — từ JSP/Servlet đến React full-stack, kèm những thứ mình học được ở mỗi chặng.",
+              cta: "Xem timeline",
+            },
+            {
+              to: "/skills",
+              label: "/skills",
+              title: "Stack chi tiết",
+              description:
+                "Breakdown rõ ràng theo nhóm: front-end, back-end, tools, methodologies — cùng mức độ tự tin.",
+              cta: "Xem skills",
+            },
+          ].map((item, index) => (
+            <ScrollReveal key={item.to} delay={index * 80}>
+              <Link to={item.to} className="block h-full group">
+                <SpotlightCard className="p-7 h-full">
+                  <div className="text-[var(--color-accent)] text-xs font-code uppercase tracking-normal">{item.label}</div>
+                  <h3 className="mt-2 font-display font-bold text-2xl">{item.title}</h3>
+                  <p className="mt-2 text-sm text-[var(--color-subtext)]">{item.description}</p>
+                  <div className="mt-5 inline-flex items-center gap-2 text-sm text-[var(--color-accent)] group-hover:gap-3 transition-all">
+                    {item.cta} <FaArrowRight className="text-xs" />
+                  </div>
+                </SpotlightCard>
+              </Link>
+            </ScrollReveal>
+          ))}
         </div>
       </section>
     </div>
@@ -142,7 +155,7 @@ const FactRow: React.FC<{ Icon: React.ComponentType<{ className?: string }>; lab
   <div className="flex items-start gap-3">
     <Icon className="text-[var(--color-accent)] mt-0.5 flex-shrink-0" />
     <div className="min-w-0">
-      <div className="text-[10px] uppercase tracking-wider text-[var(--color-subtext)] font-code">{label}</div>
+      <div className="text-[10px] uppercase tracking-normal text-[var(--color-subtext)] font-code">{label}</div>
       <div className="text-[var(--color-text)] truncate">{value}</div>
     </div>
   </div>

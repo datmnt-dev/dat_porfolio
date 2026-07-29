@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaTerminal, FaCodeBranch, FaCertificate } from "react-icons/fa";
 import { PiCertificateFill } from "react-icons/pi";
 import user_info from "../data/userdata";
+import ScrollReveal from "./ui/ScrollReveal";
+import SpotlightCard from "./ui/SpotlightCard";
 
 interface CommitNode {
   hash: string;
@@ -84,24 +86,27 @@ const EducationAndExperience: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
-            <FaTerminal className="text-xs" />
-            <span>tiendat@portfolio:~$ git log --graph --oneline</span>
+        <ScrollReveal className="mb-12">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
+              <FaTerminal className="text-xs" />
+              <span>tiendat@portfolio:~$ git log --graph --oneline</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
+              Git <span className="text-[var(--color-accent)]">Timeline</span> & Experience
+            </h2>
+            <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
+              Nhấp vào từng Commit Node trên cây thư mục Git để xem chi tiết học tập & kinh nghiệm dưới dạng lệnh &quot;git show&quot;.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
-            Git <span className="text-[var(--color-accent)]">Timeline</span> & Experience
-          </h2>
-          <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
-            Nhấp vào từng Commit Node trên cây thư mục Git để xem chi tiết học tập & kinh nghiệm dưới dạng lệnh &quot;git show&quot;.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Timeline Layout Grid */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Columns: Visual Git Graph Tree */}
-          <div className="lg:col-span-6 min-w-0 border border-[var(--color-border)] rounded-xl p-6 bg-[var(--color-bg-component)] overflow-hidden">
+          <ScrollReveal className="lg:col-span-6 min-w-0">
+            <div className="border border-[var(--color-border)] rounded-lg p-6 bg-[var(--color-bg-component)] overflow-hidden">
             <div className="flex items-center gap-2 mb-6 border-b border-[var(--color-border)] pb-3 select-none">
               <FaCodeBranch className="text-[var(--color-accent)]" />
               <span className="font-mono text-xs text-[var(--color-text)]">REPOS BRANCHING FLOW</span>
@@ -115,14 +120,15 @@ const EducationAndExperience: React.FC = () => {
                 const isMainBranch = node.branch === "main";
 
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={node.hash}
                     onClick={() => setSelectedCommit(node)}
                     className={`flex items-start gap-4 p-3 rounded-lg border cursor-pointer transition-all duration-300 ${
                       isSelected
                         ? "bg-zinc-100 dark:bg-zinc-900 border-[var(--color-accent)] shadow-sm"
                         : "border-transparent hover:bg-zinc-100/50 dark:hover:bg-zinc-900/30"
-                    }`}
+                    } w-full text-left`}
                   >
                     {/* Visual Git Lines indicator */}
                     <div className="flex flex-col items-center select-none pt-0.5">
@@ -188,7 +194,7 @@ const EducationAndExperience: React.FC = () => {
                       </p>
                     </div>
 
-                  </div>
+                  </button>
                 );
               })}
 
@@ -202,37 +208,36 @@ const EducationAndExperience: React.FC = () => {
               </h4>
               <div className="grid gap-2.5">
                 {user_info.certificates.map((cert, index) => (
-                  <a
-                    key={index}
-                    href={cert.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-accent)] hover:shadow-xs transition-all group min-w-0 overflow-hidden"
-                  >
-                    <div className="w-7 h-7 rounded-md bg-[var(--color-bg-component)] flex items-center justify-center text-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all text-xs flex-shrink-0">
-                      <FaCertificate />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-code font-bold text-[10px] text-[var(--color-text)] truncate">
-                          {cert.title}
-                        </span>
-                        <span className="text-[9px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">{cert.year}</span>
-                      </div>
-                      <p className="text-[9px] text-[var(--color-subtext)] line-clamp-2 leading-snug">
-                        {cert.description}
-                      </p>
-                    </div>
-                  </a>
+                  <ScrollReveal key={cert.title} delay={index * 60}>
+                    <a href={cert.link} target="_blank" rel="noopener noreferrer" className="block group">
+                      <SpotlightCard className="flex items-center gap-3 p-2.5 min-w-0 overflow-hidden">
+                        <div className="w-7 h-7 rounded-md bg-[var(--color-bg-component)] flex items-center justify-center text-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all text-xs flex-shrink-0">
+                          <FaCertificate />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-code font-bold text-[10px] text-[var(--color-text)] truncate">
+                              {cert.title}
+                            </span>
+                            <span className="text-[9px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">{cert.year}</span>
+                          </div>
+                          <p className="text-[9px] text-[var(--color-subtext)] line-clamp-2 leading-snug">
+                            {cert.description}
+                          </p>
+                        </div>
+                      </SpotlightCard>
+                    </a>
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
 
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Right Columns: Simulated Git Show Terminal Viewport */}
-          <div className="lg:col-span-6 flex flex-col h-full min-h-[440px]">
-            <div className="editor-window flex-1 flex flex-col border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-xl shadow-2xl relative overflow-hidden">
+          <ScrollReveal delay={100} className="lg:col-span-6 flex flex-col h-full min-h-[440px]">
+            <div className="editor-window flex-1 flex flex-col border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-lg shadow-2xl relative overflow-hidden">
               
               {/* Terminal Title Bar */}
               <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
@@ -310,7 +315,7 @@ const EducationAndExperience: React.FC = () => {
               </div>
 
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
 

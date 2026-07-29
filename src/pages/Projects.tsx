@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import user_info, { ProjectCategory } from "../data/userdata";
 import PageHero from "../components/ui/PageHero";
 import ProjectCard from "../components/ui/ProjectCard";
+import ScrollReveal from "../components/ui/ScrollReveal";
 
 const Projects = () => {
   const [filter, setFilter] = useState<"all" | ProjectCategory>("all");
@@ -36,32 +37,36 @@ const Projects = () => {
 
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
         {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12 select-none">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setFilter(cat.value)}
-              className={`px-4 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-                filter === cat.value
-                  ? "text-white scale-105"
-                  : "border border-[var(--color-border)] text-[var(--color-subtext)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-              }`}
-              style={
-                filter === cat.value
-                  ? { background: "var(--gradient-accent)", boxShadow: "0 4px 12px var(--color-accent-glow)" }
-                  : undefined
-              }
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+        <ScrollReveal className="mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-2 select-none">
+            {categories.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => setFilter(cat.value)}
+                className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
+                  filter === cat.value
+                    ? "text-white scale-105"
+                    : "border border-[var(--color-border)] text-[var(--color-subtext)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                }`}
+                style={
+                  filter === cat.value
+                    ? { background: "var(--gradient-accent)", boxShadow: "0 4px 12px var(--color-accent-glow)" }
+                    : undefined
+                }
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </ScrollReveal>
 
         {/* Projects Grid */}
         {filteredProjects.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((p, i) => (
-              <ProjectCard key={p.slug} project={p} index={i} />
+              <ScrollReveal key={`${filter}-${p.slug}`} delay={Math.min(i, 5) * 70}>
+                <ProjectCard project={p} index={i} />
+              </ScrollReveal>
             ))}
           </div>
         ) : (
