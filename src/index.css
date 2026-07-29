@@ -231,6 +231,9 @@ html.dark .bg-grid {
 
 /* ====== BUTTONS ====== */
 .btn-primary {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -243,10 +246,22 @@ html.dark .bg-grid {
   box-shadow: 0 8px 24px var(--color-accent-glow);
   transition: all var(--transition-speed) ease;
 }
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -18%;
+  width: 30%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-22deg) translateX(-460%);
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 30px var(--color-accent-glow);
 }
+.btn-primary:hover::after { transform: skewX(-22deg) translateX(560%); }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
 
 .btn-ghost {
   display: inline-flex;
@@ -266,6 +281,7 @@ html.dark .bg-grid {
   color: var(--color-accent);
   transform: translateY(-2px);
 }
+.btn-ghost:active { transform: translateY(0) scale(0.98); }
 
 /* Chip */
 .chip {
@@ -292,6 +308,12 @@ html.dark .bg-grid {
   font-size: 0.72rem;
   border: 1px solid var(--color-border);
   font-family: var(--font-code);
+  transition: color 0.24s ease, border-color 0.24s ease, background-color 0.24s ease, transform 0.24s ease;
+}
+.tag:hover {
+  color: var(--color-accent);
+  border-color: rgba(var(--color-accent-rgb), 0.45);
+  transform: translateY(-1px);
 }
 
 /* ====== ANIMATIONS ====== */
@@ -365,6 +387,42 @@ html.dark .bg-grid {
 
 .page-transition {
   animation: page-enter 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 8% 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--color-accent-rgb), 0.55), transparent);
+  animation: hero-line 1.2s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hero-line {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+.section-header-title {
+  display: inline-block;
+  position: relative;
+}
+
+.section-header-title::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  margin-top: 0.8rem;
+  border-radius: 2px;
+  background: var(--gradient-accent);
+  transform-origin: left;
+  animation: heading-line 0.7s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heading-line {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
 }
 
 /* Hover lift */
@@ -449,8 +507,18 @@ html.dark .bg-grid {
   }
 
   .hero-profile,
-  .page-transition {
+  .page-transition,
+  .page-hero::after,
+  .section-header-title::after {
     animation: none;
+  }
+
+  .spotlight-card-wrapper,
+  .tag,
+  .btn-primary,
+  .btn-ghost {
+    transition: none;
+    transform: none;
   }
 }
 
@@ -481,12 +549,46 @@ html.dark .bg-grid {
   overflow: hidden;
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --card-lift: 0px;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--card-lift), 0);
+  transform-style: preserve-3d;
+  transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
-.spotlight-card-wrapper:hover {
-  border-color: rgba(var(--color-accent-rgb), 0.3);
-  box-shadow: 0 12px 36px var(--color-accent-glow);
+@media (hover: hover) and (pointer: fine) {
+  .spotlight-card-wrapper:hover {
+    --card-lift: -5px;
+    border-color: rgba(var(--color-accent-rgb), 0.3);
+    box-shadow: 0 16px 42px var(--color-accent-glow);
+  }
+
+  .spotlight-card-wrapper.is-tilting {
+    transition-duration: 0.12s, 0.3s, 0.3s;
+  }
+
+  .project-card:hover .project-card-tag {
+    color: var(--color-accent);
+    border-color: rgba(var(--color-accent-rgb), 0.45);
+  }
+}
+
+.project-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+  transform: translateX(-110%);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.project-card:hover .project-card-media::after {
+  opacity: 1;
+  transform: translateX(110%);
 }
 
 .spotlight-card-glow {
