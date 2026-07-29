@@ -536,11 +536,14 @@ html.dark .bg-grid {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+  contain: paint;
 }
 
 .reveal-on-scroll.visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 
 .spotlight-card-wrapper {
@@ -555,7 +558,6 @@ html.dark .bg-grid {
   transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--card-lift), 0);
   transform-style: preserve-3d;
   transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -567,6 +569,7 @@ html.dark .bg-grid {
 
   .spotlight-card-wrapper.is-tilting {
     transition-duration: 0.12s, 0.3s, 0.3s;
+    will-change: transform;
   }
 
   .project-card:hover .project-card-tag {

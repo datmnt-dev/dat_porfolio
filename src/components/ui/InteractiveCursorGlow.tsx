@@ -4,6 +4,7 @@ const InteractiveCursorGlow: React.FC = () => {
   const glowRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const isVisibleRef = useRef(false);
 
   // Vị trí chuột thực tế và vị trí hiển thị hiện tại (dùng cho nội suy tuyến tính - LERP)
   const mousePos = useRef({ x: 0, y: 0 });
@@ -29,15 +30,24 @@ const InteractiveCursorGlow: React.FC = () => {
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current.x = e.clientX;
       mousePos.current.y = e.clientY;
-      if (!isVisible) setIsVisible(true);
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
     };
 
     const handleMouseLeave = () => {
-      setIsVisible(false);
+      if (isVisibleRef.current) {
+        isVisibleRef.current = false;
+        setIsVisible(false);
+      }
     };
 
     const handleMouseEnter = () => {
-      setIsVisible(true);
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -69,7 +79,7 @@ const InteractiveCursorGlow: React.FC = () => {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [isTouchDevice, isVisible]);
+  }, [isTouchDevice]);
 
   if (isTouchDevice) return null;
 
