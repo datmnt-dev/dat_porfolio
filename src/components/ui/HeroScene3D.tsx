@@ -30,8 +30,7 @@ const HeroScene3D = ({ accent }: HeroScene3DProps) => {
     const clock = new THREE.Clock();
     let frameId = 0;
 
-    const compactViewport = window.matchMedia("(max-width: 767px)").matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, reduceMotion ? 1 : compactViewport ? 1.1 : 1.3));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, reduceMotion ? 1 : 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
