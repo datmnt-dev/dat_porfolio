@@ -17,7 +17,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => {
   const wrap = align === "center" ? "text-center" : "";
   return (
-    <div className={`flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10 ${wrap}`}>
+    <div className={`section-header flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10 ${wrap}`}>
       <div className={align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"}>
         {eyebrow && (
           <span className="chip mb-3">
@@ -25,7 +25,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
             {eyebrow}
           </span>
         )}
-        <h2 className="font-display font-bold text-3xl sm:text-4xl tracking-tight leading-tight">
+        <h2 className="section-header-title font-display font-bold text-3xl sm:text-4xl tracking-normal leading-tight">
           {title}
         </h2>
         {description && (

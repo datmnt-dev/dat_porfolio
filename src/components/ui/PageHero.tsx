@@ -16,7 +16,7 @@ const PageHero: React.FC<PageHeroProps> = ({
   children,
 }) => {
   return (
-    <section className="relative overflow-hidden">
+    <section className="page-hero relative overflow-hidden">
       <div className="absolute inset-0 bg-mesh pointer-events-none" />
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
       <div
@@ -32,7 +32,7 @@ const PageHero: React.FC<PageHeroProps> = ({
             </span>
           </div>
         )}
-        <h1 className="reveal reveal-1 mt-5 font-display font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05]">
+        <h1 className="page-hero-title reveal reveal-1 mt-5 font-display font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-normal leading-[1.05]">
           {title}
         </h1>
         {subtitle && (

@@ -17,10 +17,10 @@ const statusLabel: Record<Project["status"], string> = {
 const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
   return (
     <SpotlightCard
-      className="group p-5 flex flex-col h-full hover:-translate-y-1 transition-all duration-300"
+      className="project-card group p-5 flex flex-col h-full"
       style={{ animationDelay: `${0.05 + index * 0.06}s` }}
     >
-      <div className="relative h-32 mb-4 rounded-xl overflow-hidden bg-[var(--color-bg-component)]">
+      <div className="project-card-media relative h-32 mb-4 rounded-xl overflow-hidden bg-[var(--color-bg-component)]">
         <div
           className={`absolute inset-0 bg-gradient-to-br ${project.accent} opacity-90`}
         />
@@ -30,7 +30,7 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
             <img
               src={project.cover}
               alt={project.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               onError={(e) => ((e.currentTarget.style.display = "none"))}
             />
           </div>
@@ -60,7 +60,7 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {project.techStack.slice(0, 5).map((t) => (
-            <span key={t} className="tag">{t}</span>
+            <span key={t} className="tag project-card-tag">{t}</span>
           ))}
           {project.techStack.length > 5 && (
             <span className="tag">+{project.techStack.length - 5}</span>
