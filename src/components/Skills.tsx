@@ -22,6 +22,8 @@ import { SiExpress, SiPostman, SiTailwindcss, SiVite } from "react-icons/si";
 import { VscSymbolMethod } from "react-icons/vsc";
 import { MdArchitecture, MdApi, MdCode } from "react-icons/md";
 import user_info from "../data/userdata";
+import ScrollReveal from "./ui/ScrollReveal";
+import SpotlightCard from "./ui/SpotlightCard";
 
 const Skills: React.FC = () => {
   // Sandbox Terminal State
@@ -35,7 +37,7 @@ const Skills: React.FC = () => {
   const skillItemClass =
     "inline-flex items-center justify-start gap-x-2 py-3.5 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-zinc-100/20 dark:hover:bg-zinc-900/30 transition-all font-mono text-[11px] select-none min-w-0";
 
-  const sectionTitleClass = "text-sm font-mono font-bold mb-4 flex items-center gap-2 text-[var(--color-text)] select-none uppercase tracking-wider";
+  const sectionTitleClass = "text-sm font-mono font-bold mb-4 flex items-center gap-2 text-[var(--color-text)] select-none uppercase tracking-normal";
 
   // Progress Bar CLI style generator
   const getCliProgress = (percent: number) => {
@@ -74,7 +76,7 @@ const Skills: React.FC = () => {
         "Host: FPT University Student Page",
         "Kernel: TypeScript 5.x Engine",
         "Shell: Tailwind CSS v4.0",
-        "Target Role: Front-End / Web Developer",
+        "Target Role: Full-stack Developer",
         "Uptime: 2 years since code debut"
       ];
     } else if (trimmed === "clear") {
@@ -109,18 +111,20 @@ const Skills: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
-            <FaTerminal className="text-xs" />
-            <span>tiendat@portfolio:~$ cat skills.json</span>
+        <ScrollReveal className="mb-12">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
+              <FaTerminal className="text-xs" />
+              <span>tiendat@portfolio:~$ cat skills.json</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
+              Skills & <span className="text-[var(--color-accent)]">Technologies</span>
+            </h2>
+            <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
+              Hệ thống kỹ năng và công cụ lập trình tôi đã làm chủ và áp dụng trong đồ án, thực tập OJT.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
-            Skills & <span className="text-[var(--color-accent)]">Technologies</span>
-          </h2>
-          <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
-            Hệ thống kỹ năng và công cụ lập trình tôi đã làm chủ và áp dụng trong đồ án, thực tập OJT.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Skills layout */}
         <div className="grid lg:grid-cols-12 gap-8 items-start mb-12">
@@ -136,30 +140,28 @@ const Skills: React.FC = () => {
               </h5>
               <div className="grid md:grid-cols-2 gap-4">
                 {user_info.skills.technical.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1.5 text-xs text-[var(--color-text)]">
-                      <span className="font-bold min-w-0 break-words">{skill.name}</span>
-                      <span className="text-[var(--color-accent)] font-semibold">
-                        {getCliProgress(skill.level)}
-                      </span>
-                    </div>
-                    {/* Simulated visual progress meter bar */}
-                    <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1">
-                      <div
-                        className="h-1 rounded-full bg-[var(--color-accent)] transition-all duration-1000"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
+                  <ScrollReveal key={skill.name} delay={(index % 4) * 60}>
+                    <SpotlightCard className="p-4 h-full font-mono">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1.5 text-xs text-[var(--color-text)]">
+                        <span className="font-bold min-w-0 break-words">{skill.name}</span>
+                        <span className="text-[var(--color-accent)] font-semibold">
+                          {getCliProgress(skill.level)}
+                        </span>
+                      </div>
+                      <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1">
+                        <div
+                          className="h-1 rounded-full bg-[var(--color-accent)] transition-all duration-1000"
+                          style={{ width: `${skill.level}%` }}
+                        />
+                      </div>
+                    </SpotlightCard>
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
 
             {/* Technologies Grid */}
-            <div>
+            <ScrollReveal delay={70}>
               <h5 className={sectionTitleClass}>
                 <FaReact className="text-[var(--color-accent)]" />
                 Technologies & Languages
@@ -202,12 +204,12 @@ const Skills: React.FC = () => {
                   <FaDatabase className="text-lg text-teal-600" /> MySQL
                 </span>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Tools and Methodologies grids */}
             <div className="grid md:grid-cols-2 gap-6">
               
-              <div>
+              <ScrollReveal delay={80}>
                 <h5 className={sectionTitleClass}>
                   <FaGitAlt className="text-[var(--color-accent)]" />
                   Tools & IDEs
@@ -220,9 +222,9 @@ const Skills: React.FC = () => {
                   <span className={skillItemClass}><FaFigma className="text-sm text-purple-500" /> Figma</span>
                   <span className={skillItemClass}><SiVite className="text-sm text-[#bd34fe]" /> Vite</span>
                 </div>
-              </div>
+              </ScrollReveal>
 
-              <div>
+              <ScrollReveal delay={140}>
                 <h5 className={sectionTitleClass}>
                   <MdArchitecture className="text-[var(--color-accent)]" />
                   Methodologies
@@ -239,7 +241,7 @@ const Skills: React.FC = () => {
                     </span>
                   ))}
                 </div>
-              </div>
+              </ScrollReveal>
 
             </div>
 
@@ -262,24 +264,24 @@ const Skills: React.FC = () => {
                   if (index === 3) Icon = FaComments;
 
                   return (
-                    <div
-                      key={index}
-                      className="p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-accent)] hover:shadow-xs transition-all flex items-center gap-3 group"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[var(--color-bg-component)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all flex items-center justify-center text-[var(--color-accent)] text-sm flex-shrink-0">
-                        <Icon />
-                      </div>
-                      <span className="font-code font-bold text-xs text-[var(--color-text)] leading-4">
-                        {skill}
-                      </span>
-                    </div>
+                    <ScrollReveal key={skill} delay={index * 60}>
+                      <SpotlightCard className="p-3.5 flex items-center gap-3 group">
+                        <div className="w-8 h-8 rounded-lg bg-[var(--color-bg-component)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all flex items-center justify-center text-[var(--color-accent)] text-sm flex-shrink-0">
+                          <Icon />
+                        </div>
+                        <span className="font-code font-bold text-xs text-[var(--color-text)] leading-4">
+                          {skill}
+                        </span>
+                      </SpotlightCard>
+                    </ScrollReveal>
                   );
                 })}
               </div>
             </div>
 
             {/* Sandbox Shell Widget */}
-            <div className="editor-window border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-xl shadow-lg flex flex-col h-64 overflow-hidden">
+            <ScrollReveal delay={120}>
+              <SpotlightCard className="editor-window border-zinc-800 bg-[#0d1117] text-[#c9d1d9] shadow-lg flex flex-col h-64 overflow-hidden">
               <div className="flex items-center justify-between px-3 py-1.5 bg-[#161b22] border-b border-[#21262d] select-none text-[8px] font-mono text-[#8b949e]">
                 <span className="flex items-center gap-1.5"><FaTerminal /> SKILLS SANDBOX</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping" />
@@ -314,7 +316,7 @@ const Skills: React.FC = () => {
               </form>
 
               {/* Quick CLI helpers buttons */}
-              <div className="px-2 py-1 bg-[#161b22] border-t border-[#21262d] flex gap-1.5 flex-wrap select-none">
+                <div className="px-2 py-1 bg-[#161b22] border-t border-[#21262d] flex gap-1.5 flex-wrap select-none">
                 {["help", "skills", "neofetch"].map((helper) => (
                   <button
                     key={helper}
@@ -325,8 +327,9 @@ const Skills: React.FC = () => {
                     {helper}
                   </button>
                 ))}
-              </div>
-            </div>
+                </div>
+              </SpotlightCard>
+            </ScrollReveal>
 
           </div>
 

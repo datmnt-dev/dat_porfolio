@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import useRevealInView from "../../hooks/useRevealInView";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -15,41 +16,11 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   threshold = 0.1,
   animationClass = "reveal-on-scroll",
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Hủy quan sát khi đã hiển thị xong (giúp tối ưu hiệu năng)
-          if (elementRef.current) {
-            observer.unobserve(elementRef.current);
-          }
-        }
-      },
-      {
-        threshold,
-        rootMargin: "0px 0px -50px 0px", // Kích hoạt sớm một chút trước khi cuộn hẳn tới nơi
-      }
-    );
-
-    const currentRef = elementRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [threshold]);
+  const { ref, isVisible } = useRevealInView<HTMLDivElement>({ threshold });
 
   return (
     <div
-      ref={elementRef}
+      ref={ref}
       className={`${animationClass} ${isVisible ? "visible" : ""} ${className}`}
       style={{
         transitionDelay: `${delay}ms`,
