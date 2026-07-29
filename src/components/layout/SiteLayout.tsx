@@ -47,7 +47,7 @@ const SiteLayout = () => {
         switchTheme={switchTheme}
         onOpenPalette={() => setIsPaletteOpen(true)}
       />
-      <main className="flex-1 w-full relative z-10">
+      <main key={location.pathname} className="page-transition flex-1 w-full relative z-10">
         <Outlet />
       </main>
       <SiteFooter />

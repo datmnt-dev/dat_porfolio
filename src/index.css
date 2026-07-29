@@ -326,6 +326,47 @@ html.dark .bg-grid {
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 .animate-spin-slow { animation: spin-slow 14s linear infinite; }
 
+/* ====== LAYERED HERO MOTION ====== */
+.hero-shell {
+  min-height: min(760px, calc(100svh - 4rem));
+  isolation: isolate;
+}
+
+.hero-scene-3d {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 18%, #000 48%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 18%, #000 48%, #000 100%);
+}
+
+.hero-scene-3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@keyframes hero-profile-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+.hero-profile {
+  animation: hero-profile-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.page-transition {
+  animation: page-enter 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Hover lift */
 .hover-lift { transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
 .hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
@@ -405,6 +446,20 @@ html.dark .bg-grid {
   *, ::before, ::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .hero-profile,
+  .page-transition {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-shell { min-height: auto; }
+  .hero-scene-3d {
+    opacity: 0.42;
+    mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
   }
 }
 
