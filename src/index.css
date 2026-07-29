@@ -520,6 +520,14 @@ html.dark .bg-grid {
     transition: none;
     transform: none;
   }
+
+  .mask-reveal-inner,
+  .text-reveal-word,
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -532,41 +540,95 @@ html.dark .bg-grid {
 }
 
 /* ====== PREMIUM MOTION ====== */
+.mask-reveal {
+  overflow: hidden;
+}
+
+.mask-reveal-inner {
+  opacity: 0;
+  transform: translate3d(0, 112%, 0);
+  transition:
+    opacity 0.52s var(--mask-delay, 0ms) cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.72s var(--mask-delay, 0ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mask-reveal.is-visible .mask-reveal-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.text-reveal {
+  display: inline;
+}
+
+.text-reveal-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.text-reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 115%, 0);
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--text-delay, 0ms) + var(--word-index, 0) * var(--word-delay, 55ms));
+}
+
+.text-gradient .text-reveal-word {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-reveal.is-visible .text-reveal-word {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-on-scroll.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .spotlight-card-wrapper {
   position: relative;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --card-lift: 0px;
-  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--card-lift), 0);
-  transform-style: preserve-3d;
-  transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.24s ease,
+    box-shadow 0.3s ease,
+    background-color 0.24s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .spotlight-card-wrapper:hover {
-    --card-lift: -5px;
-    border-color: rgba(var(--color-accent-rgb), 0.3);
-    box-shadow: 0 16px 42px var(--color-accent-glow);
-  }
-
-  .spotlight-card-wrapper.is-tilting {
-    transition-duration: 0.12s, 0.3s, 0.3s;
+    transform: translate3d(0, -3px, 0);
+    border-color: rgba(var(--color-accent-rgb), 0.48);
+    background-color: color-mix(in srgb, var(--color-card) 91%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.12),
+      0 0 0 1px rgba(var(--color-accent-rgb), 0.08);
   }
 
   .project-card:hover .project-card-tag {
@@ -595,9 +657,9 @@ html.dark .bg-grid {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(var(--color-accent-rgb), 0.06),
-    transparent 80%
+    260px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(var(--color-accent-rgb), 0.1),
+    transparent 68%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -612,12 +674,13 @@ html.dark .bg-grid {
 .spotlight-card-border {
   position: absolute;
   inset: -1px;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   pointer-events: none;
   background: radial-gradient(
-    300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(var(--color-accent-rgb), 0.3),
-    transparent 80%
+    170px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(var(--color-accent-rgb), 0.92) 0,
+    rgba(var(--color-accent-rgb), 0.38) 45%,
+    transparent 72%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -635,5 +698,15 @@ html.dark .bg-grid {
 
 .magnetic-element {
   transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal-inner,
+  .text-reveal-word,
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 

@@ -19,6 +19,8 @@ import SectionHeader from "../components/ui/SectionHeader";
 import ScrollReveal from "../components/ui/ScrollReveal";
 import SpotlightCard from "../components/ui/SpotlightCard";
 import Magnetic from "../components/ui/Magnetic";
+import MaskReveal from "../components/ui/MaskReveal";
+import TextReveal from "../components/ui/TextReveal";
 
 const HeroScene3D = lazy(() => import("../components/ui/HeroScene3D"));
 
@@ -77,51 +79,55 @@ const Home = () => {
         <div className="hero-content relative z-10 max-w-7xl mx-auto px-4 lg:px-8 pt-12 pb-20 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left */}
           <div>
-            <div className="reveal chip">
+            <div className="chip">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              {user_info.main.availability}
+              <TextReveal wordDelay={35}>{user_info.main.availability}</TextReveal>
             </div>
 
-            <h1 className="reveal reveal-1 mt-6 font-display font-extrabold text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[1.02]">
-              Xin chào, <br />
-              tôi là{" "}
-              <span className="text-gradient">{user_info.main.shortName}</span>
-              <span className="text-[var(--color-accent)]">.</span>
+            <h1 className="mt-6 font-display font-extrabold text-5xl sm:text-6xl md:text-7xl tracking-normal leading-[1.02]">
+              <TextReveal initialDelay={70}>
+                Xin chào, <br />
+                tôi là{" "}
+                <span className="text-gradient">{user_info.main.shortName}</span>
+                <span className="text-[var(--color-accent)]">.</span>
+              </TextReveal>
             </h1>
 
-            <div className="reveal reveal-2 mt-5 flex items-center font-code text-lg text-[var(--color-subtext)]">
-              <span className="text-[var(--color-accent)] mr-2">&gt;</span>
-              <span>{displayedRole}</span>
-              <span className="inline-block w-2 h-5 ml-1 bg-[var(--color-accent)] animate-pulse" />
-            </div>
+            <MaskReveal delay={170} className="mt-5">
+              <div className="flex items-center font-code text-lg text-[var(--color-subtext)]">
+                <span className="text-[var(--color-accent)] mr-2">&gt;</span>
+                <span>{displayedRole}</span>
+                <span className="inline-block w-2 h-5 ml-1 bg-[var(--color-accent)] animate-pulse" />
+              </div>
+            </MaskReveal>
 
-            <p className="reveal reveal-3 mt-6 text-base sm:text-lg text-[var(--color-subtext)] leading-relaxed max-w-xl">
-              {user_info.main.shortBio}
-            </p>
+            <MaskReveal delay={240} className="mt-6 max-w-xl">
+              <p className="text-base sm:text-lg text-[var(--color-subtext)] leading-relaxed">
+                {user_info.main.shortBio}
+              </p>
+            </MaskReveal>
 
-            <div className="reveal reveal-4 mt-9 flex flex-wrap items-center gap-3">
-              <Magnetic>
-                <Link to="/projects" className="btn-primary">
-                  Xem dự án
-                  <FaArrowRight className="text-xs" />
-                </Link>
-              </Magnetic>
-              <Magnetic>
-                <Link to="/contact" className="btn-ghost">
-                  Liên hệ ngay
-                </Link>
-              </Magnetic>
-              <Magnetic>
-                <a
-                  href="/CV_MaiNguyenTienDat.pdf"
-                  download
-                  className="btn-ghost"
-                >
-                  <FaDownload className="text-xs" />
-                  CV PDF
-                </a>
-              </Magnetic>
-            </div>
+            <MaskReveal delay={310} className="mt-9">
+              <div className="flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <Link to="/projects" className="btn-primary">
+                    Xem dự án
+                    <FaArrowRight className="text-xs" />
+                  </Link>
+                </Magnetic>
+                <Magnetic>
+                  <Link to="/contact" className="btn-ghost">
+                    Liên hệ ngay
+                  </Link>
+                </Magnetic>
+                <Magnetic>
+                  <a href="/CV_MaiNguyenTienDat.pdf" download className="btn-ghost">
+                    <FaDownload className="text-xs" />
+                    CV PDF
+                  </a>
+                </Magnetic>
+              </div>
+            </MaskReveal>
 
             {/* Socials */}
             <div className="reveal reveal-5 mt-9 flex items-center gap-3">
@@ -150,7 +156,7 @@ const Home = () => {
           {/* Right — visual */}
           <div className="reveal reveal-3 hero-profile relative w-full max-w-sm mx-auto lg:ml-auto lg:mr-0">
             <div className="absolute -inset-6 rounded-[3rem] opacity-40 blur-3xl" style={{ background: "var(--gradient-accent)" }} />
-            <SpotlightCard className="p-5 sm:p-6 hover:-translate-y-1 transition-all duration-300">
+            <SpotlightCard className="p-5 sm:p-6">
               <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0" style={{ background: "var(--gradient-accent)" }} />
                 <img
@@ -174,7 +180,7 @@ const Home = () => {
                     className="text-center px-2 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)]"
                   >
                     <div className="font-display font-bold text-xl text-[var(--color-accent)]">{s.value}</div>
-                    <div className="text-[9px] uppercase tracking-wider text-[var(--color-subtext)] mt-1">{s.label}</div>
+                    <div className="text-[9px] uppercase tracking-normal text-[var(--color-subtext)] mt-1">{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -182,7 +188,7 @@ const Home = () => {
               {/* Accent picker */}
               <div className="mt-5 p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)]">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] uppercase tracking-wider text-[var(--color-subtext)] font-code">
+                  <span className="text-[10px] uppercase tracking-normal text-[var(--color-subtext)] font-code">
                     Live accent
                   </span>
                   <span className="text-[10px] text-[var(--color-accent)] font-code">{accent}</span>
@@ -248,7 +254,7 @@ const Home = () => {
             },
           ].map((c, i) => (
             <ScrollReveal key={c.title} delay={i * 100}>
-              <SpotlightCard className="p-7 flex flex-col h-full hover:-translate-y-1 transition-all duration-300">
+              <SpotlightCard className="p-7 flex flex-col h-full">
                 <div
                   className="w-12 h-12 rounded-2xl grid place-items-center text-white text-xl"
                   style={{ background: "var(--gradient-accent)" }}
@@ -310,7 +316,7 @@ const Home = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {user_info.values.map((v, i) => (
             <ScrollReveal key={v.title} delay={i * 80}>
-              <SpotlightCard className="p-6 text-center h-full hover:-translate-y-1 transition-all duration-300">
+              <SpotlightCard className="p-6 text-center h-full">
                 <div
                   className="w-12 h-12 mx-auto rounded-2xl grid place-items-center text-2xl text-[var(--color-accent)] bg-[var(--color-accent-soft)]"
                 >
@@ -347,7 +353,7 @@ const Home = () => {
                 to={`/blog/${p.slug}`}
                 className="block h-full group"
               >
-                <SpotlightCard className="p-6 h-full hover:-translate-y-1 transition-all duration-300">
+                <SpotlightCard className="p-6 h-full">
                   <div className="flex items-center gap-2 flex-wrap mb-3">
                     {p.tags.map((t) => (
                       <span key={t} className="tag">{t}</span>

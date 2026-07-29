@@ -1,4 +1,6 @@
 import React from "react";
+import MaskReveal from "./MaskReveal";
+import TextReveal from "./TextReveal";
 
 interface SectionHeaderProps {
   eyebrow?: string;
@@ -22,17 +24,23 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
         {eyebrow && (
           <span className="chip mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
-            {eyebrow}
+            <TextReveal wordDelay={36}>{eyebrow}</TextReveal>
           </span>
         )}
         <h2 className="section-header-title font-display font-bold text-3xl sm:text-4xl tracking-normal leading-tight">
-          {title}
+          <TextReveal>{title}</TextReveal>
         </h2>
         {description && (
-          <p className="mt-3 text-[var(--color-subtext)] leading-relaxed">{description}</p>
+          <MaskReveal delay={110} className="mt-3">
+            <p className="text-[var(--color-subtext)] leading-relaxed">{description}</p>
+          </MaskReveal>
         )}
       </div>
-      {action && <div className="flex-shrink-0">{action}</div>}
+      {action && (
+        <MaskReveal delay={170} className="flex-shrink-0">
+          {action}
+        </MaskReveal>
+      )}
     </div>
   );
 };
