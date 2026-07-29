@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { lazy, Suspense, useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   FaArrowRight,
@@ -19,6 +19,8 @@ import SectionHeader from "../components/ui/SectionHeader";
 import ScrollReveal from "../components/ui/ScrollReveal";
 import SpotlightCard from "../components/ui/SpotlightCard";
 import Magnetic from "../components/ui/Magnetic";
+
+const HeroScene3D = lazy(() => import("../components/ui/HeroScene3D"));
 
 const valueIcons: Record<string, React.ReactNode> = {
   sparkle: <HiSparkles />,
@@ -65,13 +67,14 @@ const Home = () => {
   return (
     <div>
       {/* HERO */}
-      <section className="relative overflow-hidden">
+      <section id="hero" className="hero-shell relative overflow-hidden">
         <div className="absolute inset-0 bg-mesh pointer-events-none" />
         <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none" />
-        <div className="absolute -top-24 right-0 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-20 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-10 blur-[120px] pointer-events-none" />
+        <Suspense fallback={null}>
+          <HeroScene3D accent={accent} />
+        </Suspense>
 
-        <div className="relative max-w-7xl mx-auto px-4 lg:px-8 pt-12 pb-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="hero-content relative z-10 max-w-7xl mx-auto px-4 lg:px-8 pt-12 pb-20 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left */}
           <div>
             <div className="reveal chip">
@@ -145,7 +148,7 @@ const Home = () => {
           </div>
 
           {/* Right — visual */}
-          <div className="reveal reveal-3 relative w-full max-w-sm mx-auto lg:ml-auto lg:mr-0">
+          <div className="reveal reveal-3 hero-profile relative w-full max-w-sm mx-auto lg:ml-auto lg:mr-0">
             <div className="absolute -inset-6 rounded-[3rem] opacity-40 blur-3xl" style={{ background: "var(--gradient-accent)" }} />
             <SpotlightCard className="p-5 sm:p-6 hover:-translate-y-1 transition-all duration-300">
               <div className="aspect-[5/6] rounded-2xl overflow-hidden relative">
