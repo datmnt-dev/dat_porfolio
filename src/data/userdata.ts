@@ -32,6 +32,7 @@ export interface Project {
     status: ProjectStatus;
     category: ProjectCategory;
     featured: boolean;
+    githubContributions?: number;
     responsibilities: string[];
     highlights?: { label: string; value: string }[];
     languageBreakdown?: ProjectLanguage[];
@@ -184,6 +185,7 @@ const info = {
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
             featured: true,
+            githubContributions: 166,
             responsibilities: [
                 "Phát triển dashboard cho admin và job seeker, cùng các trang chi tiết ứng viên",
                 "Bổ sung luồng chặn người dùng, trang blocked và notification cho các vai trò liên quan",
@@ -277,12 +279,13 @@ const info = {
             techStack: ["Next.js 15", "React 19", "TypeScript", "Zustand", "NestJS", "MongoDB", "Redis", "Socket.IO"],
             github: "https://github.com/ThreadLearn/ThreadLearn_WEB_FE",
             link: "https://thread-learn-web-fe.vercel.app",
-            duration: "05/2026 - 07/2026",
+            duration: "05/2026 - Hiện tại",
             cover: "/fpt.png",
             accent: "from-violet-500 to-cyan-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
             featured: true,
+            githubContributions: 235,
             responsibilities: [
                 "Tích hợp Monaco Code Editor, live JavaScript sandbox và luồng AI server stream cho Code Lab",
                 "Hoàn thiện entitlement subscription/premium access và reconciliation callback thanh toán PayOS",
@@ -318,23 +321,24 @@ const info = {
             techStack: ["Next.js 15", "TypeScript", "Tailwind 4", "NestJS 10", "TypeORM", "PostgreSQL", "Swagger", "Docker"],
             github: "https://github.com/AgriLinkVN/agrilink-frontend",
             link: "#",
-            duration: "06/2026 - 07/2026",
+            duration: "06/2026 - Hiện tại",
             cover: "https://raw.githubusercontent.com/AgriLinkVN/agrilink-frontend/develop/public/logo.png",
             accent: "from-emerald-500 to-lime-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
             featured: true,
+            githubContributions: 208,
             responsibilities: [
                 "Hoàn thiện marketplace filters, cải tiến responsive và SEO/image polish cho luồng sản phẩm",
                 "Refactor query layer cho notifications và wishlist, đồng thời cải thiện seller/certification flows",
                 "Thiết lập frontend CI quality gate, xử lý lint và chuẩn bị checklist deploy",
                 "Củng cố TypeORM composition, persistence boundaries cho users/auth/profiles/admin và login email/phone",
-                "Đóng góp 37 commits ở frontend và 102 commits ở backend theo thống kê GitHub công khai",
+                "Đóng góp 38 commits ở frontend và 170 commits ở backend theo contributor API công khai",
             ],
             highlights: [
                 { label: "Vai trò", value: "Full-stack Contributor" },
                 { label: "Người dùng", value: "7 roles" },
-                { label: "GitHub", value: "139 commits" },
+                { label: "GitHub", value: "208 commits" },
             ],
             languageBreakdown: [
                 { name: "TypeScript", percent: "70%", color: "#3178c6" },
@@ -374,17 +378,20 @@ const info = {
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
             featured: true,
+            githubContributions: 173,
             responsibilities: [
                 "Xây dựng giao diện nghe nhạc với player, queue, thư viện, playlist và các trạng thái loading/error",
                 "Tổ chức API layer, query hooks và state management cho xác thực, bài hát, lịch sử nghe và chatbot",
                 "Phát triển backend theo controller, service, repository và validation tách lớp",
                 "Tích hợp JWT, phân quyền User/Moderator/Admin, Cloudinary và quản lý metadata audio",
                 "Triển khai dịch vụ semantic search độc lập với FastAPI, embeddings, Redis cache và FAISS",
+                "Đóng góp 85 commits ở frontend, 55 commits ở backend, 30 commits ở AI service và 3 commits ở shared contracts",
             ],
             highlights: [
                 { label: "Vai trò", value: "Full-stack Developer" },
                 { label: "Kiến trúc", value: "Web + API + AI service" },
                 { label: "AI", value: "Semantic search" },
+                { label: "GitHub", value: "173 commits" },
             ],
             languageBreakdown: [
                 { name: "TypeScript", percent: "55%", color: "#3178c6" },
@@ -463,6 +470,7 @@ const info = {
             status: "completed" as ProjectStatus,
             category: "mobile" as ProjectCategory,
             featured: true,
+            githubContributions: 28,
             responsibilities: [
                 "Xây dựng luồng đăng ký, đăng nhập và điều hướng theo vai trò Customer, Manager và Admin",
                 "Phát triển quản lý sản phẩm, giỏ hàng, checkout, lịch sử đơn và thống kê doanh thu",
@@ -649,17 +657,20 @@ const info = {
             status: "in-progress" as ProjectStatus,
             category: "frontend" as ProjectCategory,
             featured: true,
+            githubContributions: 64,
             responsibilities: [
                 "Thiết kế và phát triển giao diện responsive với Tailwind CSS",
                 "Tích hợp dark/light theme với CSS Variables, 4 accent themes",
                 "Xây dựng form liên hệ tích hợp Resend (email service)",
                 "Triển khai routing đa trang với React Router 7",
                 "Tối ưu hiệu suất và accessibility (a11y, reduced motion)",
+                "Duy trì 64 commits trên repository portfolio public và tách riêng mail API cho production",
             ],
             highlights: [
                 { label: "Vai trò", value: "Solo Dev" },
                 { label: "Pages", value: "10+" },
                 { label: "Theme", value: "Dark/Light + 4 accents" },
+                { label: "GitHub", value: "64 commits" },
             ],
             languageBreakdown: [
                 { name: "TypeScript", percent: "55%", color: "#3178c6" },
