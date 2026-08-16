@@ -21,6 +21,7 @@ import SpotlightCard from "../components/ui/SpotlightCard";
 import Magnetic from "../components/ui/Magnetic";
 import MaskReveal from "../components/ui/MaskReveal";
 import TextReveal from "../components/ui/TextReveal";
+import GitHubActivity from "../components/GitHubActivity";
 
 const HeroScene3D = lazy(() => import("../components/ui/HeroScene3D"));
 
@@ -63,7 +64,10 @@ const Home = () => {
     return () => clearTimeout(t);
   }, [displayedRole, isDeleting, roleIdx, roles]);
 
-  const featured = user_info.projects.filter((p) => p.featured).slice(0, 3);
+  const featured = user_info.projects
+    .filter((project) => project.featured)
+    .sort((first, second) => (second.githubContributions ?? 0) - (first.githubContributions ?? 0))
+    .slice(0, 3);
   const latestPosts = user_info.blog.slice(0, 2);
 
   return (
@@ -226,7 +230,7 @@ const Home = () => {
           <SectionHeader
             eyebrow="What I do"
             title="Ba mảng mình tập trung nhất"
-            description="Mình thích build những thứ giải quyết bài toán thật. Mạnh nhất ở front-end, đủ tự tin với back-end và đang nghiêm túc đầu tư cho design."
+            description="Mình phát triển sản phẩm full-stack từ giao diện, API và dữ liệu đến realtime, tích hợp cloud và trải nghiệm người dùng."
           />
         </ScrollReveal>
         <div className="grid md:grid-cols-3 gap-5">
@@ -241,7 +245,7 @@ const Home = () => {
             {
               icon: <FaServer />,
               title: "Full-stack & APIs",
-              text: "Node/Express, MongoDB, REST. Đủ để dựng MVP từ đầu, validate ý tưởng và build dashboard đơn giản.",
+              text: "NestJS, ASP.NET Core, Node/Express, PostgreSQL và MongoDB. Xây API, auth/RBAC, realtime và tích hợp dịch vụ end-to-end.",
               link: "/projects",
               cta: "Xem projects",
             },
@@ -281,9 +285,9 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
         <ScrollReveal>
           <SectionHeader
-            eyebrow="Featured work"
-            title="Một vài dự án nổi bật"
-            description="Các dự án mình đầu tư thời gian nhất — mỗi cái có một góc thú vị riêng để chia sẻ."
+            eyebrow="GitHub-backed work"
+            title="Dự án tôi đóng góp nhiều nhất"
+            description="Ba sản phẩm có footprint GitHub public lớn nhất, được sắp theo số commit tôi đóng góp trên các repository liên quan."
             action={
               <Magnetic>
                 <Link to="/projects" className="btn-ghost !text-xs">
@@ -302,6 +306,8 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      <GitHubActivity />
 
       {/* VALUES */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
@@ -392,7 +398,7 @@ const Home = () => {
               Build cùng nhau cái gì đó <span className="text-gradient">tử tế</span> nhé?
             </h2>
             <p className="mt-3 text-[var(--color-subtext)] max-w-xl mx-auto">
-              Mình đang mở cho intern, junior position hoặc các dự án freelance front-end. Trao đổi qua email luôn nhé.
+              Mình đang mở cho intern, junior position hoặc các dự án freelance full-stack/web. Trao đổi qua email luôn nhé.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <Magnetic>

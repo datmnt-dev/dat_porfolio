@@ -700,6 +700,173 @@ html.dark .bg-grid {
   transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* ====== GITHUB ACTIVITY ====== */
+.github-calendar-scroll {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-accent-rgb), 0.42) transparent;
+}
+
+.github-calendar-content {
+  min-width: 500px;
+  width: 100%;
+}
+
+.github-month-labels {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 476px;
+  margin-inline: auto;
+  margin-bottom: 8px;
+  color: var(--color-subtext);
+  font-family: var(--font-code);
+  font-size: 9px;
+}
+
+.github-contribution-grid {
+  --contribution-cell: 11px;
+  display: grid;
+  grid-template-rows: repeat(7, var(--contribution-cell));
+  grid-auto-flow: column;
+  grid-auto-columns: var(--contribution-cell);
+  gap: 3px;
+  width: max-content;
+  margin-inline: auto;
+}
+
+.github-contribution-day {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  background: rgba(var(--color-accent-rgb), 0.08);
+  box-shadow: inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.github-contribution-day.level-1 {
+  background: rgba(var(--color-accent-rgb), 0.28);
+}
+
+.github-contribution-day.level-2 {
+  background: rgba(var(--color-accent-rgb), 0.5);
+}
+
+.github-contribution-day.level-3 {
+  background: rgba(var(--color-accent-rgb), 0.74);
+}
+
+.github-contribution-day.level-4 {
+  background: rgb(var(--color-accent-rgb));
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.38);
+}
+
+.github-contribution-day.is-empty {
+  visibility: hidden;
+}
+
+.github-activity-metric + .github-activity-metric {
+  border-left: 1px solid var(--color-border);
+}
+
+.github-month-bars {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+  height: 150px;
+  align-items: end;
+}
+
+.github-month-bar-item {
+  display: grid;
+  grid-template-rows: 110px auto auto;
+  gap: 4px;
+  min-width: 0;
+  text-align: center;
+}
+
+.github-month-bar-track {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 110px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.github-month-bar-fill {
+  display: block;
+  width: min(26px, 70%);
+  border-radius: 3px 3px 0 0;
+  background: var(--gradient-accent);
+  box-shadow: 0 0 16px rgba(var(--color-accent-rgb), 0.14);
+  transform-origin: bottom;
+  animation: contribution-bar-in 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.github-month-bar-value,
+.github-month-bar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-code);
+  font-size: 9px;
+}
+
+.github-month-bar-value {
+  color: var(--color-text);
+}
+
+.github-month-bar-label {
+  color: var(--color-subtext);
+}
+
+.github-repository-track {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(var(--color-accent-rgb), 0.09);
+}
+
+.github-repository-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gradient-accent);
+  transform-origin: left;
+  transition: filter 0.2s ease;
+}
+
+@keyframes contribution-bar-in {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .github-contribution-day:hover {
+    transform: translate3d(0, -2px, 0) scale(1.35);
+    box-shadow: 0 0 12px rgba(var(--color-accent-rgb), 0.45);
+  }
+
+  .github-repository-row:hover .github-repository-fill {
+    filter: brightness(1.18);
+  }
+}
+
+@media (max-width: 639px) {
+  .github-calendar-content {
+    min-width: 476px;
+  }
+
+  .github-activity-metric:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .github-activity-metric:nth-child(4) {
+    border-top: 1px solid var(--color-border);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mask-reveal-inner,
   .text-reveal-word,
@@ -707,6 +874,10 @@ html.dark .bg-grid {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .github-month-bar-fill {
+    animation: none;
   }
 }
 

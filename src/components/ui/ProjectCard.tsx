@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaArrowRight, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaArrowRight, FaCodeBranch, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import type { Project } from "../../data/userdata";
 import SpotlightCard from "./SpotlightCard";
 
@@ -68,7 +68,15 @@ const ProjectCard: React.FC<Props> = ({ project, index = 0 }) => {
         </div>
 
         <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center justify-between gap-3">
-          <span className="text-[11px] text-[var(--color-subtext)] font-code">{project.duration}</span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[var(--color-subtext)] font-code">
+            <span>{project.duration}</span>
+            {project.githubContributions ? (
+              <span className="inline-flex items-center gap-1 text-[var(--color-accent)]">
+                <FaCodeBranch className="text-[10px]" />
+                {project.githubContributions} commits
+              </span>
+            ) : null}
+          </div>
           <div className="flex items-center gap-2">
             {project.github && project.github !== "#" && (
               <a
