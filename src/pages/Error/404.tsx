@@ -1,130 +1,154 @@
-import React, { useEffect, useRef } from "react";
-import styles from "./ErrorPage.module.css";
+import React, { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { HiArrowLeft, HiCommandLine } from "react-icons/hi2";
+import { CgDarkMode } from "react-icons/cg";
+import { AppContext } from "../../context/AppContext";
 
- const NotFound: React.FC = () => {
-  const cordRef = useRef<HTMLCanvasElement>(null);
-  const visorRef = useRef<HTMLCanvasElement>(null);
+const NotFound: React.FC = () => {
+  const location = useLocation();
+  const { theme, switchTheme } = useContext(AppContext);
+  const isDark = theme === "dark";
 
-  // Animation cho dây nối
-  useEffect(() => {
-    const cordCanvas = cordRef.current;
-    if (!cordCanvas) return;
-
-    const ctx = cordCanvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let y1 = 160,
-      y2 = 100,
-      y3 = 100;
-    let y1Forward = true,
-      y2Forward = false,
-      y3Forward = true;
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, cordCanvas.width, cordCanvas.height);
-
-      ctx.beginPath();
-      ctx.moveTo(130, 170);
-      ctx.bezierCurveTo(250, y1, 345, y2, 400, y3);
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 8;
-      ctx.stroke();
-
-      y1 += y1Forward ? 1 : -1;
-      y2 += y2Forward ? 1 : -1;
-      y3 += y3Forward ? 1 : -1;
-
-      if (y1 <= 100) y1Forward = true;
-      if (y1 >= 300) y1Forward = false;
-      if (y2 <= 100) y2Forward = true;
-      if (y2 >= 310) y2Forward = false;
-      if (y3 <= 100) y3Forward = true;
-      if (y3 >= 317) y3Forward = false;
-    };
-
-    animate();
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
-  // Vẽ mặt nạ của phi hành gia
-  useEffect(() => {
-    const visorCanvas = visorRef.current;
-    if (!visorCanvas) return;
-
-    const visorCtx = visorCanvas.getContext("2d");
-    if (!visorCtx) return;
-
-    visorCtx.beginPath();
-    visorCtx.moveTo(5, 45);
-    visorCtx.bezierCurveTo(15, 64, 45, 64, 55, 45);
-    visorCtx.lineTo(55, 20);
-    visorCtx.bezierCurveTo(55, 15, 50, 10, 45, 10);
-    visorCtx.lineTo(15, 10);
-    visorCtx.bezierCurveTo(15, 10, 5, 10, 5, 20);
-    visorCtx.lineTo(5, 45);
-    visorCtx.fillStyle = "#2f3640";
-    visorCtx.strokeStyle = "#f5f6fa";
-    visorCtx.fill();
-    visorCtx.stroke();
-  }, []);
+  const handleOpenCommandPalette = () => {
+    window.dispatchEvent(new CustomEvent("open-command-palette"));
+  };
 
   return (
-    <div className={styles.errorPage}>
-      {/* Moon */}
-      <div className={styles.moon}></div>
-      <div className={`${styles.moonCrater} ${styles.moonCrater1}`}></div>
-      <div className={`${styles.moonCrater} ${styles.moonCrater2}`}></div>
-      <div className={`${styles.moonCrater} ${styles.moonCrater3}`}></div>
-
-      {/* Stars */}
-      <div className={`${styles.star} ${styles.star1}`}></div>
-      <div className={`${styles.star} ${styles.star2}`}></div>
-      <div className={`${styles.star} ${styles.star3}`}></div>
-      <div className={`${styles.star} ${styles.star4}`}></div>
-      <div className={`${styles.star} ${styles.star5}`}></div>
-
-      {/* Error text */}
-      <div className={styles.error}>
-        <div className={styles.errorTitle}>404</div>
-        <div className={styles.errorSubtitle}>Hmmm...</div>
-        <div className={styles.errorDescription}>
-          It looks like one of the developers fell asleep
+    <div
+      className="min-h-screen flex flex-col justify-between selection:bg-[var(--color-accent)] selection:text-white"
+      style={{
+        backgroundColor: "var(--color-bg)",
+        color: "var(--color-text)",
+      }}
+    >
+      {/* Top minimal bar */}
+      <header
+        className="w-full border-b px-6 py-4 flex items-center justify-between"
+        style={{ borderColor: "var(--color-border)" }}
+      >
+        <Link
+          to="/"
+          className="font-display font-semibold tracking-tight text-base hover:text-[var(--color-accent)] transition-colors"
+        >
+          Tien Dat<span className="text-[var(--color-accent)]">.</span>
+        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={switchTheme}
+            className="w-8 h-8 rounded-lg grid place-items-center border text-sm transition-colors cursor-pointer"
+            style={{
+              borderColor: "var(--color-border)",
+              backgroundColor: "var(--color-card)",
+              color: "var(--color-subtext)",
+            }}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-label="Toggle color theme"
+          >
+            <CgDarkMode />
+          </button>
         </div>
-       <button className={`${styles.errorButton} ${styles.errorButtonActive}`}>LOGIN</button>
-       <button className={styles.errorButton}>CONTACT</button>
+      </header>
 
-      </div>
+      {/* Main 404 block */}
+      <main className="flex-1 flex items-center justify-center px-6 py-16">
+        <div className="max-w-xl w-full text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium border mb-6"
+            style={{
+              borderColor: "var(--color-border)",
+              backgroundColor: "var(--color-card)",
+              color: "var(--color-accent)",
+            }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+            HTTP 404 · Unresolved Node
+          </div>
 
-      {/* Astronaut */}
-      <div className={styles.astronaut}>
-        <div className={styles.astronautBackpack}></div>
-        <div className={styles.astronautBody}></div>
-        <div className={styles.astronautBodyChest}></div>
-        <div className={styles.astronautArmLeft1}></div>
-        <div className={styles.astronautArmLeft2}></div>
-        <div className={styles.astronautArmRight1}></div>
-        <div className={styles.astronautArmRight2}></div>
-        <div className={styles.astronautArmThumbLeft}></div>
-        <div className={styles.astronautArmThumbRight}></div>
-        <div className={styles.astronautLegLeft}></div>
-        <div className={styles.astronautLegRight}></div>
-        <div className={styles.astronautFootLeft}></div>
-        <div className={styles.astronautFootRight}></div>
-        <div className={styles.astronautWristLeft}></div>
-        <div className={styles.astronautWristRight}></div>
+          <h1
+            className="font-display font-bold tracking-tight mb-3 text-7xl sm:text-8xl"
+            style={{
+              letterSpacing: "-0.04em",
+              lineHeight: 1,
+            }}
+          >
+            404
+          </h1>
 
-        <div className={styles.astronautCord}>
-          <canvas ref={cordRef} id="cord" height={500} width={500}></canvas>
+          <p className="text-xl sm:text-2xl font-medium tracking-tight mb-4 text-[var(--color-text)]">
+            Looks like this route isn&apos;t in the graph.
+          </p>
+
+          <p className="text-sm text-[var(--color-subtext)] leading-relaxed mb-6 font-sans">
+            The requested path could not be resolved to any active route, project case study, or engineering note.
+          </p>
+
+          {/* Diagnostic terminal snippet */}
+          <div
+            className="rounded-xl border p-4 mb-8 font-mono text-xs text-left"
+            style={{
+              backgroundColor: "var(--color-card)",
+              borderColor: "var(--color-border)",
+            }}
+          >
+            <div className="text-[var(--color-subtext)] mb-1">// router.resolve(pathname)</div>
+            <div className="text-red-400">
+              <span className="text-[var(--color-subtext)]">&gt;</span> Error: Route &apos;{location.pathname}&apos; not found
+            </div>
+            <div className="text-[var(--color-subtext)] mt-1">
+              &gt; suggestions: [&quot;/&quot;, &quot;/projects&quot;, &quot;/about&quot;, &quot;/blog&quot;]
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+              style={{
+                backgroundColor: "var(--color-text)",
+                color: "var(--color-bg)",
+              }}
+            >
+              <HiArrowLeft className="text-base" />
+              <span>Back to home</span>
+            </Link>
+
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-colors"
+              style={{
+                borderColor: "var(--color-border)",
+                backgroundColor: "var(--color-card)",
+                color: "var(--color-text)",
+              }}
+            >
+              <span>Selected work</span>
+            </Link>
+
+            <button
+              onClick={handleOpenCommandPalette}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-mono border transition-colors cursor-pointer"
+              style={{
+                borderColor: "var(--color-border)",
+                backgroundColor: "transparent",
+                color: "var(--color-subtext)",
+              }}
+              title="Command Palette"
+            >
+              <HiCommandLine />
+              <span>Ctrl + K</span>
+            </button>
+          </div>
         </div>
+      </main>
 
-        <div className={styles.astronautHead}>
-          <canvas ref={visorRef} id="visor" width={60} height={60}></canvas>
-          <div className={styles.astronautHeadVisorFlare1}></div>
-          <div className={styles.astronautHeadVisorFlare2}></div>
-        </div>
-      </div>
+      {/* Bottom status */}
+      <footer
+        className="w-full border-t px-6 py-3 flex items-center justify-between text-xs font-mono text-[var(--color-subtext)]"
+        style={{ borderColor: "var(--color-border)" }}
+      >
+        <span>Mai Nguyen Tien Dat · Portfolio</span>
+        <span>Da Nang, Vietnam</span>
+      </footer>
     </div>
   );
 };

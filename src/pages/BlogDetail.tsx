@@ -1,79 +1,61 @@
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { FaArrowLeft, FaClock, FaCalendarAlt } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import user_info from "../data/userdata";
 
-// Simple Markdown Parser to render custom styled blocks from JSON text
+// Parse markdown to clean JSX
 const parseMarkdownToJSX = (content: string) => {
   if (!content) return null;
 
-  // Split content by code blocks code tag ```
   const parts = content.split(/```/g);
-  
+
   return parts.map((part, index) => {
-    // Every odd index is inside a code block
+    // Code block
     if (index % 2 === 1) {
       const lines = part.split("\n");
-      const language = lines[0].trim(); // first line might contain language e.g. tsx, css, js
+      const language = lines[0].trim() || "code";
       const code = lines.slice(1).join("\n").trim();
-      
+
       return (
-        <div key={index} className="editor-window my-6 border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-xl shadow-lg flex flex-col overflow-hidden font-mono text-xs">
-          <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none text-[9px] text-[#8b949e]">
-            <span>{language.toUpperCase() || "CODE SNIPPET"}</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+        <div
+          key={index}
+          className="my-6 rounded-xl border border-[var(--color-border)] bg-[#0a0d14] dark:bg-[#07090e] text-[#cbd5e1] overflow-hidden font-mono text-xs"
+        >
+          <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-[#0e131d] text-[10px] text-zinc-400 select-none">
+            <span className="uppercase tracking-wider">{language}</span>
           </div>
-          <pre className="p-4 overflow-x-auto custom-scrollbar bg-[#05070c] leading-5 select-text">
-            <code>
-              {/* Basic color highlighting for demonstration in viewport */}
-              {code.split("\n").map((line, lineIdx) => {
-                // simple regex helper highlights keywords
-                const words = line.split(/(\s+)/);
-                return (
-                  <div key={lineIdx}>
-                    {words.map((word, wIdx) => {
-                      if (/^(const|let|var|function|import|from|return|export|default|class|if|else|for|async|await|const|try|catch)$/.test(word.trim())) {
-                        return <span key={wIdx} className="syntax-keyword">{word}</span>;
-                      }
-                      if (/^(".*"|'.*'|`.*`)$/.test(word.trim())) {
-                        return <span key={wIdx} className="syntax-string">{word}</span>;
-                      }
-                      if (/^\d+$/.test(word.trim())) {
-                        return <span key={wIdx} className="syntax-number">{word}</span>;
-                      }
-                      if (word.trim().startsWith("//") || word.trim().startsWith("/*")) {
-                        return <span key={wIdx} className="syntax-comment">{word}</span>;
-                      }
-                      return <span key={wIdx}>{word}</span>;
-                    })}
-                  </div>
-                );
-              })}
-            </code>
+          <pre className="p-4 overflow-x-auto leading-relaxed select-text font-mono text-xs">
+            <code>{code}</code>
           </pre>
         </div>
       );
     }
 
-    // Process normal text (even indices)
+    // Normal text blocks
     const blocks = part.split("\n\n");
     return blocks.map((block, bIdx) => {
       const trimmed = block.trim();
       if (!trimmed) return null;
 
-      // Header H2
+      // H2
       if (trimmed.startsWith("## ")) {
         return (
-          <h2 key={`${index}-${bIdx}`} className="font-display font-bold text-2xl mt-8 mb-4 text-[var(--color-text)] leading-tight">
+          <h2
+            key={`${index}-${bIdx}`}
+            className="font-display font-bold text-2xl mt-10 mb-4 text-[var(--color-text)] leading-tight tracking-tight"
+          >
             {trimmed.substring(3)}
           </h2>
         );
       }
 
-      // Header H3
+      // H3
       if (trimmed.startsWith("### ")) {
         return (
-          <h3 key={`${index}-${bIdx}`} className="font-display font-bold text-xl mt-6 mb-3 text-[var(--color-text)] leading-tight">
+          <h3
+            key={`${index}-${bIdx}`}
+            className="font-display font-bold text-xl mt-8 mb-3 text-[var(--color-text)] leading-tight tracking-tight"
+          >
             {trimmed.substring(4)}
           </h3>
         );
@@ -81,38 +63,43 @@ const parseMarkdownToJSX = (content: string) => {
 
       // Blockquote
       if (trimmed.startsWith("> ")) {
-        // block quotes can have subheadings or normal text
         return (
-          <blockquote key={`${index}-${bIdx}`} className="border-l-4 border-[var(--color-accent)] pl-4 py-2 my-4 bg-[var(--color-accent-soft)] rounded-r-lg text-sm text-[var(--color-text)] font-sans italic">
+          <blockquote
+            key={`${index}-${bIdx}`}
+            className="border-l-3 border-[var(--color-accent)] pl-4 py-2.5 my-6 bg-[var(--color-accent-soft)] rounded-r-lg text-sm text-[var(--color-text)] italic leading-relaxed"
+          >
             {trimmed.substring(2).replace(/^"(.*)"$/, "$1")}
           </blockquote>
         );
       }
 
-      // Unordered Lists
+      // Lists
       if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
         const listItems = trimmed.split(/\n/);
         return (
-          <ul key={`${index}-${bIdx}`} className="list-disc pl-5 my-4 space-y-2 text-sm text-[var(--color-subtext)] font-sans font-light">
+          <ul
+            key={`${index}-${bIdx}`}
+            className="list-disc pl-5 my-4 space-y-2 text-sm text-[var(--color-subtext)] leading-relaxed"
+          >
             {listItems.map((item, itemIdx) => (
-              <li key={itemIdx}>
-                {parseInlineFormatting(item.substring(2))}
-              </li>
+              <li key={itemIdx}>{item.substring(2)}</li>
             ))}
           </ul>
         );
       }
 
-      // Ordered Lists
       if (/^\d+\.\s/.test(trimmed)) {
         const listItems = trimmed.split(/\n/);
         return (
-          <ol key={`${index}-${bIdx}`} className="list-decimal pl-5 my-4 space-y-2 text-sm text-[var(--color-subtext)] font-sans font-light">
+          <ol
+            key={`${index}-${bIdx}`}
+            className="list-decimal pl-5 my-4 space-y-2 text-sm text-[var(--color-subtext)] leading-relaxed"
+          >
             {listItems.map((item, itemIdx) => {
               const dotIdx = item.indexOf(".");
               return (
                 <li key={itemIdx}>
-                  {parseInlineFormatting(item.substring(dotIdx + 1).trim())}
+                  {item.substring(dotIdx + 1).trim()}
                 </li>
               );
             })}
@@ -120,57 +107,21 @@ const parseMarkdownToJSX = (content: string) => {
         );
       }
 
-      // Normal paragraph
+      // Paragraph
       return (
-        <p key={`${index}-${bIdx}`} className="text-sm md:text-base text-[var(--color-subtext)] font-sans font-light leading-relaxed my-4">
-          {parseInlineFormatting(trimmed)}
+        <p
+          key={`${index}-${bIdx}`}
+          className="text-base text-[var(--color-subtext)] leading-relaxed my-4"
+        >
+          {trimmed}
         </p>
       );
     });
   });
 };
 
-// Parse inline `code` and bold **bold** or *italic*
-const parseInlineFormatting = (text: string) => {
-  // Regex to split by inline code blocks `
-  const codeParts = text.split(/`([^`]+)`/g);
-  
-  if (codeParts.length === 1) {
-    return parseEmphasis(text);
-  }
-
-  return codeParts.map((part, idx) => {
-    // Odd indices are code
-    if (idx % 2 === 1) {
-      return (
-        <code key={idx} className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--color-bg-component)] text-[var(--color-accent)]">
-          {part}
-        </code>
-      );
-    }
-    return parseEmphasis(part);
-  });
-};
-
-// Helper for bold and italic
-const parseEmphasis = (text: string) => {
-  // Bold **bold**
-  const boldParts = text.split(/\*\*([^*]+)\*\*/g);
-  if (boldParts.length === 1) {
-    return text;
-  }
-
-  return boldParts.map((part, idx) => {
-    if (idx % 2 === 1) {
-      return <strong key={idx} className="font-semibold text-[var(--color-text)]">{part}</strong>;
-    }
-    return part;
-  });
-};
-
-const BlogDetail = () => {
+const BlogDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-
   const post = user_info.blog.find((b) => b.slug === slug);
 
   if (!post) {
@@ -178,63 +129,60 @@ const BlogDetail = () => {
   }
 
   return (
-    <div className="py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <article className="py-12 sm:py-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Back button */}
-      <Link
-        to="/blog"
-        className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-subtext)] hover:text-[var(--color-accent)] mb-8 transition-colors group"
-      >
-        <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-        <span>back to blog/</span>
-      </Link>
+      <nav className="mb-10">
+        <Link
+          to="/blog"
+          className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors"
+        >
+          <FaArrowLeft className="text-[10px]" />
+          <span>Quay lại Engineering Notes</span>
+        </Link>
+      </nav>
 
-      {/* Article Header */}
-      <article className="reveal">
-        <header className="mb-8">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            {post.tags.map((t) => (
-              <span key={t} className="tag">
-                {t}
-              </span>
-            ))}
-          </div>
-          
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-[var(--color-text)] tracking-tight leading-tight">
-            {post.title}
-          </h1>
-
-          <div className="flex items-center gap-5 mt-6 text-xs font-mono text-[var(--color-subtext)] select-none">
-            <span className="flex items-center gap-1.5">
-              <FaCalendarAlt className="text-[var(--color-accent)]" />
-              {post.date}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <FaClock className="text-[var(--color-accent)]" />
-              {post.readMinutes} min read
-            </span>
-          </div>
-        </header>
-
-        {/* Cover image banner */}
-        <div className="h-64 sm:h-96 rounded-3xl overflow-hidden mb-10 card-surface border border-[var(--color-border)] relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
-          <img
-            src={post.cover}
-            alt={post.title}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-          <div className="absolute inset-0 bg-grid opacity-30 z-0" />
+      {/* Note Header */}
+      <header className="space-y-4 pb-8 border-b border-[var(--color-border)] mb-10">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[var(--color-subtext)]">
+          <span>{post.date}</span>
+          <span>·</span>
+          <span>{post.readMinutes} min read</span>
         </div>
 
-        {/* Article Body */}
-        <div className="prose-custom pb-20 select-text">
-          {parseMarkdownToJSX(post.content)}
+        <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-[1.1]">
+          {post.title}
+        </h1>
+
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          {post.tags.map((tag) => (
+            <span key={tag} className="tag">
+              {tag}
+            </span>
+          ))}
         </div>
-      </article>
-    </div>
+      </header>
+
+      {/* Content */}
+      <div className="prose-custom max-w-none select-text">
+        {parseMarkdownToJSX(post.content)}
+      </div>
+
+      {/* Footer navigation */}
+      <footer className="mt-16 pt-8 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-mono">
+        <Link
+          to="/blog"
+          className="text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors"
+        >
+          ← Xem tất cả bài viết
+        </Link>
+        <Link
+          to="/contact"
+          className="text-[var(--color-accent)] hover:underline"
+        >
+          Liên hệ trao đổi →
+        </Link>
+      </footer>
+    </article>
   );
 };
 

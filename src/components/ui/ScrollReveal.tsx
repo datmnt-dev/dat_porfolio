@@ -1,33 +1,39 @@
-import React from "react";
-import useRevealInView from "../../hooks/useRevealInView";
+import { Reveal, type RevealDirection } from "../../motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
-  delay?: number; // Đơn vị: miligiây
-  threshold?: number; // Phần trăm hiển thị của element để kích hoạt
-  animationClass?: string; // Tùy chọn thay thế hiệu ứng fade-up mặc định
+  delay?: number;
+  distance?: number;
+  duration?: number;
+  direction?: RevealDirection;
+  threshold?: number;
+  rootMargin?: string;
+  animationClass?: string;
 }
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   className = "",
   delay = 0,
+  distance = 18,
+  duration = 580,
+  direction = "up",
   threshold = 0.1,
-  animationClass = "reveal-on-scroll",
+  rootMargin = "0px 0px -20px 0px",
 }) => {
-  const { ref, isVisible } = useRevealInView<HTMLDivElement>({ threshold });
-
   return (
-    <div
-      ref={ref}
-      className={`${animationClass} ${isVisible ? "visible" : ""} ${className}`}
-      style={{
-        transitionDelay: `${delay}ms`,
-      }}
+    <Reveal
+      direction={direction}
+      distance={distance}
+      delay={delay}
+      threshold={threshold}
+      duration={duration}
+      rootMargin={rootMargin}
+      className={className}
     >
       {children}
-    </div>
+    </Reveal>
   );
 };
 

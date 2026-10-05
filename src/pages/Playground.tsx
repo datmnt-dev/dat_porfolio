@@ -32,7 +32,7 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
       if (!gameStarted && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d"].includes(e.key)) {
         setGameStarted(true);
       }
-      
+
       const currentDir = dirRef.current;
       switch (e.key.toLowerCase()) {
         case "arrowup":
@@ -68,11 +68,9 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
     if (!ctx) return;
 
     const interval = setInterval(() => {
-      // Update direction
       dirRef.current = nextDirRef.current;
       const dir = dirRef.current;
 
-      // Move snake
       const newHead = {
         x: snakeRef.current[0].x + dir.x,
         y: snakeRef.current[0].y + dir.y,
@@ -99,13 +97,11 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
         return;
       }
 
-      // Add new head
       snakeRef.current.unshift(newHead);
 
       // Check if food eaten
       if (newHead.x === foodRef.current.x && newHead.y === foodRef.current.y) {
         setScore((s) => s + 1);
-        // Spawn new food
         let newFood: { x: number; y: number };
         do {
           newFood = {
@@ -117,20 +113,16 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
         );
         foodRef.current = newFood;
       } else {
-        // Pop tail
         snakeRef.current.pop();
       }
 
-      // Render
       draw();
     }, 110);
 
     const draw = () => {
-      // Clear canvas
       ctx.fillStyle = "#05070c";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw grid lines (subtle)
       ctx.strokeStyle = "rgba(148, 163, 184, 0.05)";
       ctx.lineWidth = 0.5;
       for (let i = 0; i <= tileCount; i++) {
@@ -144,7 +136,7 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
         ctx.stroke();
       }
 
-      // Draw food (apple)
+      // Draw food
       ctx.fillStyle = "#ef4444";
       ctx.beginPath();
       const foodX = foodRef.current.x * gridSize + gridSize / 2;
@@ -154,7 +146,6 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
       // Draw snake
       snakeRef.current.forEach((segment, idx) => {
-        // Head is accent color, body is lighter accent
         ctx.fillStyle = idx === 0 ? "var(--color-accent)" : "rgba(6, 182, 212, 0.6)";
         ctx.strokeStyle = "#05070c";
         ctx.lineWidth = 1;
@@ -163,7 +154,6 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
       });
     };
 
-    // Initial draw
     draw();
 
     return () => clearInterval(interval);
@@ -178,7 +168,6 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
     setGameOver(false);
     setGameStarted(false);
 
-    // Redraw initial state
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
@@ -218,13 +207,13 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="card-surface bg-[#0a0f1d] border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-[#0a0f1d] border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
         <div className="flex items-center justify-between px-5 py-4 bg-[#111827] border-b border-zinc-800 select-none">
           <span className="font-mono text-xs text-[var(--color-accent)] flex items-center gap-1.5">
             <FaTerminal /> SNAKE_GAME.EXE
           </span>
           <button onClick={onClose} className="text-zinc-500 hover:text-white font-mono text-xs cursor-pointer">
-            [ESC] Đóng
+            [ESC] Close
           </button>
         </div>
 
@@ -247,20 +236,20 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
           {!gameStarted && !gameOver && (
             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center font-mono text-xs p-5 select-none pointer-events-none">
               <p className="text-white font-bold mb-2">SNAKE GAME RETRO</p>
-              <p className="text-[var(--color-subtext)]">Nhấn phím mũi tên hoặc WASD để bắt đầu chơi.</p>
-              <p className="text-zinc-500 text-[10px] mt-4">Điểm cao của bạn: {highScore}</p>
+              <p className="text-[var(--color-subtext)]">Press arrow keys or WASD to start.</p>
+              <p className="text-zinc-500 text-[10px] mt-4">Personal High Score: {highScore}</p>
             </div>
           )}
 
           {gameOver && (
             <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center font-mono text-xs p-5 select-none">
               <p className="text-red-500 font-bold mb-2">GAME OVER</p>
-              <p className="text-white">Bạn đạt được {score} điểm.</p>
+              <p className="text-white">Score reached: {score}</p>
               <button
                 onClick={handleReset}
-                className="mt-4 px-4 py-2 bg-[var(--color-accent)] hover:opacity-95 text-white font-bold rounded-lg cursor-pointer transition"
+                className="mt-4 px-4 py-2 bg-[var(--color-accent)] text-white font-bold rounded-lg cursor-pointer transition"
               >
-                Chơi lại
+                Play Again
               </button>
             </div>
           )}
@@ -388,27 +377,27 @@ const Playground = () => {
   return (
     <div>
       <PageHero
-        eyebrow="My Laboratory"
+        eyebrow="Interactive Lab"
         title={
           <>
-            Trang thử nghiệm & <span className="text-gradient">Widget tương tác</span>
+            Browser experiments & <span className="text-[var(--color-accent)]">prototypes</span>
           </>
         }
-        subtitle="Tổng hợp các tính năng tương tác, easter egg, và các game mini tôi tích hợp trực tiếp trên portfolio này."
+        subtitle="A secondary sandbox for small browser experiments, Canvas API interactions, and custom UI primitives built into this portfolio."
       />
 
-      <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
+      <section className="max-w-7xl mx-auto px-4 lg:px-8 py-14">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Card 1: Matrix Rain */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full reveal">
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 grid place-items-center text-lg mb-4 border border-emerald-500/20">
+              <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 grid place-items-center text-sm mb-4 border border-emerald-500/20">
                 <FaTerminal />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Matrix Rain Easter Egg</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Hiệu ứng mưa chữ kiểu Ma Trận kỹ thuật số vẽ bằng HTML5 Canvas. Nhấn phím nóng Ctrl+K rồi gõ &quot;matrix&quot; hoặc click kích hoạt trực tiếp dưới đây.
+              <h3 className="font-display font-semibold text-base mb-2">Matrix Rain Easter Egg</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                Full-screen falling katakana stream rendered with pure HTML5 2D Canvas. Press Ctrl+K and search &quot;matrix&quot;, or launch directly below.
               </p>
             </div>
             <button
@@ -420,14 +409,14 @@ const Playground = () => {
           </div>
 
           {/* Card 2: Command Palette */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full reveal reveal-1">
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-500 grid place-items-center text-lg mb-4 border border-cyan-500/20">
+              <div className="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 grid place-items-center text-sm mb-4 border border-cyan-500/20">
                 <FaSearch />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Command Palette Controller</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Hộp tìm kiếm phím tắt dạng VS Code để điều hướng, đổi màu theme nhanh. Kích hoạt bằng tổ hợp phím Ctrl + K.
+              <h3 className="font-display font-semibold text-base mb-2">Command Palette Controller</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                Fast keyboard-first navigation with action triggers, routing fuzzy search, and accent controls. Accessible anywhere with Ctrl + K.
               </p>
             </div>
             <button
@@ -439,14 +428,14 @@ const Playground = () => {
           </div>
 
           {/* Card 3: Live Accent Themer */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full reveal reveal-2">
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 grid place-items-center text-lg mb-4 border border-purple-500/20">
+              <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 grid place-items-center text-sm mb-4 border border-purple-500/20">
                 <FaPalette />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Live Accent Themer</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Dùng thử hệ thống 4 Accent Theme đồng bộ qua CSS Variables. Nhấp chọn màu sắc để đổi tông chủ đạo toàn site:
+              <h3 className="font-display font-semibold text-base mb-2">Live Accent Themer</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                Interactive theme selector dynamically syncing 4 color presets across CSS custom variables with persistent local storage.
               </p>
               
               {/* Mini Color Picker Widget */}
@@ -464,8 +453,8 @@ const Playground = () => {
                     <button
                       key={c}
                       onClick={() => setAccent(c)}
-                      className={`flex-1 h-7 rounded-lg ${bg} transition-transform hover:scale-110 cursor-pointer ${
-                        accent === c ? "ring-2 ring-offset-2 ring-offset-[var(--color-card)] ring-[var(--color-accent)]" : ""
+                      className={`flex-1 h-7 rounded-lg ${bg} transition-all cursor-pointer ${
+                        accent === c ? "ring-2 ring-offset-2 ring-offset-[var(--color-bg)] ring-[var(--color-accent)] scale-105" : "opacity-80 hover:opacity-100"
                       }`}
                       title={c}
                     />
@@ -473,43 +462,43 @@ const Playground = () => {
                 })}
               </div>
             </div>
-            <div className="mt-6 text-[10px] text-center font-mono text-[var(--color-accent)]">
-              Active accent: {accent.toUpperCase()}
+            <div className="mt-6 text-[11px] text-center font-mono text-[var(--color-accent)]">
+              active: {accent}
             </div>
           </div>
 
           {/* Card 4: Typewriter Roles */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full reveal reveal-3">
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 grid place-items-center text-lg mb-4 border border-amber-500/20">
+              <div className="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 grid place-items-center text-sm mb-4 border border-amber-500/20">
                 <FaKeyboard />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Typewriter Roles Effect</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Hiệu ứng gõ và xóa chữ tuần tự các chức danh công việc, lập trình bằng React Hooks thuần không sử dụng thư viện ngoài.
+              <h3 className="font-display font-semibold text-base mb-2">Typewriter Hook Sandbox</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                Custom zero-dependency character sequencer hook demonstrating recursive timeout state management and string slicing.
               </p>
               
               {/* Typewriter Demo Display */}
-              <div className="mt-4 p-3 rounded-lg bg-[var(--color-bg-component)] font-mono text-xs text-white flex items-center min-h-[36px]">
+              <div className="mt-4 p-3 rounded-lg bg-[var(--color-bg-component)] border border-[var(--color-border)] font-mono text-xs flex items-center min-h-[36px]">
                 <span className="text-[var(--color-accent)] mr-2">&gt;</span>
-                <span>{roleText}</span>
+                <span className="text-[var(--color-text)]">{roleText}</span>
                 <span className="inline-block w-1.5 h-4 ml-0.5 bg-[var(--color-accent)] animate-pulse" />
               </div>
             </div>
-            <div className="mt-6 text-[9px] text-center font-mono text-zinc-500">
-              No dependencies text printer logic
+            <div className="mt-6 text-[10px] text-center font-mono text-[var(--color-subtext)]">
+              Isolated hook prototype
             </div>
           </div>
 
           {/* Card 5: Hex Color Convertor */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full reveal reveal-4">
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-500 grid place-items-center text-lg mb-4 border border-pink-500/20">
+              <div className="w-9 h-9 rounded-lg bg-pink-500/10 text-pink-400 grid place-items-center text-sm mb-4 border border-pink-500/20">
                 <FaEyeDropper />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Hex Color Picker Converter</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Công cụ nhỏ để lấy màu Hex và chuyển đổi trực quan sang định dạng RGB, HSL của trình duyệt trong thời gian thực.
+              <h3 className="font-display font-semibold text-base mb-2">Color Space Math</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                Real-time color calculation transforming hex color inputs into RGB channel tuples and cylindrical HSL coordinates.
               </p>
 
               {/* Live Picker display */}
@@ -521,34 +510,34 @@ const Playground = () => {
                   className="w-10 h-10 border-0 rounded-lg cursor-pointer bg-transparent"
                 />
                 <div className="font-mono text-[10px] space-y-1">
-                  <div>Hex: <span className="text-white font-bold">{hexColor.toUpperCase()}</span></div>
-                  <div className="text-zinc-400">RGB: {hexToRgb(hexColor)}</div>
-                  <div className="text-zinc-400">HSL: {hexToHsl(hexColor)}</div>
+                  <div>Hex: <span className="font-semibold text-[var(--color-text)]">{hexColor.toUpperCase()}</span></div>
+                  <div className="text-[var(--color-subtext)]">RGB: {hexToRgb(hexColor)}</div>
+                  <div className="text-[var(--color-subtext)]">HSL: {hexToHsl(hexColor)}</div>
                 </div>
               </div>
             </div>
-            <div className="mt-6 text-[9px] text-center font-mono text-zinc-500">
-              Dynamic color matrix displayer
+            <div className="mt-6 text-[10px] text-center font-mono text-[var(--color-subtext)]">
+              Client-side color calculations
             </div>
           </div>
 
-          {/* Card 6: Snake Game Retro (WOW FACTOR) */}
-          <div className="card-surface p-6 flex flex-col justify-between h-full border-[var(--color-accent)] shadow-md reveal reveal-5">
+          {/* Card 6: Snake Game Retro */}
+          <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-accent-soft)] text-[var(--color-accent)] grid place-items-center text-lg mb-4 border border-[var(--color-accent)]/20">
+              <div className="w-9 h-9 rounded-lg bg-[var(--color-accent-soft)] text-[var(--color-accent)] grid place-items-center text-sm mb-4 border border-[var(--color-accent)]/20">
                 <HiSparkles />
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Snake Retro Game Canvas</h3>
-              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans font-light">
-                Trò chơi rắn săn mồi cổ điển viết trực tiếp bằng HTML5 Canvas API và React Hooks. Thiết lập lưới, ăn quả táo đỏ và tính điểm cao.
+              <h3 className="font-display font-semibold text-base mb-2">Retro Snake Engine</h3>
+              <p className="text-xs text-[var(--color-subtext)] leading-relaxed font-sans">
+                A 20x20 cell retro snake game implemented with pure 2D Canvas rendering, wrap-around grid boundary math, and high score caching.
               </p>
             </div>
             <button
               onClick={() => setIsSnakeOpen(true)}
-              className="btn-primary mt-6 w-full justify-center text-xs font-mono flex items-center gap-1.5 shadow-md"
+              className="btn-primary mt-6 w-full justify-center text-xs font-mono flex items-center gap-2"
             >
               <FaPlay size={10} />
-              <span>Chơi Game Ngay</span>
+              <span>Launch Snake Sandbox</span>
             </button>
           </div>
 

@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
-import type { AccentTheme } from "../../types/AppContext";
 import { CgDarkMode } from "react-icons/cg";
 import { HiMenu, HiX } from "react-icons/hi";
 import { FaDownload, FaSearch } from "react-icons/fa";
@@ -12,45 +10,34 @@ interface HeaderProps {
   onOpenPalette: () => void;
 }
 
-const navItems = [
-  { to: "/", label: "Home" },
+// Editorial desktop navigation: Work, About, Notes, Lab
+const primaryNavItems = [
+  { to: "/projects", label: "Work" },
   { to: "/about", label: "About" },
-  { to: "/projects", label: "Projects" },
-  { to: "/experience", label: "Experience" },
-  { to: "/skills", label: "Skills" },
-  { to: "/blog", label: "Blog" },
+  { to: "/blog", label: "Notes" },
   { to: "/playground", label: "Lab" },
-  { to: "/contact", label: "Contact" },
 ];
 
-const AccentPicker: React.FC = () => {
-  const { accent, setAccent } = useContext(AppContext);
-  const colors: { key: AccentTheme; bg: string }[] = [
-    { key: "cyan", bg: "bg-cyan-500" },
-    { key: "green", bg: "bg-emerald-500" },
-    { key: "purple", bg: "bg-purple-500" },
-    { key: "amber", bg: "bg-amber-500" },
-  ];
-  return (
-    <div className="flex items-center gap-1.5">
-      {colors.map((c) => (
-        <button
-          key={c.key}
-          onClick={() => setAccent(c.key)}
-          className={`w-4 h-4 rounded-full ${c.bg} transition-transform hover:scale-125 ${
-            accent === c.key ? "ring-2 ring-offset-2 ring-offset-[var(--color-bg)] ring-[var(--color-accent)]" : ""
-          }`}
-          title={`Accent: ${c.key}`}
-          aria-label={`Switch accent to ${c.key}`}
-        />
-      ))}
-    </div>
-  );
-};
+const secondaryNavItems = [
+  { to: "/experience", label: "Experience" },
+  { to: "/skills", label: "Skills" },
+  { to: "/contact", label: "Contact" },
+];
 
 const SiteHeader: React.FC<HeaderProps> = ({ switchTheme, onOpenPalette }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -64,204 +51,222 @@ const SiteHeader: React.FC<HeaderProps> = ({ switchTheme, onOpenPalette }) => {
   }, [onOpenPalette]);
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 16);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <>
       <header
-        className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 inset-x-0 z-40 h-16 transition-colors duration-200 ${
           isScrolled
-            ? "py-2 backdrop-blur-xl border-b"
-            : "py-4"
+            ? "border-b backdrop-blur-xl"
+            : ""
         }`}
         style={{
-          backgroundColor: isScrolled ? "rgba(var(--bg-rgb, 0,0,0), 0.0)" : "transparent",
-          background: isScrolled ? "color-mix(in oklab, var(--color-bg) 75%, transparent)" : "transparent",
+          backgroundColor: isScrolled
+            ? "color-mix(in srgb, var(--color-bg) 85%, transparent)"
+            : "transparent",
           borderColor: isScrolled ? "var(--color-border)" : "transparent",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group min-w-0">
-              <div className="relative w-10 h-10 flex-shrink-0">
-                <div className="absolute inset-0 rounded-xl bg-[var(--gradient-accent,linear-gradient(135deg,var(--color-accent),var(--color-accent-hover)))] opacity-90 blur-[6px] group-hover:opacity-100 transition" />
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-2 ring-[var(--color-accent)] bg-[var(--color-card)]">
-                  <img
-                    src={user_info.main.photo}
-                    alt={user_info.main.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="hidden sm:block min-w-0">
-                <div className="font-display font-bold text-sm text-[var(--color-text)] truncate">
-                  {user_info.main.shortName}
-                  <span className="text-[var(--color-accent)]">.</span>
-                </div>
-                <div className="text-[10px] font-code text-[var(--color-subtext)] truncate">
-                  ~/portfolio · {user_info.main.role}
-                </div>
-              </div>
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1 p-1 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-component)]/60 backdrop-blur">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.to === "/"}
-                  className={({ isActive }) =>
-                    `relative px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
-                      isActive
-                        ? "text-white"
-                        : "text-[var(--color-text)] hover:text-[var(--color-accent)]"
-                    }`
-                  }
-                >
-                  {({ isActive }) => (
-                    <>
-                      {isActive && (
-                        <span
-                          className="absolute inset-0 rounded-xl -z-0"
-                          style={{ background: "var(--gradient-accent)" }}
-                        />
-                      )}
-                      <span className="relative z-10">{item.label}</span>
-                    </>
-                  )}
-                </NavLink>
-              ))}
-            </nav>
-
-            {/* Right actions */}
-            <div className="flex items-center gap-2">
-              <div className="hidden xl:block">
-                <AccentPicker />
-              </div>
-
-              <button
-                onClick={onOpenPalette}
-                className="hidden md:flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)]/60 hover:border-[var(--color-accent)] transition text-xs text-[var(--color-subtext)]"
-                title="Command palette (Ctrl+K)"
-              >
-                <FaSearch className="text-[10px]" />
-                <span className="hidden xl:inline">Search</span>
-                <kbd className="hidden xl:inline-block px-1 py-px rounded border border-[var(--color-border)] text-[9px] font-code">
-                  Ctrl K
-                </kbd>
-              </button>
-
-              <button
-                onClick={switchTheme}
-                className="p-2 rounded-xl text-[var(--color-text)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-component)] transition"
-                aria-label="Toggle theme"
-              >
-                <CgDarkMode className="text-lg" />
-              </button>
-
-              <a
-                href="/CV_MaiNguyenTienDat.pdf"
-                download
-                className="hidden sm:inline-flex btn-primary !py-1.5 !px-3 !text-xs"
-              >
-                <FaDownload className="text-[10px]" />
-                <span>Resume</span>
-              </a>
-
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="lg:hidden p-2 rounded-xl text-[var(--color-text)] hover:bg-[var(--color-bg-component)] transition"
-                aria-label="Open menu"
-              >
-                <HiMenu className="text-xl" />
-              </button>
+        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 group select-none text-[var(--color-text)] transition-opacity hover:opacity-90"
+            aria-label="Tien Dat Home"
+          >
+            <div className="w-8 h-8 rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-card)] flex-shrink-0">
+              <img
+                src={user_info.main.photo}
+                alt={user_info.main.name}
+                className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-300"
+              />
             </div>
+            <div className="flex items-baseline gap-1">
+              <span className="font-display font-bold text-base tracking-tight text-[var(--color-text)]">
+                Tien Dat
+              </span>
+              <span className="text-[var(--color-accent)] font-bold text-base">.</span>
+            </div>
+          </Link>
+
+          {/* Desktop Primary Nav */}
+          <nav
+            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/70 backdrop-blur-md shadow-xs"
+            aria-label="Primary navigation"
+          >
+            {primaryNavItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `px-3.5 py-1 text-xs font-medium rounded-full transition-colors ${
+                    isActive
+                      ? "text-white bg-[var(--color-accent)]"
+                      : "text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-component)]"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Right Action Items */}
+          <div className="flex items-center gap-2">
+            {/* Command Palette Trigger */}
+            <button
+              onClick={onOpenPalette}
+              className="hidden sm:inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-xs text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
+              title="Command Palette (Ctrl+K)"
+              aria-label="Open command palette"
+            >
+              <FaSearch className="text-[10px]" />
+              <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-[9px] font-code bg-[var(--color-bg-component)]">
+                Ctrl K
+              </kbd>
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={switchTheme}
+              className="p-2 rounded-lg text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-component)] border border-transparent hover:border-[var(--color-border)] transition-colors cursor-pointer"
+              aria-label="Toggle dark/light theme"
+            >
+              <CgDarkMode className="text-lg" />
+            </button>
+
+            {/* Resume Button */}
+            <a
+              href="/CV_MaiNguyenTienDat.pdf"
+              download
+              className="hidden sm:inline-flex items-center gap-1.5 btn-primary !py-1.5 !px-3 !text-xs !rounded-lg"
+              title="Download Resume"
+            >
+              <FaDownload className="text-[10px]" />
+              <span>Resume</span>
+            </a>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-lg text-[var(--color-text)] hover:bg-[var(--color-bg-component)] transition-colors cursor-pointer"
+              aria-label="Open navigation menu"
+            >
+              <HiMenu className="text-xl" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Spacing under fixed header */}
+      {/* Spacer under fixed header */}
       <div className="h-16" />
 
-      {/* Mobile menu */}
+      {/* Mobile Menu Drawer */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden transition-all ${
-          isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"
+        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-200 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation drawer"
       >
         <div
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/50 backdrop-blur-xs"
           onClick={() => setIsMobileMenuOpen(false)}
         />
         <aside
-          className={`absolute top-0 right-0 h-full w-80 max-w-[88vw] flex flex-col transition-transform duration-300 ${
+          className={`absolute top-0 right-0 h-full w-72 max-w-[85vw] flex flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] transition-transform duration-220 ease-out shadow-2xl ${
             isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{
-            backgroundColor: "var(--color-bg-component)",
-            borderLeft: "1px solid var(--color-border)",
-          }}
         >
           <div className="flex items-center justify-between p-5 border-b border-[var(--color-border)]">
-            <span className="font-code text-xs text-[var(--color-accent)]">~/menu</span>
+            <span className="font-display font-bold text-sm tracking-tight text-[var(--color-text)]">
+              Menu
+            </span>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-1 rounded-lg text-[var(--color-text)] hover:bg-[var(--color-card)]"
+              className="p-1 rounded-md text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-component)] transition-colors cursor-pointer"
               aria-label="Close menu"
             >
               <HiX className="text-xl" />
             </button>
           </div>
 
-          <div className="p-5 flex flex-col items-center text-center border-b border-[var(--color-border)]">
-            <div className="w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-[var(--color-accent)]">
-              <img src={user_info.main.photo} alt="" className="w-full h-full object-cover" />
-            </div>
-            <h2 className="mt-3 font-display font-bold text-base">{user_info.main.name}</h2>
-            <p className="text-xs text-[var(--color-accent)] font-code">{user_info.main.role}</p>
-          </div>
-
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => (
+            <div className="text-[10px] font-code uppercase tracking-wider text-[var(--color-subtext)] px-3 py-1 mb-1">
+              Primary
+            </div>
+            {primaryNavItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
-                end={item.to === "/"}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-xl text-sm transition-all ${
+                  `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "text-white font-semibold"
-                      : "text-[var(--color-text)] hover:bg-[var(--color-card)] hover:text-[var(--color-accent)]"
+                      ? "text-[var(--color-accent)] bg-[var(--color-accent-soft)] font-semibold"
+                      : "text-[var(--color-text)] hover:bg-[var(--color-bg-component)]"
                   }`
                 }
-                style={({ isActive }) =>
-                  isActive ? { background: "var(--gradient-accent)" } : undefined
-                }
               >
-                <span className="text-[var(--color-accent)] mr-2 font-code text-xs">›</span>
                 {item.label}
               </NavLink>
             ))}
+
+            <div className="pt-4 mt-4 border-t border-[var(--color-border)]">
+              <div className="text-[10px] font-code uppercase tracking-wider text-[var(--color-subtext)] px-3 py-1 mb-1">
+                More
+              </div>
+              {secondaryNavItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg text-sm transition-colors ${
+                      isActive
+                        ? "text-[var(--color-accent)] bg-[var(--color-accent-soft)] font-semibold"
+                        : "text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-component)]"
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
           </nav>
 
-          <div className="p-5 border-t border-[var(--color-border)] space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-code text-[var(--color-subtext)] uppercase">Accent</span>
-              <AccentPicker />
-            </div>
+          <div className="p-4 border-t border-[var(--color-border)] space-y-3">
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                onOpenPalette();
+              }}
+              className="w-full py-2 px-3 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:border-[var(--color-accent)] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <FaSearch className="text-[10px]" />
+              <span>Command Palette (Ctrl+K)</span>
+            </button>
             <a
               href="/CV_MaiNguyenTienDat.pdf"
               download
-              className="btn-primary w-full justify-center"
+              className="btn-primary w-full justify-center !py-2 text-xs"
             >
-              <FaDownload className="text-xs" />
-              <span>Download CV</span>
+              <FaDownload className="text-[10px]" />
+              <span>Download Resume</span>
             </a>
           </div>
         </aside>
@@ -272,21 +277,39 @@ const SiteHeader: React.FC<HeaderProps> = ({ switchTheme, onOpenPalette }) => {
   );
 };
 
+// Subtle 2px ScrollProgress using transform scaleX (hardware accelerated)
 const ScrollProgress: React.FC = () => {
-  const [progress, setProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
+    let ticking = false;
+    const updateProgress = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollHeight > 0 ? window.scrollY / scrollHeight : 0;
+      if (barRef.current) {
+        barRef.current.style.transform = `scaleX(${progress})`;
+      }
+      ticking = false;
     };
-    window.addEventListener("scroll", onScroll);
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateProgress();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   return (
-    <div className="fixed top-0 inset-x-0 h-0.5 z-[60] pointer-events-none">
+    <div className="fixed top-0 inset-x-0 h-[2px] z-[60] pointer-events-none bg-transparent">
       <div
-        className="h-full transition-all"
-        style={{ width: `${progress}%`, background: "var(--gradient-accent)" }}
+        ref={barRef}
+        className="h-full bg-[var(--color-accent)] origin-left will-change-transform"
+        style={{ transform: "scaleX(0)" }}
       />
     </div>
   );

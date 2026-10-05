@@ -2,23 +2,32 @@ import { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import type { AppContextType } from "../../types/AppContext";
+import { useLenis } from "../../motion";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
 import BackToTop from "../BackToTop";
 import CommandPalette from "../CommandPalette";
 import MatrixRain from "../MatrixRain";
 import InteractiveCursorGlow from "../ui/InteractiveCursorGlow";
+import IDEStatusBar from "./IDEStatusBar";
 
 const SiteLayout = () => {
   const { switchTheme } = useContext<AppContextType>(AppContext);
   const location = useLocation();
+  const { scrollTo } = useLenis();
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [isMatrixActive, setIsMatrixActive] = useState(false);
 
-  // Scroll to top on route change
+  // Instant scroll to top on route change (eliminates floating catch-up)
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [location.pathname]);
+    scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  }, [location.pathname, scrollTo]);
 
   // Listen to custom events from other pages (like Playground)
   useEffect(() => {
@@ -36,7 +45,7 @@ const SiteLayout = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col transition-colors duration-300 relative overflow-hidden"
+      className="min-h-screen flex flex-col transition-colors duration-300 relative overflow-hidden pb-7"
       style={{
         backgroundColor: "var(--color-bg)",
         color: "var(--color-text)",
@@ -61,6 +70,12 @@ const SiteLayout = () => {
       {isMatrixActive && (
         <MatrixRain onClose={() => setIsMatrixActive(false)} />
       )}
+
+      {/* Modern IDE Status Bar (VS Code / Linear style) */}
+      <IDEStatusBar
+        onOpenPalette={() => setIsPaletteOpen(true)}
+        onOpenMatrix={() => setIsMatrixActive(true)}
+      />
     </div>
   );
 };

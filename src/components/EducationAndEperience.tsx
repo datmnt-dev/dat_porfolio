@@ -1,326 +1,184 @@
-import React, { useState } from "react";
-import { FaTerminal, FaCodeBranch, FaCertificate } from "react-icons/fa";
-import { PiCertificateFill } from "react-icons/pi";
+import React from "react";
 import user_info from "../data/userdata";
 import ScrollReveal from "./ui/ScrollReveal";
-import SpotlightCard from "./ui/SpotlightCard";
 
-interface CommitNode {
-  hash: string;
-  type: "education" | "experience" | "achievement";
-  title: string; // school or company
-  subtitle: string; // degree or position
-  duration: string;
-  image?: string;
-  descriptions: string[];
-  branch: "main" | "feature/experience";
+interface ExperienceEvent {
+  year: string;
+  role: string;
+  entity: string;
+  summary: string;
+  keyContributions: string[];
+  technology: string[];
+  lesson: string;
 }
 
+const experienceEvents: ExperienceEvent[] = [
+  {
+    year: "2026",
+    role: "Full-stack Contributor",
+    entity: "ThreadLearn — Dự án Nền tảng Học Lập trình Tương tác",
+    summary: "Xây dựng tính năng Monaco Code Editor live sandbox, subscription/PayOS callback và hệ thống quiz attempt.",
+    keyContributions: [
+      "Tích hợp Monaco Code Editor, live JavaScript sandbox và luồng AI server stream cho Code Lab",
+      "Xây dựng entitlement gói premium và xử lý đối soát callback thanh toán PayOS ở backend",
+      "Đóng góp 157 commits ở frontend Next.js và 78 commits ở backend NestJS theo thống kê GitHub",
+    ],
+    technology: ["Next.js 15", "NestJS", "MongoDB", "Redis", "Socket.IO", "Zustand", "PayOS"],
+    lesson: "Học được cách đồng bộ trạng thái phức tạp giữa server stream và editor, cùng với tính idempotent khi xử lý webhook thanh toán.",
+  },
+  {
+    year: "2026",
+    role: "Full-stack Contributor",
+    entity: "AgriLink Vietnam — Hệ sinh thái TMĐT Nông sản",
+    summary: "Phát triển tính năng marketplace đa vai trò, bộ lọc sản phẩm, DTO validation và xác thực chứng nhận.",
+    keyContributions: [
+      "Hoàn thiện marketplace filters, tối ưu responsive và SEO hình ảnh cho luồng sản phẩm",
+      "Củng cố ranh giới persistence TypeORM, bảo mật auth cho 7 vai trò người dùng và admin",
+      "Đóng góp 38 commits ở frontend và 170 commits ở backend theo contributor API công khai",
+    ],
+    technology: ["Next.js 15", "NestJS 10", "PostgreSQL", "TypeORM", "Docker", "Swagger"],
+    lesson: "Hiểu sâu hơn về việc thiết kế schema quan hệ cho hệ thống nhiều vai trò (RBAC) và quản lý upload tài liệu an toàn.",
+  },
+  {
+    year: "2026",
+    role: "Full-stack Contributor",
+    entity: "MyRoomie — Nền tảng Ghép Phòng & Bạn Cùng Phòng",
+    summary: "Triển khai chat realtime theo room card, đồng bộ API contracts giữa React 19 và ASP.NET Core 8.",
+    keyContributions: [
+      "Phát triển chat thời gian thực theo room card và chat ẩn danh tenant bằng SignalR",
+      "Hoàn thiện backend booking/notification, xử lý phản hồi kiểm thử và đồng bộ API contracts",
+      "Tích hợp Firebase Analytics tracking và leaderboard seeder",
+    ],
+    technology: ["React 19", "TypeScript", "ASP.NET Core 8", "SignalR", "Firestore", "FastAPI"],
+    lesson: "Làm chủ việc kết nối duplex realtime giữa client SPA và server .NET cùng cách xử lý reconnect mượt mà khi rớt mạng.",
+  },
+  {
+    year: "2024 - 2025",
+    role: "Front-end Lead & Backend Contributor",
+    entity: "JobFinder — Nền tảng Tuyển dụng & Tìm việc làm",
+    summary: "Xây dựng dashboard ứng viên/nhà tuyển dụng, quy trình quản lý CV và tìm kiếm việc làm thông minh.",
+    keyContributions: [
+      "Phát triển dashboard admin & job seeker, quản lý CV (PDF) và bộ lọc tìm kiếm việc làm",
+      "Cộng tác ở cả frontend ReactJS và backend Spring Boot (141 commits FE, 25 commits BE)",
+      "Triển khai xác thực JWT và bảo vệ API theo vai trò người dùng",
+    ],
+    technology: ["ReactJS", "Tailwind CSS", "Spring Boot", "JWT", "SQL Server", "REST API"],
+    lesson: "Rèn luyện kỹ năng lãnh đạo nhóm front-end, thiết kế giao diện responsive và phối hợp chặt chẽ với backend team.",
+  },
+  {
+    year: "2023 - Nay",
+    role: "Sinh viên Kỹ thuật Phần mềm (BIT_SE)",
+    entity: "FPT University — Đà Nẵng",
+    summary: "Hoàn thành chương trình đào tạo chính quy, khóa huấn luyện OJT và các đồ án chuyên ngành phần mềm.",
+    keyContributions: [
+      "Nắm vững các môn học cốt lõi: OOP, Cấu trúc dữ liệu & Giải thuật, Hệ quản trị CSDL, Mạng máy tính",
+      "Hoàn thành On-the-Job Training (OJT), áp dụng quy trình Git workflow và teamwork chuyên nghiệp",
+      "Đạt thành tích học tập xuất sắc trong nhiều đồ án phát triển web theo mô hình MVC & REST",
+    ],
+    technology: ["Java", "C#", "TypeScript", "SQL", "Git", "OOP Architecture"],
+    lesson: "Xây dựng nền tảng khoa học máy tính vững chắc giúp học công nghệ mới nhanh chóng và hiểu sâu bản chất hệ thống.",
+  },
+];
+
 const EducationAndExperience: React.FC = () => {
-  // Convert our data into chronological git commit nodes
-  const commitNodes: CommitNode[] = [
-    // 1. OJT & Student web dev (FPT)
-    {
-      hash: "8df20b1",
-      type: "experience",
-      title: "FPT University – Đà Nẵng",
-      subtitle: "Web Developer (Student)",
-      duration: "2023 - Hiện tại",
-      image: "fpt.png",
-      descriptions: user_info.experience[2].descriptions,
-      branch: "feature/experience"
-    },
-    // 2. FPT Education
-    {
-      hash: "ed5a07c",
-      type: "education",
-      title: "FPT University – Đà Nẵng",
-      subtitle: "Cử nhân Công nghệ Thông tin – Kỹ thuật Phần mềm (BIT_SE)",
-      duration: "2023 - Hiện tại (Hệ Chính Quy)",
-      image: "fpt.png",
-      descriptions: user_info.education[0].descriptions,
-      branch: "main"
-    },
-    // 3. Library system project
-    {
-      hash: "fa82c9e",
-      type: "experience",
-      title: "Library Management System",
-      subtitle: "Full-stack Developer",
-      duration: "2025 - Hiện tại",
-      image: "fpt.png",
-      descriptions: user_info.experience[1].descriptions,
-      branch: "feature/experience"
-    },
-    // 4. JobFinder project
-    {
-      hash: "c29d0f3",
-      type: "experience",
-      title: "Dự án JobFinder",
-      subtitle: "Front-end Developer",
-      duration: "10/2024 - Hiện tại",
-      image: "jobfinder.ico",
-      descriptions: user_info.experience[0].descriptions,
-      branch: "feature/experience"
-    },
-    // 5. Academic Achievement
-    {
-      hash: "ae3c8b9",
-      type: "achievement",
-      title: "Academic Achievement",
-      subtitle: "Thành tựu học tập & chuyên môn",
-      duration: "2025 - Hiện tại",
-      descriptions: user_info.achievements[0].descriptions,
-      branch: "main"
-    }
-  ];
-
-  // Active commit node to display in "git show" terminal
-  const [selectedCommit, setSelectedCommit] = useState<CommitNode>(commitNodes[1]); // Default to FPT Edu
-
   return (
-    <section
-      id="education-and-experience"
-      className="py-16 px-4 md:px-8 lg:px-16 bg-[var(--color-bg)] transition-colors duration-500 border-b border-[var(--color-border)]"
-    >
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Section Header */}
-        <ScrollReveal className="mb-12">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-component)] font-mono text-[10px] text-[var(--color-accent)] mb-4 select-none shadow-sm">
-              <FaTerminal className="text-xs" />
-              <span>tiendat@portfolio:~$ git log --graph --oneline</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-code font-bold text-[var(--color-text)]">
-              Git <span className="text-[var(--color-accent)]">Timeline</span> & Experience
-            </h2>
-            <p className="mt-3 text-xs sm:text-sm text-[var(--color-subtext)] max-w-2xl mx-auto font-sans font-light">
-              Nhấp vào từng Commit Node trên cây thư mục Git để xem chi tiết học tập & kinh nghiệm dưới dạng lệnh &quot;git show&quot;.
-            </p>
-          </div>
-        </ScrollReveal>
-
-        {/* Timeline Layout Grid */}
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Columns: Visual Git Graph Tree */}
-          <ScrollReveal className="lg:col-span-6 min-w-0">
-            <div className="border border-[var(--color-border)] rounded-lg p-6 bg-[var(--color-bg-component)] overflow-hidden">
-            <div className="flex items-center gap-2 mb-6 border-b border-[var(--color-border)] pb-3 select-none">
-              <FaCodeBranch className="text-[var(--color-accent)]" />
-              <span className="font-mono text-xs text-[var(--color-text)]">REPOS BRANCHING FLOW</span>
-            </div>
-
-            {/* Tree Nodes List */}
-            <div className="relative font-mono text-xs pl-2 space-y-6">
-              
-              {commitNodes.map((node) => {
-                const isSelected = selectedCommit.hash === node.hash;
-                const isMainBranch = node.branch === "main";
-
-                return (
-                  <button
-                    type="button"
-                    key={node.hash}
-                    onClick={() => setSelectedCommit(node)}
-                    className={`flex items-start gap-4 p-3 rounded-lg border cursor-pointer transition-all duration-300 ${
-                      isSelected
-                        ? "bg-zinc-100 dark:bg-zinc-900 border-[var(--color-accent)] shadow-sm"
-                        : "border-transparent hover:bg-zinc-100/50 dark:hover:bg-zinc-900/30"
-                    } w-full text-left`}
-                  >
-                    {/* Visual Git Lines indicator */}
-                    <div className="flex flex-col items-center select-none pt-0.5">
-                      <div className="flex gap-2.5">
-                        {/* Main Branch Line */}
-                        <div className="flex flex-col items-center">
-                          {isMainBranch ? (
-                            <div
-                              className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border-2 ${
-                                isSelected
-                                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white scale-110"
-                                  : "border-zinc-400 dark:border-zinc-600 bg-[var(--color-bg-component)]"
-                              }`}
-                            >
-                              <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                            </div>
-                          ) : (
-                            <div className="w-0.5 h-3.5 border-l-2 border-dashed border-zinc-400/40" />
-                          )}
-                        </div>
-
-                        {/* Experience Branch Line */}
-                        <div className="flex flex-col items-center">
-                          {!isMainBranch ? (
-                            <div
-                              className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border-2 ${
-                                isSelected
-                                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white scale-110"
-                                  : "border-cyan-500/70 bg-[var(--color-bg-component)]"
-                              }`}
-                            >
-                              <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                            </div>
-                          ) : (
-                            <div className="w-0.5 h-3.5 border-l-2 border-dashed border-zinc-400/40" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Commit Info details */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-[10px] text-[var(--color-accent)] font-bold">
-                          commit {node.hash}
-                        </span>
-                        <span className={`text-[8px] px-1 rounded font-semibold ${
-                          isMainBranch
-                            ? "bg-green-500/10 text-green-500"
-                            : "bg-cyan-500/10 text-cyan-500"
-                        }`}>
-                          {node.branch}
-                        </span>
-                        <span className="text-[9px] text-zinc-400 dark:text-zinc-500">
-                          ({node.duration})
-                        </span>
-                      </div>
-                      <h4 className="font-code font-bold text-xs text-[var(--color-text)] truncate">
-                        {node.subtitle}
-                      </h4>
-                      <p className="text-[10px] text-[var(--color-subtext)] truncate">
-                        {node.title}
-                      </p>
-                    </div>
-
-                  </button>
-                );
-              })}
-
-            </div>
-
-            {/* Certificates Subsection */}
-            <div className="mt-8 pt-6 border-t border-[var(--color-border)] select-none">
-              <h4 className="font-mono text-xs font-bold text-[var(--color-text)] mb-4 flex items-center gap-2">
-                <PiCertificateFill className="text-base text-[var(--color-accent)]" />
-                <span>CERTIFICATES & BADGES</span>
-              </h4>
-              <div className="grid gap-2.5">
-                {user_info.certificates.map((cert, index) => (
-                  <ScrollReveal key={cert.title} delay={index * 60}>
-                    <a href={cert.link} target="_blank" rel="noopener noreferrer" className="block group">
-                      <SpotlightCard className="flex items-center gap-3 p-2.5 min-w-0 overflow-hidden">
-                        <div className="w-7 h-7 rounded-md bg-[var(--color-bg-component)] flex items-center justify-center text-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all text-xs flex-shrink-0">
-                          <FaCertificate />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="font-code font-bold text-[10px] text-[var(--color-text)] truncate">
-                              {cert.title}
-                            </span>
-                            <span className="text-[9px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">{cert.year}</span>
-                          </div>
-                          <p className="text-[9px] text-[var(--color-subtext)] line-clamp-2 leading-snug">
-                            {cert.description}
-                          </p>
-                        </div>
-                      </SpotlightCard>
-                    </a>
-                  </ScrollReveal>
-                ))}
-              </div>
-            </div>
-
-            </div>
-          </ScrollReveal>
-
-          {/* Right Columns: Simulated Git Show Terminal Viewport */}
-          <ScrollReveal delay={100} className="lg:col-span-6 flex flex-col h-full min-h-[440px]">
-            <div className="editor-window flex-1 flex flex-col border border-zinc-800 bg-[#0d1117] text-[#c9d1d9] rounded-lg shadow-2xl relative overflow-hidden">
-              
-              {/* Terminal Title Bar */}
-              <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
-                <div className="flex gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-                </div>
-                <span className="text-[9px] font-mono text-[#8b949e] flex items-center gap-1.5">
-                  <FaTerminal /> bash --cmd &quot;git show {selectedCommit.hash}&quot;
+    <div className="space-y-16">
+      {/* Timeline Section */}
+      <div className="space-y-12">
+        {experienceEvents.map((event, index) => (
+          <ScrollReveal key={index} delay={Math.min(index, 3) * 60}>
+            <article
+              className="relative grid md:grid-cols-12 gap-6 pb-12 border-b border-[var(--color-border)] last:border-b-0"
+            >
+              {/* Left: Year & Entity metadata */}
+              <div className="md:col-span-4 space-y-1">
+                <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">
+                  {event.year}
                 </span>
-                <div className="w-6" />
+                <h3 className="font-display font-bold text-lg text-[var(--color-text)] leading-snug">
+                  {event.entity}
+                </h3>
+                <p className="text-xs font-mono text-[var(--color-subtext)]">
+                  {event.role}
+                </p>
               </div>
 
-              {/* Terminal screen content (Git diff details) */}
-              <div className="flex-1 overflow-y-auto p-4 font-mono text-[10px] leading-5 select-text custom-scrollbar bg-[#05070c]">
-                
-                {/* Simulated cmd */}
-                <div className="mb-4">
-                  <span className="text-cyan-400">tiendat@portfolio:~$</span>{" "}
-                  <span className="text-white">git show {selectedCommit.hash}</span>
+              {/* Right: Summary, Contributions, Tech & Lesson */}
+              <div className="md:col-span-8 space-y-4">
+                <p className="text-sm text-[var(--color-text)] font-medium leading-relaxed">
+                  {event.summary}
+                </p>
+
+                <div className="space-y-2">
+                  <span className="text-[11px] font-mono uppercase text-[var(--color-subtext)] block">
+                    Key Work Delivered:
+                  </span>
+                  <ul className="space-y-1.5 text-xs text-[var(--color-subtext)] list-disc pl-4 leading-relaxed">
+                    {event.keyContributions.map((c, i) => (
+                      <li key={i}>{c}</li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Git commit metadata */}
-                <div className="text-yellow-500 font-semibold mb-1">
-                  commit {selectedCommit.hash}b210e74ff983e200c01a2d59df4a32ef
-                </div>
-                <div>Author: Mai Nguyen Tien Dat &lt;tiendatyyy2005@gmail.com&gt;</div>
-                <div className="mb-2">Date:   {selectedCommit.duration}</div>
-                
-                <div className="text-sky-400 font-semibold pl-4 mb-3 border-l-2 border-sky-400/50">
-                  {selectedCommit.subtitle} @ {selectedCommit.title}
-                </div>
-
-                {/* Simulated file header diff */}
-                <div className="text-[#8b949e] mb-1">
-                  --- a/milestones/{selectedCommit.type === "education" ? "education" : "experience"}.md<br />
-                  +++ b/milestones/{selectedCommit.type === "education" ? "education" : "experience"}.md
-                </div>
-                <div className="text-blue-400 mb-2">@@ -0,0 +1,{selectedCommit.descriptions.length} @@</div>
-
-                {/* Commit Diff items (responsibilities/descriptions) */}
-                <div className="space-y-1.5">
-                  {selectedCommit.descriptions.map((desc, idx) => (
-                    <div
-                      key={idx}
-                      className="pl-2 py-1 rounded-sm diff-added flex items-start gap-2 text-green-400"
-                    >
-                      <span className="font-bold select-none text-green-500 flex-shrink-0">+</span>
-                      <span className="text-green-300/90 whitespace-normal leading-4">{desc}</span>
-                    </div>
+                {/* Stack Used */}
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  {event.technology.map((t) => (
+                    <span key={t} className="tag">
+                      {t}
+                    </span>
                   ))}
                 </div>
 
-                {/* Certificate node image */}
-                {selectedCommit.image && (
-                  <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center gap-3">
-                    <img
-                      src={`/${selectedCommit.image}`}
-                      alt="milestone logo"
-                      className="w-10 h-10 rounded-full border border-zinc-800 p-0.5 bg-white flex-shrink-0"
-                    />
-                    <div>
-                      <div className="text-zinc-500 font-semibold">Related Node</div>
-                      <div className="text-white text-[9px] font-bold">{selectedCommit.title}</div>
-                    </div>
-                  </div>
-                )}
+                {/* Lesson Learned */}
+                <div className="p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] text-xs text-[var(--color-subtext)] space-y-1">
+                  <span className="font-mono font-semibold text-[var(--color-text)] text-[11px] block">
+                    Lesson Learned:
+                  </span>
+                  <p className="leading-relaxed font-sans">{event.lesson}</p>
+                </div>
               </div>
-
-              {/* Terminal footer status */}
-              <div className="px-3 py-1 bg-[#161b22] border-t border-[#21262d] flex items-center justify-between text-[8px] text-[#8b949e] select-none">
-                <span>git commit diff tracker</span>
-                <span>ESC to clear log</span>
-              </div>
-
-            </div>
+            </article>
           </ScrollReveal>
-
-        </div>
-
+        ))}
       </div>
-    </section>
+
+      {/* Certificates & Credentials Section */}
+      <section className="pt-8 space-y-6">
+        <ScrollReveal>
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+              Credentials
+            </span>
+            <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
+              Certificates & Achievements
+            </h3>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {user_info.certificates.map((cert, idx) => (
+            <ScrollReveal key={cert.title} delay={idx * 50}>
+              <div
+                className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-3"
+              >
+                <div>
+                  <div className="flex items-center justify-between text-xs font-mono text-[var(--color-subtext)] mb-2">
+                    <span>{cert.year}</span>
+                    <span className="chip !py-0.5 !px-2 text-[9px]">Verified</span>
+                  </div>
+                  <h4 className="font-display font-bold text-base text-[var(--color-text)]">
+                    {cert.title}
+                  </h4>
+                  <p className="mt-2 text-xs text-[var(--color-subtext)] leading-relaxed">
+                    {cert.description}
+                  </p>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 

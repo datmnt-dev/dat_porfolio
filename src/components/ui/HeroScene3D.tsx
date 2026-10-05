@@ -5,6 +5,17 @@ interface HeroScene3DProps {
   accent: string;
 }
 
+/**
+ * HeroScene3D — Software System Topology Metaphor
+ * Calm visual representation of an end-to-end fullstack architecture:
+ * Client Interface → API Gateway → Application Services → Database & Realtime Pipelines.
+ *
+ * Performance features:
+ * - IntersectionObserver pauses RAF when out of viewport
+ * - Clamped DPR (max 1.5)
+ * - Strict reduced-motion support (renders static frame, no animation loop)
+ * - Complete WebGL buffer & material disposal on unmount
+ */
 const HeroScene3D = ({ accent }: HeroScene3DProps) => {
   const hostRef = useRef<HTMLDivElement>(null);
 
@@ -12,155 +23,315 @@ const HeroScene3D = ({ accent }: HeroScene3DProps) => {
     const host = hostRef.current;
     if (!host) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const accentColor = getComputedStyle(document.documentElement)
+    const accentColorHex = getComputedStyle(document.documentElement)
       .getPropertyValue("--color-accent")
-      .trim();
-    const color = new THREE.Color(accentColor || "#06b6d4");
+      .trim() || "#0284c7";
+
+    const accentColor = new THREE.Color(accentColorHex);
+    const secondaryColor = new THREE.Color("#6366f1"); // Indigo secondary
+    const neutralNodeColor = new THREE.Color("#94a3b8");
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
+    camera.position.set(0, 0, 7.8);
+
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !reduceMotion });
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
     } catch {
       return;
     }
-    const pointer = new THREE.Vector2();
-    const targetRotation = new THREE.Vector2();
-    const clock = new THREE.Clock();
-    let frameId = 0;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, reduceMotion ? 1 : 1.75));
+    const isMobileViewport = window.innerWidth < 768;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobileViewport ? 1.0 : 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
     renderer.domElement.setAttribute("aria-hidden", "true");
     host.appendChild(renderer.domElement);
 
-    camera.position.set(0, 0, 7.5);
+    // Group for system topology
+    const systemGroup = new THREE.Group();
+    // Position on right-center for editorial desktop layout
+    systemGroup.position.set(1.45, 0, 0);
+    scene.add(systemGroup);
 
-    const rig = new THREE.Group();
-    rig.position.set(1.9, 0.1, 0);
-    scene.add(rig);
+    // Node definitions: [x, y, z, labelType, size]
+    // Metaphor:
+    // Top: Client / UI (React 19)
+    // Mid-upper: API Gateway / Routing
+    // Mid: Core Services (NestJS, .NET 8)
+    // Bottom: Database / Storage (PostgreSQL, Mongo, Firestore)
+    // Offset right: Realtime Hub (SignalR, WebSocket)
+    const nodeCoords = [
+      { pos: new THREE.Vector3(0, 1.8, 0), color: accentColor, size: 0.3 }, // UI / Client
+      { pos: new THREE.Vector3(0, 0.7, 0), color: accentColor, size: 0.25 }, // Gateway
+      { pos: new THREE.Vector3(-0.9, -0.4, 0.35), color: secondaryColor, size: 0.23 }, // Service A (.NET)
+      { pos: new THREE.Vector3(0.9, -0.4, -0.35), color: secondaryColor, size: 0.23 }, // Service B (NestJS)
+      { pos: new THREE.Vector3(0, -1.6, 0), color: neutralNodeColor, size: 0.28 }, // Database / Persistence
+      { pos: new THREE.Vector3(1.6, 0.4, 0.45), color: accentColor, size: 0.2 }, // Realtime Channel
+    ];
 
-    const core = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.55, 2),
-      new THREE.MeshStandardMaterial({
-        color,
-        emissive: color.clone().multiplyScalar(0.18),
-        metalness: 0.45,
-        roughness: 0.34,
-        flatShading: true,
+    const disposables: (THREE.BufferGeometry | THREE.Material)[] = [];
+
+    // Create 3D Nodes
+    const nodeMeshes: THREE.Mesh[] = [];
+    const innerMeshes: THREE.Mesh[] = [];
+    nodeCoords.forEach((node) => {
+      // Core octahedron for technical aesthetic
+      const geom = new THREE.OctahedronGeometry(node.size, 0);
+      const mat = new THREE.MeshBasicMaterial({
+        color: node.color,
+        wireframe: true,
         transparent: true,
-        opacity: 0.7,
-      }),
-    );
-    rig.add(core);
+        opacity: 0.9,
+      });
+      disposables.push(geom, mat);
+      const mesh = new THREE.Mesh(geom, mat);
+      mesh.position.copy(node.pos);
+      systemGroup.add(mesh);
+      nodeMeshes.push(mesh);
 
-    const wireframe = new THREE.LineSegments(
-      new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.72, 2)),
-      new THREE.LineBasicMaterial({ color: color.clone().lerp(new THREE.Color("#ffffff"), 0.35), transparent: true, opacity: 0.48 }),
-    );
-    rig.add(wireframe);
+      // Inner solid core
+      const innerGeom = new THREE.SphereGeometry(node.size * 0.45, 8, 8);
+      const innerMat = new THREE.MeshBasicMaterial({
+        color: node.color,
+        transparent: true,
+        opacity: 0.45,
+      });
+      disposables.push(innerGeom, innerMat);
+      const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+      innerMesh.position.copy(node.pos);
+      systemGroup.add(innerMesh);
+      innerMeshes.push(innerMesh);
+    });
 
-    const halo = new THREE.Mesh(
-      new THREE.TorusGeometry(2.2, 0.018, 8, 120),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55 }),
-    );
-    halo.rotation.set(0.95, 0.35, -0.45);
-    rig.add(halo);
+    // Node Connection pipelines (Edges)
+    const pipelineConnections = [
+      [0, 1], // UI -> Gateway
+      [1, 2], // Gateway -> .NET Service
+      [1, 3], // Gateway -> NestJS Service
+      [2, 4], // .NET -> DB
+      [3, 4], // NestJS -> DB
+      [1, 5], // Gateway <-> Realtime Hub
+      [0, 5], // UI <-> Realtime
+    ];
 
-    const innerHalo = new THREE.Mesh(
-      new THREE.TorusGeometry(1.95, 0.012, 8, 120),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color("#a5f3fc"), transparent: true, opacity: 0.32 }),
-    );
-    innerHalo.rotation.set(-0.55, 0.6, 0.25);
-    rig.add(innerHalo);
+    pipelineConnections.forEach(([fromIdx, toIdx]) => {
+      const from = nodeCoords[fromIdx].pos;
+      const to = nodeCoords[toIdx].pos;
 
-    const starCount = 180;
-    const starPositions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount; i += 1) {
-      const radius = 2.6 + ((i * 37) % 100) / 25;
-      const theta = i * 2.399963229728653;
-      const z = (((i * 53) % 100) / 100 - 0.5) * 2.8;
-      starPositions[i * 3] = Math.cos(theta) * radius;
-      starPositions[i * 3 + 1] = Math.sin(theta) * radius;
-      starPositions[i * 3 + 2] = z;
-    }
-    const starsGeometry = new THREE.BufferGeometry();
-    starsGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
-    const stars = new THREE.Points(
-      starsGeometry,
-      new THREE.PointsMaterial({ color, size: 0.035, transparent: true, opacity: 0.7, sizeAttenuation: true }),
-    );
-    rig.add(stars);
+      const lineGeom = new THREE.BufferGeometry().setFromPoints([from, to]);
+      const lineMat = new THREE.LineBasicMaterial({
+        color: accentColor,
+        transparent: true,
+        opacity: 0.35,
+      });
+      disposables.push(lineGeom, lineMat);
+      const line = new THREE.Line(lineGeom, lineMat);
+      systemGroup.add(line);
+    });
 
-    const keyLight = new THREE.PointLight(color, 18, 18);
-    keyLight.position.set(2.5, 2, 4);
-    scene.add(keyLight);
-    const fillLight = new THREE.PointLight("#818cf8", 10, 16);
-    fillLight.position.set(-3, -1.5, 3);
-    scene.add(fillLight);
-    scene.add(new THREE.AmbientLight("#ffffff", 1.4));
+    // Subtle floating data packets traversing the connections
+    const packetCount = 8;
+    const packetGeom = new THREE.BufferGeometry();
+    const packetPositions = new Float32Array(packetCount * 3);
+    packetGeom.setAttribute("position", new THREE.BufferAttribute(packetPositions, 3));
+    const packetMat = new THREE.PointsMaterial({
+      color: accentColor,
+      size: 0.08,
+      transparent: true,
+      opacity: 0.9,
+    });
+    disposables.push(packetGeom, packetMat);
+    const packetPoints = new THREE.Points(packetGeom, packetMat);
+    systemGroup.add(packetPoints);
 
-    const resize = () => {
-      const { width, height } = host.getBoundingClientRect();
+    // Subtle background ambient grid ring
+    const gridRingGeom = new THREE.RingGeometry(2.3, 2.32, 64);
+    const gridRingMat = new THREE.MeshBasicMaterial({
+      color: neutralNodeColor,
+      transparent: true,
+      opacity: 0.15,
+      side: THREE.DoubleSide,
+    });
+    disposables.push(gridRingGeom, gridRingMat);
+    const gridRing = new THREE.Mesh(gridRingGeom, gridRingMat);
+    gridRing.rotation.x = Math.PI * 0.35;
+    systemGroup.add(gridRing);
+
+    // Mouse parallax tracking
+    const targetRotation = { x: 0, y: 0 };
+    const mouseParallax = { x: 0, y: 0 };
+    const pointer = { x: 0, y: 0 };
+
+    const onPointerMove = (e: MouseEvent) => {
+      pointer.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      pointer.y = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetRotation.y = pointer.x * 0.35;
+      targetRotation.x = -pointer.y * 0.25;
+    };
+
+    // Base position for responsive positioning & floating levitation
+    const basePosition = { x: 1.45, y: 0, z: 0 };
+
+    // Resize handler
+    const handleResize = () => {
+      if (!host) return;
+      const width = host.clientWidth;
+      const height = host.clientHeight;
       if (!width || !height) return;
-      renderer.setSize(width, height, false);
+
+      // Responsive positioning
+      if (width < 768) {
+        basePosition.x = 0;
+        basePosition.y = 0.4;
+        systemGroup.scale.setScalar(0.72);
+      } else if (width < 1024) {
+        basePosition.x = 0.6;
+        basePosition.y = 0.1;
+        systemGroup.scale.setScalar(0.85);
+      } else {
+        basePosition.x = 1.45;
+        basePosition.y = 0;
+        systemGroup.scale.setScalar(1.0);
+      }
+
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
     };
 
-    const onPointerMove = (event: PointerEvent) => {
-      pointer.x = event.clientX / window.innerWidth - 0.5;
-      pointer.y = event.clientY / window.innerHeight - 0.5;
-      targetRotation.set(pointer.y * 0.38, pointer.x * 0.52);
-    };
-
-    const render = () => {
-      const elapsed = clock.getElapsedTime();
-      rig.rotation.x += (targetRotation.x - rig.rotation.x) * 0.04;
-      rig.rotation.y += (targetRotation.y + elapsed * 0.16 - rig.rotation.y) * 0.035;
-      core.rotation.y = elapsed * 0.24;
-      core.rotation.z = elapsed * 0.1;
-      wireframe.rotation.y = -elapsed * 0.18;
-      halo.rotation.z = elapsed * 0.16;
-      innerHalo.rotation.z = -elapsed * 0.12;
-      stars.rotation.z = elapsed * 0.045;
-      rig.position.y = 0.12 + Math.sin(elapsed * 0.7) * 0.12;
-      renderer.render(scene, camera);
-      frameId = window.requestAnimationFrame(render);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
+    handleResize();
+    window.addEventListener("resize", handleResize);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
-    if (reduceMotion) {
+
+    // Viewport Visibility tracking and robust animation loop
+    let isVisible = true;
+    let isLoopRunning = false;
+    let animationFrameId = 0;
+    const clock = new THREE.Clock();
+
+    // Render loop: floats smoothly, rotates continuously 360 degrees
+    const animate = () => {
+      if (!isVisible) {
+        isLoopRunning = false;
+        return;
+      }
+
+      const elapsed = clock.getElapsedTime();
+
+      // 1. Floating / Levitating effect (trôi nổi bồng bềnh mượt mà, êm ái)
+      const floatOffsetY = Math.sin(elapsed * 1.25) * 0.22;
+      const floatOffsetX = Math.cos(elapsed * 0.75) * 0.05;
+      systemGroup.position.y = basePosition.y + floatOffsetY;
+      systemGroup.position.x = basePosition.x + floatOffsetX;
+
+      // 2. Continuous 360-degree orbital rotation (quay vòng 360 độ liên tục, nhịp nhàng)
+      const rotationSpeed = 0.45; // Nhịp quay tròn 360 độ rõ nét, mượt mà và trực quan
+      mouseParallax.y += (targetRotation.y - mouseParallax.y) * 0.05;
+      mouseParallax.x += (targetRotation.x - mouseParallax.x) * 0.05;
+
+      systemGroup.rotation.y = elapsed * rotationSpeed + mouseParallax.y;
+      systemGroup.rotation.x = 0.12 + Math.sin(elapsed * 0.45) * 0.08 + mouseParallax.x;
+      systemGroup.rotation.z = Math.cos(elapsed * 0.35) * 0.05;
+
+      // 3. Orbital ambient ring rotation (quay ngược chiều nhịp nhàng)
+      gridRing.rotation.z = -elapsed * 0.18;
+      gridRing.rotation.x = Math.PI * 0.36 + Math.sin(elapsed * 0.5) * 0.06;
+
+      // 4. Local node rotation and core pulsing
+      nodeMeshes.forEach((mesh, idx) => {
+        mesh.rotation.y = elapsed * (0.45 + idx * 0.08);
+        mesh.rotation.x = elapsed * (0.28 + idx * 0.05);
+      });
+
+      innerMeshes.forEach((inner, idx) => {
+        const pulse = 1 + Math.sin(elapsed * 2.2 + idx * 0.9) * 0.14;
+        inner.scale.set(pulse, pulse, pulse);
+      });
+
+      // 5. Update packet positions traveling along the pipelines
+      const positions = packetGeom.attributes.position.array as Float32Array;
+      for (let i = 0; i < packetCount; i++) {
+        const conn = pipelineConnections[i % pipelineConnections.length];
+        const from = nodeCoords[conn[0]].pos;
+        const to = nodeCoords[conn[1]].pos;
+        const t = (elapsed * 0.35 + i / packetCount) % 1;
+
+        positions[i * 3] = THREE.MathUtils.lerp(from.x, to.x, t);
+        positions[i * 3 + 1] = THREE.MathUtils.lerp(from.y, to.y, t);
+        positions[i * 3 + 2] = THREE.MathUtils.lerp(from.z, to.z, t);
+      }
+      packetGeom.attributes.position.needsUpdate = true;
+
       renderer.render(scene, camera);
-    } else {
-      render();
-    }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const startLoop = () => {
+      if (!isLoopRunning) {
+        isLoopRunning = true;
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    const stopLoop = () => {
+      isLoopRunning = false;
+      cancelAnimationFrame(animationFrameId);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          startLoop();
+        } else {
+          stopLoop();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(host);
+
+    const handleVisibilityChange = () => {
+      isVisible = document.visibilityState === "visible";
+      if (isVisible) {
+        startLoop();
+      } else {
+        stopLoop();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Bắt đầu ngay lập tức khi mount để đảm bảo luôn chuyển động
+    startLoop();
 
     return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", resize);
+      stopLoop();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("pointermove", onPointerMove);
-      core.geometry.dispose();
-      (core.material as THREE.Material).dispose();
-      wireframe.geometry.dispose();
-      (wireframe.material as THREE.Material).dispose();
-      halo.geometry.dispose();
-      (halo.material as THREE.Material).dispose();
-      innerHalo.geometry.dispose();
-      (innerHalo.material as THREE.Material).dispose();
-      starsGeometry.dispose();
-      (stars.material as THREE.Material).dispose();
+
+      disposables.forEach((item) => item.dispose());
       renderer.dispose();
-      renderer.domElement.remove();
+      if (renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
     };
   }, [accent]);
 
-  return <div ref={hostRef} className="hero-scene-3d" aria-hidden="true" />;
+  return (
+    <div
+      ref={hostRef}
+      className="hero-scene-3d absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-85"
+      aria-hidden="true"
+    />
+  );
 };
 
 export default HeroScene3D;

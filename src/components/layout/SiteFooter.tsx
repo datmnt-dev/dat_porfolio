@@ -1,112 +1,131 @@
 import { Link } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaFacebook, FaInstagram, FaArrowUp } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaArrowUp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import user_info from "../../data/userdata";
+import { useLenis } from "../../motion";
 
 const SiteFooter = () => {
-  const year = 2025;
-  const sections = [
+  const year = new Date().getFullYear();
+  const { scrollTo } = useLenis();
+
+  const navSections = [
     {
-      title: "Khám phá",
+      title: "Index",
       links: [
+        { to: "/projects", label: "Selected Work" },
         { to: "/about", label: "About" },
-        { to: "/projects", label: "Projects" },
         { to: "/experience", label: "Experience" },
-        { to: "/skills", label: "Skills" },
+        { to: "/skills", label: "Technical Skills" },
       ],
     },
     {
-      title: "Đọc & thử",
+      title: "Exploration",
       links: [
-        { to: "/blog", label: "Blog" },
-        { to: "/playground", label: "Playground" },
-        { to: "/contact", label: "Contact" },
+        { to: "/blog", label: "Engineering Notes" },
+        { to: "/playground", label: "Interactive Lab" },
+        { to: "/contact", label: "Direct Contact" },
       ],
     },
   ];
 
+  const socialLinks = [
+    { href: user_info.socials.github, Icon: FaGithub, label: "GitHub" },
+    { href: user_info.socials.linkedin, Icon: FaLinkedin, label: "LinkedIn" },
+    { href: `mailto:${user_info.main.email}`, Icon: MdEmail, label: "Email" },
+  ];
+
   return (
     <footer
-      className="mt-24 border-t relative"
+      className="mt-28 border-t relative"
       style={{
         borderColor: "var(--color-border)",
-        backgroundColor: "var(--color-bg-component)",
+        backgroundColor: "var(--color-bg)",
       }}
     >
-      <div className="absolute inset-x-0 -top-px h-px" style={{ background: "var(--gradient-accent)", opacity: 0.4 }} />
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden ring-2 ring-[var(--color-accent)]">
-                <img src={user_info.main.photo} alt="" className="w-full h-full object-cover" />
-              </div>
-              <span className="font-display font-bold text-lg">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          {/* Brand info - 6 cols */}
+          <div className="md:col-span-6 space-y-4">
+            <Link to="/" className="inline-flex items-center gap-2.5 group">
+              <span className="font-display font-semibold text-lg tracking-tight">
                 {user_info.main.name}
                 <span className="text-[var(--color-accent)]">.</span>
               </span>
             </Link>
-            <p className="mt-4 text-sm text-[var(--color-subtext)] max-w-md leading-relaxed">
-              {user_info.main.shortBio}
+
+            <p className="text-sm text-[var(--color-subtext)] max-w-sm leading-relaxed">
+              Software Engineer based in Da Nang, Vietnam. Focused on building reliable web products with React, TypeScript, and modern backend services.
             </p>
 
-            <div className="mt-5 flex items-center gap-2">
-              {[
-                { href: user_info.socials.github, Icon: FaGithub, label: "GitHub" },
-                { href: user_info.socials.linkedin, Icon: FaLinkedin, label: "LinkedIn" },
-                { href: user_info.socials.facebook, Icon: FaFacebook, label: "Facebook" },
-                { href: user_info.socials.instagram, Icon: FaInstagram, label: "Instagram" },
-                { href: `mailto:${user_info.main.email}`, Icon: MdEmail, label: "Email" },
-              ].map(({ href, Icon, label }) => (
+            <div className="pt-2 flex items-center gap-2.5">
+              {socialLinks.map(({ href, Icon, label }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 grid place-items-center rounded-xl border border-[var(--color-border)] text-[var(--color-text)] hover:text-white hover:border-[var(--color-accent)] transition"
+                  className="w-9 h-9 rounded-lg border flex items-center justify-center text-sm transition-colors"
                   style={{
-                    background: "transparent",
+                    borderColor: "var(--color-border)",
+                    backgroundColor: "var(--color-card)",
+                    color: "var(--color-subtext)",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "var(--gradient-accent)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--color-text)";
+                    e.currentTarget.style.borderColor = "var(--color-border-strong)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--color-subtext)";
+                    e.currentTarget.style.borderColor = "var(--color-border)";
+                  }}
                   aria-label={label}
+                  title={label}
                 >
-                  <Icon className="text-sm" />
+                  <Icon />
                 </a>
               ))}
             </div>
           </div>
 
-          {sections.map((s) => (
-            <div key={s.title}>
-              <h4 className="font-display font-semibold text-sm mb-4">{s.title}</h4>
-              <ul className="space-y-2">
-                {s.links.map((l) => (
-                  <li key={l.to}>
-                    <Link
-                      to={l.to}
-                      className="text-sm text-[var(--color-subtext)] hover:text-[var(--color-accent)] transition"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Navigation links - 6 cols (3 + 3) */}
+          <div className="md:col-span-6 grid grid-cols-2 gap-8">
+            {navSections.map((section) => (
+              <div key={section.title}>
+                <h4 className="font-mono text-xs uppercase tracking-wider text-[var(--color-subtext)] mb-4 font-semibold">
+                  {section.title}
+                </h4>
+                <ul className="space-y-2.5">
+                  {section.links.map((link) => (
+                    <li key={link.to}>
+                      <Link
+                        to={link.to}
+                        className="text-sm text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors inline-block"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-[var(--color-subtext)]">
-            © {year} {user_info.main.name}. Crafted with React, Vite & a lot of ☕.
+        {/* Bottom bar */}
+        <div
+          className="mt-14 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-[var(--color-subtext)]"
+          style={{ borderColor: "var(--color-border)" }}
+        >
+          <p>
+            © {year} {user_info.main.name}. Built with React 19 + TypeScript.
           </p>
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex items-center gap-2 text-xs text-[var(--color-subtext)] hover:text-[var(--color-accent)] transition"
+            onClick={() => scrollTo(0)}
+            className="inline-flex items-center gap-2 hover:text-[var(--color-text)] transition-colors cursor-pointer"
+            aria-label="Scroll back to top"
           >
-            <FaArrowUp />
             <span>Back to top</span>
+            <FaArrowUp className="text-[10px]" />
           </button>
         </div>
       </div>
