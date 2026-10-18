@@ -2,6 +2,8 @@ import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaArrowRight, FaCodeBranch, FaCheck } from "react-icons/fa";
 import user_info from "../data/userdata";
+import { Reveal } from "../motion";
+import SectionDivider from "../components/ui/SectionDivider";
 
 const statusLabel = {
   "in-progress": "In progress",
@@ -36,61 +38,71 @@ const ProjectDetail: React.FC = () => {
       </nav>
 
       {/* Case Study Hero */}
-      <header className="space-y-6 pb-12 border-b border-[var(--color-border)]">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="chip text-[10px]">{project.category.toUpperCase()}</span>
-          <span className="text-xs font-mono uppercase px-2.5 py-0.5 rounded-full bg-[var(--color-bg-component)] border border-[var(--color-border)] text-[var(--color-subtext)]">
-            {statusLabel[project.status]}
-          </span>
-          <span className="text-xs font-mono text-[var(--color-subtext)]">
-            {project.duration}
-          </span>
-        </div>
+      <header className="space-y-6 pb-12">
+        <Reveal direction="right" distance={12} duration={550} delay={0}>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="chip text-[10px]">{project.category.toUpperCase()}</span>
+            <span className="text-xs font-mono uppercase px-2.5 py-0.5 rounded-full bg-[var(--color-bg-component)] border border-[var(--color-border)] text-[var(--color-subtext)]">
+              {statusLabel[project.status]}
+            </span>
+            <span className="text-xs font-mono text-[var(--color-subtext)]">
+              {project.duration}
+            </span>
+          </div>
+        </Reveal>
 
-        <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-[var(--color-text)] tracking-tight leading-[1.05]">
-          {project.title}
-        </h1>
+        <Reveal direction="up" distance={26} duration={680} delay={60}>
+          <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-[var(--color-text)] tracking-tight leading-[1.05]">
+            {project.title}
+          </h1>
+        </Reveal>
 
-        <p className="text-base sm:text-xl font-medium text-[var(--color-accent)] font-mono">
-          {project.tagline}
-        </p>
+        <Reveal direction="up" distance={16} duration={600} delay={120}>
+          <p className="text-base sm:text-xl font-medium text-[var(--color-accent)] font-mono">
+            {project.tagline}
+          </p>
+        </Reveal>
 
         {/* Action Links */}
-        <div className="flex flex-wrap items-center gap-4 pt-2">
-          {project.github && project.github !== "#" && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary !text-xs !py-2 !px-3.5"
-            >
-              <FaGithub />
-              <span>Xem Repository</span>
-            </a>
-          )}
-          {project.link && project.link !== "#" && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost !text-xs !py-2 !px-3.5"
-            >
-              <FaExternalLinkAlt className="text-[10px]" />
-              <span>Xem Live Demo</span>
-            </a>
-          )}
-          {(!project.link || project.link === "#") && (!project.github || project.github === "#") && (
-            <span className="text-xs font-mono text-[var(--color-subtext)] italic">
-              [Repository nội bộ / Đang triển khai thử nghiệm]
-            </span>
-          )}
-        </div>
+        <Reveal direction="up" distance={12} duration={550} delay={180}>
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            {project.github && project.github !== "#" && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary !text-xs !py-2 !px-3.5"
+              >
+                <FaGithub />
+                <span>Xem Repository</span>
+              </a>
+            )}
+            {project.link && project.link !== "#" && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost !text-xs !py-2 !px-3.5"
+              >
+                <FaExternalLinkAlt className="text-[10px]" />
+                <span>Xem Live Demo</span>
+              </a>
+            )}
+            {(!project.link || project.link === "#") && (!project.github || project.github === "#") && (
+              <span className="text-xs font-mono text-[var(--color-subtext)] italic">
+                [Repository nội bộ / Đang triển khai thử nghiệm]
+              </span>
+            )}
+          </div>
+        </Reveal>
       </header>
+
+      <SectionDivider />
 
       {/* Case Study Body */}
       <div className="py-12 space-y-16">
         {/* 1. Overview */}
-        <section className="space-y-4">
+        <Reveal variant="section" className="space-y-4">
           <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
             01 / Overview
           </h2>
@@ -105,11 +117,11 @@ const ProjectDetail: React.FC = () => {
               {project.longDescription}
             </p>
           )}
-        </section>
+        </Reveal>
 
         {/* 2. Key Contributions & Technical Responsibilities */}
         {project.responsibilities && project.responsibilities.length > 0 && (
-          <section className="space-y-6">
+          <Reveal variant="section" className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
@@ -139,11 +151,11 @@ const ProjectDetail: React.FC = () => {
                 ))}
               </ul>
             </div>
-          </section>
+          </Reveal>
         )}
 
         {/* 3. Technology Stack & Repositories */}
-        <section className="space-y-6">
+        <Reveal variant="section" className="space-y-6">
           <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
             03 / Architecture
           </h2>
@@ -206,11 +218,11 @@ const ProjectDetail: React.FC = () => {
               )}
             </div>
           </div>
-        </section>
+        </Reveal>
       </div>
 
       {/* Next Project Footer Link */}
-      <footer className="pt-12 mt-12 border-t border-[var(--color-border)] flex items-center justify-between">
+      <Reveal variant="content" distance={12} className="pt-12 mt-12 border-t border-[var(--color-border)] flex items-center justify-between">
         <Link
           to="/projects"
           className="text-xs font-mono text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors"
@@ -227,7 +239,7 @@ const ProjectDetail: React.FC = () => {
             <FaArrowRight className="text-[10px]" />
           </Link>
         )}
-      </footer>
+      </Reveal>
     </article>
   );
 };

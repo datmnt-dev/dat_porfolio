@@ -1,32 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import user_info from "../data/userdata";
-import ScrollReveal from "../components/ui/ScrollReveal";
+import { Reveal } from "../motion";
+import SectionDivider from "../components/ui/SectionDivider";
 
 const Blog: React.FC = () => {
   const posts = user_info.blog;
 
   return (
-    <div className="py-12 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="py-12 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       {/* Editorial Header */}
-      <ScrollReveal>
-        <header className="space-y-4 border-b border-[var(--color-border)] pb-12">
-          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+      <header className="space-y-4">
+        <Reveal direction="right" distance={12} duration={550} delay={0}>
+          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block">
             Technical Writing
           </span>
+        </Reveal>
+        <Reveal direction="up" distance={26} duration={680} delay={60}>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-[var(--color-text)]">
             Engineering Notes
           </h1>
+        </Reveal>
+        <Reveal direction="up" distance={16} duration={600} delay={120}>
           <p className="text-base sm:text-lg text-[var(--color-subtext)] max-w-2xl leading-relaxed">
             Ghi chép về kiến trúc phần mềm, tư duy chuyển đổi từ MVC sang SPA, và các kinh nghiệm thực tế rút ra trong quá trình xây dựng sản phẩm.
           </p>
-        </header>
-      </ScrollReveal>
+        </Reveal>
+      </header>
+
+      <SectionDivider />
 
       {/* Editorial Notes List (No card clutter, pure typography rhythm) */}
       <div className="divide-y divide-[var(--color-border)]">
         {posts.map((post, idx) => (
-          <ScrollReveal key={post.slug} delay={idx * 60}>
+          <Reveal key={post.slug} variant="card" delay={idx * 70}>
             <article className="py-10 group">
               <Link to={`/blog/${post.slug}`} className="block">
                 <div className="grid md:grid-cols-12 gap-4 md:gap-8 items-baseline">
@@ -56,7 +63,7 @@ const Blog: React.FC = () => {
                 </div>
               </Link>
             </article>
-          </ScrollReveal>
+          </Reveal>
         ))}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaCodeBranch } from "react-icons/fa";
+import { Reveal } from "../motion";
 
 interface SkillItem {
   name: string;
@@ -136,23 +137,27 @@ const Skills: React.FC = () => {
     <div className="space-y-16">
       {/* 1. Production / Strong Tier */}
       <section className="space-y-6">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
-            Tier 01 · Production Ready
-          </span>
-          <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
-            Production & Strong
-          </h3>
-          <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
-            Các công nghệ cốt lõi mình sử dụng hàng ngày với mức độ tự tin cao nhất, đã ship vào các sản phẩm thực tế.
-          </p>
-        </div>
+        <Reveal variant="content" direction="up" distance={20} duration={600}>
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+              Tier 01 · Production Ready
+            </span>
+            <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
+              Production & Strong
+            </h3>
+            <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
+              Các công nghệ cốt lõi mình sử dụng hàng ngày với mức độ tự tin cao nhất, đã ship vào các sản phẩm thực tế.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {strongSkills.map((skill) => (
-            <div
+          {strongSkills.map((skill, idx) => (
+            <Reveal
               key={skill.name}
-              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4"
+              variant="card"
+              delay={(idx % 3) * 60}
+              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4 h-full"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 text-xs font-mono text-[var(--color-subtext)] mb-2">
@@ -179,30 +184,34 @@ const Skills: React.FC = () => {
                   </Link>
                 </div>
               )}
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* 2. Comfortable Tier */}
       <section className="space-y-6">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
-            Tier 02 · Backend & Data
-          </span>
-          <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
-            Comfortable
-          </h3>
-          <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
-            Nắm vững kiến trúc, xây dựng độc lập các module backend, cơ sở dữ liệu và hạ tầng cơ bản.
-          </p>
-        </div>
+        <Reveal variant="content" direction="up" distance={20} duration={600}>
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+              Tier 02 · Backend & Data
+            </span>
+            <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
+              Comfortable
+            </h3>
+            <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
+              Nắm vững kiến trúc, xây dựng độc lập các module backend, cơ sở dữ liệu và hạ tầng cơ bản.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {comfortableSkills.map((skill) => (
-            <div
+          {comfortableSkills.map((skill, idx) => (
+            <Reveal
               key={skill.name}
-              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4"
+              variant="card"
+              delay={(idx % 3) * 60}
+              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4 h-full"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 text-xs font-mono text-[var(--color-subtext)] mb-2">
@@ -229,30 +238,34 @@ const Skills: React.FC = () => {
                   </Link>
                 </div>
               )}
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* 3. Exploring Tier */}
       <section className="space-y-6">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
-            Tier 03 · Exploring
-          </span>
-          <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
-            Familiar & Exploring
-          </h3>
-          <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
-            Các công nghệ mình đã có kinh nghiệm làm prototype hoặc đang tìm hiểu sâu thêm để mở rộng khả năng.
-          </p>
-        </div>
+        <Reveal variant="content" direction="up" distance={20} duration={600}>
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+              Tier 03 · Exploring
+            </span>
+            <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
+              Familiar & Exploring
+            </h3>
+            <p className="mt-2 text-sm text-[var(--color-subtext)] max-w-xl">
+              Các công nghệ mình đã có kinh nghiệm làm prototype hoặc đang tìm hiểu sâu thêm để mở rộng khả năng.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {exploringSkills.map((skill) => (
-            <div
+          {exploringSkills.map((skill, idx) => (
+            <Reveal
               key={skill.name}
-              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4"
+              variant="card"
+              delay={(idx % 3) * 60}
+              className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4 h-full"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 text-xs font-mono text-[var(--color-subtext)] mb-2">
@@ -279,13 +292,13 @@ const Skills: React.FC = () => {
                   </Link>
                 </div>
               )}
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Methodologies & Workflow */}
-      <section className="p-8 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] space-y-6">
+      <Reveal variant="section" className="p-8 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] space-y-6">
         <div>
           <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
             Engineering Practice
@@ -303,10 +316,12 @@ const Skills: React.FC = () => {
             { label: "Clean Code & Refactoring", desc: "Đặt tên có nghĩa, tránh duplicate logic, giữ function nhỏ và đơn trách nhiệm" },
             { label: "Agile / Scrum Teamwork", desc: "Lập kế hoạch sprint, backlog refinement và họp trao đổi tiến độ" },
             { label: "Performance & A11y", desc: "Kiểm soát re-render, lazy-load tài nguyên nặng, hỗ trợ phím và reduced motion" },
-          ].map((item) => (
-            <div
+          ].map((item, idx) => (
+            <Reveal
               key={item.label}
-              className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] space-y-1.5"
+              variant="card"
+              delay={(idx % 3) * 60}
+              className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)] space-y-1.5 h-full"
             >
               <span className="font-semibold text-[var(--color-text)] flex items-center gap-1.5">
                 <FaCodeBranch className="text-[10px] text-[var(--color-accent)]" />
@@ -315,10 +330,10 @@ const Skills: React.FC = () => {
               <p className="text-[11px] text-[var(--color-subtext)] leading-relaxed font-sans">
                 {item.desc}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
-      </section>
+      </Reveal>
     </div>
   );
 };

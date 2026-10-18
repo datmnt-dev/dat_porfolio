@@ -543,26 +543,41 @@ html.dark .bg-grid {
 @keyframes revealFadeSlide {
   0% {
     opacity: 0;
-    transform: var(--reveal-from, translate3d(0, 18px, 0));
+    transform: var(--reveal-from, translate3d(0, 24px, 0)) scale(var(--reveal-scale-from, 1));
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
 .scroll-reveal {
   opacity: 0;
-  transform: var(--reveal-from, translate3d(0, 18px, 0));
+  transform: var(--reveal-from, translate3d(0, 24px, 0)) scale(var(--reveal-scale-from, 1));
   will-change: opacity, transform;
 }
 
 .scroll-reveal.is-revealed {
   animation-name: revealFadeSlide;
-  animation-duration: var(--reveal-duration, 580ms);
+  animation-duration: var(--reveal-duration, 640ms);
   animation-delay: var(--reveal-delay, 0ms);
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: forwards;
+}
+
+/* Free GPU memory after reveal completes */
+.scroll-reveal.is-revealed:not(:hover) {
+  will-change: auto;
+}
+
+/* Reduced motion safeguard */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
 }
 
 @media (max-width: 1023px) {

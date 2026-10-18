@@ -2,6 +2,8 @@ import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import user_info from "../data/userdata";
+import { Reveal } from "../motion";
+import SectionDivider from "../components/ui/SectionDivider";
 
 // Parse markdown to clean JSX
 const parseMarkdownToJSX = (content: string) => {
@@ -129,9 +131,9 @@ const BlogDetail: React.FC = () => {
   }
 
   return (
-    <article className="py-12 sm:py-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <article className="py-12 sm:py-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Back button */}
-      <nav className="mb-10">
+      <nav>
         <Link
           to="/blog"
           className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors"
@@ -142,33 +144,41 @@ const BlogDetail: React.FC = () => {
       </nav>
 
       {/* Note Header */}
-      <header className="space-y-4 pb-8 border-b border-[var(--color-border)] mb-10">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[var(--color-subtext)]">
-          <span>{post.date}</span>
-          <span>·</span>
-          <span>{post.readMinutes} min read</span>
-        </div>
+      <header className="space-y-4">
+        <Reveal direction="right" distance={12} duration={550} delay={0}>
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[var(--color-subtext)]">
+            <span>{post.date}</span>
+            <span>·</span>
+            <span>{post.readMinutes} min read</span>
+          </div>
+        </Reveal>
 
-        <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-[1.1]">
-          {post.title}
-        </h1>
+        <Reveal direction="up" distance={26} duration={680} delay={60}>
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-[1.1]">
+            {post.title}
+          </h1>
+        </Reveal>
 
-        <div className="flex flex-wrap items-center gap-2 pt-2">
-          {post.tags.map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
+        <Reveal direction="up" distance={14} duration={550} delay={120}>
+          <div className="flex flex-wrap items-center gap-2 pt-2">
+            {post.tags.map((tag) => (
+              <span key={tag} className="tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </Reveal>
       </header>
 
+      <SectionDivider />
+
       {/* Content */}
-      <div className="prose-custom max-w-none select-text">
+      <div className="prose-custom max-w-none select-text pt-4">
         {parseMarkdownToJSX(post.content)}
       </div>
 
       {/* Footer navigation */}
-      <footer className="mt-16 pt-8 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-mono">
+      <Reveal variant="content" distance={12} className="mt-16 pt-8 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-mono">
         <Link
           to="/blog"
           className="text-[var(--color-subtext)] hover:text-[var(--color-text)] transition-colors"
@@ -181,7 +191,7 @@ const BlogDetail: React.FC = () => {
         >
           Liên hệ trao đổi →
         </Link>
-      </footer>
+      </Reveal>
     </article>
   );
 };

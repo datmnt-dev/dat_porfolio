@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaArrowUp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import user_info from "../../data/userdata";
-import { useLenis } from "../../motion";
+import { useLenis, Reveal } from "../../motion";
 
 const SiteFooter = () => {
   const year = new Date().getFullYear();
@@ -42,7 +42,7 @@ const SiteFooter = () => {
         backgroundColor: "var(--color-bg)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
+      <Reveal variant="content" distance={12} duration={500} className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Brand info - 6 cols */}
           <div className="md:col-span-6 space-y-4">
@@ -128,7 +128,7 @@ const SiteFooter = () => {
             <FaArrowUp className="text-[10px]" />
           </button>
         </div>
-      </div>
+      </Reveal>
     </footer>
   );
 };

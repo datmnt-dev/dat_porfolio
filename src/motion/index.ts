@@ -15,7 +15,8 @@ export { SmoothScrollProvider, type SmoothScrollProviderProps } from "./provider
 export { LenisContext, type LenisContextValue } from "./providers/LenisContext";
 
 // Primitives
-export { Reveal, type RevealProps, type RevealDirection } from "./primitives/Reveal";
+export { Reveal, type RevealProps, type RevealDirection, type RevealVariant } from "./primitives/Reveal";
+export { VisualReveal, type VisualRevealProps } from "./primitives/VisualReveal";
 export { TiltCard, type TiltCardProps } from "./primitives/TiltCard";
 export { CountUp, type CountUpProps } from "./primitives/CountUp";
 export { ProgressRing, type ProgressRingProps } from "./primitives/ProgressRing";

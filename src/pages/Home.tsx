@@ -11,7 +11,8 @@ import user_info, { type Project } from "../data/userdata";
 import ScrollReveal from "../components/ui/ScrollReveal";
 import GitHubActivity from "../components/GitHubActivity";
 import Magnetic from "../components/ui/Magnetic";
-import { useLenis } from "../motion";
+import { useLenis, Reveal, VisualReveal } from "../motion";
+import SectionDivider from "../components/ui/SectionDivider";
 
 const HeroScene3D = lazy(() => import("../components/ui/HeroScene3D"));
 
@@ -124,38 +125,51 @@ const Home = () => {
       {/* =========================================================================
           2. SELECTED WORK — FLAGSHIP PRODUCT STORIES
          ========================================================================= */}
+      <SectionDivider />
       <section
         id="selected-work"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 border-b border-[var(--color-border)]"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32"
       >
-        <ScrollReveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+          <div>
+            <Reveal direction="right" distance={12} duration={580} delay={0}>
+              <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block mb-2">
                 01 / Work
               </span>
-              <h2 className="mt-2 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
+            </Reveal>
+            <Reveal direction="up" distance={26} duration={680} delay={70}>
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
                 Selected Work
               </h2>
+            </Reveal>
+            <Reveal direction="up" distance={16} duration={600} delay={140}>
               <p className="mt-3 text-sm sm:text-base text-[var(--color-subtext)] max-w-xl">
                 Ba dự án thực tế thể hiện tư duy kiến trúc, khả năng làm việc full-stack và sự tỉ mỉ trong từng chi tiết sản phẩm.
               </p>
-            </div>
+            </Reveal>
+          </div>
+          <Reveal direction="up" distance={14} duration={550} delay={190}>
             <Link
               to="/projects"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-accent)] hover:underline self-start md:self-end"
+              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-accent)] hover:underline self-start md:self-end group/all"
             >
               <span>Tất cả {user_info.projects.length} dự án</span>
-              <FaArrowRight className="text-[10px]" />
+              <FaArrowRight className="text-[10px] transition-transform duration-200 group-hover/all:translate-x-1" />
             </Link>
-          </div>
-        </ScrollReveal>
+          </Reveal>
+        </div>
 
-        {/* Flagship Projects List (Alternating Layouts) */}
+        {/* Flagship Projects List (Choreographed Alternating Layouts & Motion Rhythm) */}
         <div className="space-y-20 sm:space-y-28">
           {flagshipProjects.map((project, idx) => {
             const isReversed = idx % 2 === 1;
             const projectNumber = `0${idx + 1}`;
+
+            // Rhythm:
+            // Project 01 & 03: visual enters from left (x: -28px -> 0), text enters from right (x: +22px -> 0)
+            // Project 02: visual enters from right (x: +28px -> 0), text enters from left (x: -22px -> 0)
+            const visualDirection = isReversed ? "left" : "right";
+            const textDirection = isReversed ? "right" : "left";
 
             return (
               <article
@@ -164,16 +178,17 @@ const Home = () => {
                   isReversed ? "lg:grid-flow-dense" : ""
                 }`}
               >
-                {/* Media / Visual Presentation Frame (Tier 1: Subtle reveal + 1.015 hover) */}
+                {/* Media / Visual Presentation Frame (Level 3: Visual Reveal with scale & depth) */}
                 <div
                   className={`lg:col-span-7 ${
                     isReversed ? "lg:col-start-6" : ""
                   }`}
                 >
-                  <ScrollReveal
-                    direction="up"
-                    distance={16}
-                    duration={580}
+                  <VisualReveal
+                    direction={visualDirection}
+                    distance={28}
+                    scale={0.985}
+                    duration={820}
                     delay={0}
                     threshold={0.12}
                   >
@@ -222,23 +237,24 @@ const Home = () => {
                         ) : null}
                       </div>
                     </div>
-                  </ScrollReveal>
+                  </VisualReveal>
                 </div>
 
-                {/* Story & Technical Summary (Tier 1: text translateY 16px with 60ms stagger) */}
+                {/* Story & Technical Summary (Enters 90ms after visual from opposite direction) */}
                 <div
                   className={`lg:col-span-5 ${
                     isReversed ? "lg:col-start-1" : ""
                   }`}
                 >
-                  <ScrollReveal
-                    direction="up"
-                    distance={16}
-                    duration={580}
-                    delay={60}
+                  <Reveal
+                    direction={textDirection}
+                    distance={22}
+                    duration={660}
+                    delay={90}
                     threshold={0.12}
                   >
                     <div className="space-y-4">
+                      {/* Eyebrow Number & Category */}
                       <div className="flex items-center gap-3">
                         <span className="font-mono text-sm font-semibold text-[var(--color-accent)]">
                           {projectNumber}
@@ -300,7 +316,7 @@ const Home = () => {
                           className="btn-primary !py-2 !px-3.5 !text-xs group/btn"
                         >
                           <span>Xem case study</span>
-                          <FaArrowRight className="text-[10px] transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+                          <FaArrowRight className="text-[10px] transition-transform duration-200 group-hover/btn:translate-x-1" />
                         </Link>
 
                         {project.github && project.github !== "#" && (
@@ -330,7 +346,7 @@ const Home = () => {
                         )}
                       </div>
                     </div>
-                  </ScrollReveal>
+                  </Reveal>
                 </div>
               </article>
             );
@@ -341,24 +357,29 @@ const Home = () => {
       {/* =========================================================================
           3. ENGINEERING CAPABILITIES (3-Column Text Layout replacing "What I do")
          ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 border-b border-[var(--color-border)]">
-        <ScrollReveal>
-          <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+      <SectionDivider />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="mb-16">
+          <Reveal direction="right" distance={12} duration={580} delay={0}>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block mb-2">
               02 / Capabilities
             </span>
-            <h2 className="mt-2 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
+          </Reveal>
+          <Reveal direction="up" distance={26} duration={680} delay={60}>
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
               What I Build
             </h2>
+          </Reveal>
+          <Reveal direction="up" distance={16} duration={600} delay={120}>
             <p className="mt-3 text-sm sm:text-base text-[var(--color-subtext)] max-w-xl">
               Tổ chức theo 3 tầng kỹ năng rõ ràng, không khoa trương — tập trung vào khả năng ship sản phẩm hoàn chỉnh.
             </p>
-          </div>
-        </ScrollReveal>
+          </Reveal>
+        </div>
 
-        <div className="mt-16 grid md:grid-cols-3 gap-10 lg:gap-12">
+        <div className="grid md:grid-cols-3 gap-10 lg:gap-12">
           {/* Column 1: Interfaces */}
-          <ScrollReveal delay={0}>
+          <Reveal variant="content" distance={20} duration={600} delay={0}>
             <div className="space-y-4">
               <div className="text-xs font-mono uppercase text-[var(--color-accent)]">
                 Frontend / UX
@@ -380,10 +401,10 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-          </ScrollReveal>
+          </Reveal>
 
           {/* Column 2: Systems */}
-          <ScrollReveal delay={60}>
+          <Reveal variant="content" distance={20} duration={600} delay={80}>
             <div className="space-y-4">
               <div className="text-xs font-mono uppercase text-[var(--color-accent)]">
                 Backend / Architecture
@@ -406,10 +427,10 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-          </ScrollReveal>
+          </Reveal>
 
           {/* Column 3: Products */}
-          <ScrollReveal delay={120}>
+          <Reveal variant="content" distance={20} duration={600} delay={160}>
             <div className="space-y-4">
               <div className="text-xs font-mono uppercase text-[var(--color-accent)]">
                 Engineering Mindset
@@ -431,31 +452,42 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-          </ScrollReveal>
+          </Reveal>
         </div>
       </section>
 
       {/* =========================================================================
           4. HOW I BUILD — VALUES WITH RESTRAINED EDITORIAL SEPARATORS
          ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 border-b border-[var(--color-border)]">
-        <ScrollReveal>
-          <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+      <SectionDivider />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="mb-16">
+          <Reveal direction="right" distance={12} duration={580} delay={0}>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block mb-2">
               03 / Principles
             </span>
-            <h2 className="mt-2 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
+          </Reveal>
+          <Reveal direction="up" distance={26} duration={680} delay={60}>
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
               How I Build
             </h2>
+          </Reveal>
+          <Reveal direction="up" distance={16} duration={600} delay={120}>
             <p className="mt-3 text-sm sm:text-base text-[var(--color-subtext)] max-w-xl">
               Các nguyên tắc định hướng khi mình ra quyết định kỹ thuật và hợp tác cùng đồng đội.
             </p>
-          </div>
-        </ScrollReveal>
+          </Reveal>
+        </div>
 
-        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {user_info.values.map((val, idx) => (
-            <ScrollReveal key={val.title} delay={idx * 50}>
+            <Reveal
+              key={val.title}
+              variant="card"
+              distance={18}
+              duration={560}
+              delay={idx * 70}
+            >
               <div className="pt-6 border-t border-[var(--color-border)] space-y-3">
                 <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">
                   0{idx + 1}
@@ -467,7 +499,7 @@ const Home = () => {
                   {val.description}
                 </p>
               </div>
-            </ScrollReveal>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -475,38 +507,52 @@ const Home = () => {
       {/* =========================================================================
           5. GITHUB ACTIVITY FOOTPRINT
          ========================================================================= */}
+      <SectionDivider />
       <GitHubActivity />
 
       {/* =========================================================================
           6. WRITING / NOTES
          ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 border-b border-[var(--color-border)]">
-        <ScrollReveal>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+      <SectionDivider />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
+          <div>
+            <Reveal direction="right" distance={12} duration={580} delay={0}>
+              <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block mb-2">
                 04 / Writing
               </span>
-              <h2 className="mt-2 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
+            </Reveal>
+            <Reveal direction="up" distance={26} duration={680} delay={60}>
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-[var(--color-text)]">
                 Engineering Notes
               </h2>
+            </Reveal>
+            <Reveal direction="up" distance={16} duration={600} delay={120}>
               <p className="mt-3 text-sm sm:text-base text-[var(--color-subtext)] max-w-xl">
                 Ghi chép về quá trình chuyển đổi tư duy kiến trúc, themer kỹ thuật và bài học thực tế từ các dự án.
               </p>
-            </div>
+            </Reveal>
+          </div>
+          <Reveal direction="up" distance={14} duration={550} delay={160}>
             <Link
               to="/blog"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-accent)] hover:underline self-start sm:self-end"
+              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-accent)] hover:underline self-start sm:self-end group/notes"
             >
               <span>Tất cả ghi chép</span>
-              <FaArrowRight className="text-[10px]" />
+              <FaArrowRight className="text-[10px] transition-transform duration-200 group-hover/notes:translate-x-1" />
             </Link>
-          </div>
-        </ScrollReveal>
+          </Reveal>
+        </div>
 
         <div className="divide-y divide-[var(--color-border)]">
           {latestNotes.map((post, idx) => (
-            <ScrollReveal key={post.slug} delay={idx * 60}>
+            <Reveal
+              key={post.slug}
+              variant="content"
+              distance={18}
+              duration={560}
+              delay={idx * 70}
+            >
               <article className="py-8 group">
                 <Link to={`/blog/${post.slug}`} className="block">
                   <div className="grid md:grid-cols-12 gap-4 md:gap-8 items-baseline">
@@ -517,8 +563,9 @@ const Home = () => {
                     </div>
 
                     <div className="md:col-span-9 space-y-2">
-                      <h3 className="font-display font-bold text-xl sm:text-2xl text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors leading-snug">
-                        {post.title}
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors leading-snug flex items-center gap-2">
+                        <span>{post.title}</span>
+                        <FaArrowRight className="text-xs opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 text-[var(--color-accent)]" />
                       </h3>
                       <p className="text-sm text-[var(--color-subtext)] leading-relaxed max-w-[65ch]">
                         {post.excerpt}
@@ -534,7 +581,7 @@ const Home = () => {
                   </div>
                 </Link>
               </article>
-            </ScrollReveal>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -542,8 +589,9 @@ const Home = () => {
       {/* =========================================================================
           7. CONTACT CTA
          ========================================================================= */}
+      <SectionDivider />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-        <ScrollReveal>
+        <Reveal variant="scale" distance={24} scale={0.985} duration={700}>
           <div className="p-8 sm:p-14 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] relative overflow-hidden">
             <div className="max-w-2xl">
               <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
@@ -556,9 +604,9 @@ const Home = () => {
                 Mình đang sẵn sàng cho các vị trí Software Engineer (Intern / Junior) và cơ hội cộng tác phát triển sản phẩm web full-stack.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Link to="/contact" className="btn-primary">
+                <Link to="/contact" className="btn-primary group/btn">
                   <span>Gửi tin nhắn</span>
-                  <FaArrowRight className="text-[11px]" />
+                  <FaArrowRight className="text-[11px] transition-transform duration-200 group-hover/btn:translate-x-1" />
                 </Link>
                 <a
                   href={`mailto:${user_info.main.email}`}
@@ -569,7 +617,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </section>
     </div>
   );
