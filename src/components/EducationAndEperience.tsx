@@ -1,6 +1,6 @@
 import React from "react";
 import user_info from "../data/userdata";
-import ScrollReveal from "./ui/ScrollReveal";
+import { Reveal } from "../motion";
 
 interface ExperienceEvent {
   year: string;
@@ -86,30 +86,36 @@ const EducationAndExperience: React.FC = () => {
       {/* Timeline Section */}
       <div className="space-y-12">
         {experienceEvents.map((event, index) => (
-          <ScrollReveal key={index} delay={Math.min(index, 3) * 60}>
-            <article
-              className="relative grid md:grid-cols-12 gap-6 pb-12 border-b border-[var(--color-border)] last:border-b-0"
-            >
-              {/* Left: Year & Entity metadata */}
-              <div className="md:col-span-4 space-y-1">
-                <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">
-                  {event.year}
-                </span>
-                <h3 className="font-display font-bold text-lg text-[var(--color-text)] leading-snug">
+          <article
+            key={index}
+            className="relative grid md:grid-cols-12 gap-6 pb-12 border-b border-[var(--color-border)] last:border-b-0 items-start"
+          >
+            {/* Left: Year & Entity metadata (Enters from left x: -16px) */}
+            <div className="md:col-span-4 space-y-1.5">
+              <Reveal direction="right" distance={16} duration={600} delay={0} threshold={0.12}>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] flex-shrink-0" />
+                  <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">
+                    {event.year}
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-lg text-[var(--color-text)] leading-snug mt-1">
                   {event.entity}
                 </h3>
                 <p className="text-xs font-mono text-[var(--color-subtext)]">
                   {event.role}
                 </p>
-              </div>
+              </Reveal>
+            </div>
 
-              {/* Right: Summary, Contributions, Tech & Lesson */}
-              <div className="md:col-span-8 space-y-4">
+            {/* Right: Summary, Contributions, Tech & Lesson (Enters from right x: +20px) */}
+            <div className="md:col-span-8 space-y-4">
+              <Reveal direction="left" distance={20} duration={620} delay={60} threshold={0.12}>
                 <p className="text-sm text-[var(--color-text)] font-medium leading-relaxed">
                   {event.summary}
                 </p>
 
-                <div className="space-y-2">
+                <div className="space-y-2 pt-1">
                   <span className="text-[11px] font-mono uppercase text-[var(--color-subtext)] block">
                     Key Work Delivered:
                   </span>
@@ -136,31 +142,31 @@ const EducationAndExperience: React.FC = () => {
                   </span>
                   <p className="leading-relaxed font-sans">{event.lesson}</p>
                 </div>
-              </div>
-            </article>
-          </ScrollReveal>
+              </Reveal>
+            </div>
+          </article>
         ))}
       </div>
 
       {/* Certificates & Credentials Section */}
       <section className="pt-8 space-y-6">
-        <ScrollReveal>
-          <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
+        <div>
+          <Reveal direction="right" distance={12} duration={580} delay={0}>
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)] block mb-1">
               Credentials
             </span>
-            <h3 className="mt-1 font-display font-bold text-2xl text-[var(--color-text)]">
+          </Reveal>
+          <Reveal direction="up" distance={24} duration={680} delay={60}>
+            <h3 className="font-display font-bold text-2xl text-[var(--color-text)]">
               Certificates & Achievements
             </h3>
-          </div>
-        </ScrollReveal>
+          </Reveal>
+        </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {user_info.certificates.map((cert, idx) => (
-            <ScrollReveal key={cert.title} delay={idx * 50}>
-              <div
-                className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-3"
-              >
+            <Reveal key={cert.title} variant="card" distance={16} duration={540} delay={idx * 60}>
+              <div className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-3">
                 <div>
                   <div className="flex items-center justify-between text-xs font-mono text-[var(--color-subtext)] mb-2">
                     <span>{cert.year}</span>
@@ -174,7 +180,7 @@ const EducationAndExperience: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
           ))}
         </div>
       </section>

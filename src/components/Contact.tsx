@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import { MdEmail, MdLocationOn, MdSend } from "react-icons/md";
 import { sendEmail } from "../services/emailService";
 import user_info from "../data/userdata";
-import ScrollReveal from "./ui/ScrollReveal";
+import { Reveal } from "../motion";
 
 const CONTACT_LIMITS = {
   nameMin: 2,
@@ -67,7 +67,7 @@ const Contact: React.FC = () => {
     <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
       {/* Left Column: Direct channels (Privacy-cleaned) */}
       <div className="lg:col-span-5">
-        <ScrollReveal delay={0}>
+        <Reveal direction="right" distance={20} duration={650}>
           <div className="space-y-6">
         <div className="space-y-3">
           <h2 className="font-display font-bold text-2xl text-[var(--color-text)]">
@@ -146,12 +146,12 @@ const Contact: React.FC = () => {
           </a>
         </div>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </div>
 
       {/* Right Column: Clean Form */}
       <div className="lg:col-span-7">
-        <ScrollReveal delay={90}>
+        <Reveal direction="left" distance={20} duration={650} delay={80}>
           <form
           onSubmit={handleSubmit}
           className="p-6 sm:p-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] space-y-5"
@@ -249,7 +249,7 @@ const Contact: React.FC = () => {
             )}
           </div>
         </form>
-        </ScrollReveal>
+        </Reveal>
       </div>
     </div>
   );

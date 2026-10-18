@@ -1,10 +1,12 @@
-import { Reveal, type RevealDirection } from "../../motion";
+import { Reveal, type RevealDirection, type RevealVariant } from "../../motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
+  variant?: RevealVariant;
   className?: string;
   delay?: number;
   distance?: number;
+  scale?: number;
   duration?: number;
   direction?: RevealDirection;
   threshold?: number;
@@ -14,18 +16,22 @@ interface ScrollRevealProps {
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
+  variant,
   className = "",
   delay = 0,
-  distance = 18,
-  duration = 580,
-  direction = "up",
-  threshold = 0.1,
-  rootMargin = "0px 0px -20px 0px",
+  distance,
+  scale,
+  duration,
+  direction,
+  threshold,
+  rootMargin,
 }) => {
   return (
     <Reveal
+      variant={variant}
       direction={direction}
       distance={distance}
+      scale={scale}
       delay={delay}
       threshold={threshold}
       duration={duration}
