@@ -2,18 +2,20 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SiteLayout from "./components/layout/SiteLayout";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import ProjectDetail from "./pages/ProjectDetail";
-import Experience from "./pages/Experience";
-import SkillsPage from "./pages/Skills";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
-import Playground from "./pages/Playground";
-import ContactPage from "./pages/Contact";
-import NotFound from "./pages/Error/404";
+import PageLoader from "./components/ui/PageLoader";
 import { SmoothScrollProvider } from "./motion";
 
+// Lazy-loaded routes for code-splitting and faster initial page load
+const About = lazy(() => import("./pages/About"));
+const Projects = lazy(() => import("./pages/Projects"));
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
+const Experience = lazy(() => import("./pages/Experience"));
+const SkillsPage = lazy(() => import("./pages/Skills"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const Playground = lazy(() => import("./pages/Playground"));
+const ContactPage = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/Error/404"));
 const MotionKitDemo = lazy(() => import("./motion/demo/MotionKitDemo"));
 
 const App: React.FC = () => {
@@ -21,7 +23,7 @@ const App: React.FC = () => {
     <SmoothScrollProvider>
       <BrowserRouter>
         <Routes>
-          {/* Các route đa trang bọc bởi SiteLayout */}
+          {/* Main layout routes with automatic Suspense fallback */}
           <Route element={<SiteLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -39,20 +41,21 @@ const App: React.FC = () => {
           <Route
             path="/motion-kit"
             element={
-              <Suspense
-                fallback={
-                  <div className="min-h-screen bg-[#090b10] flex items-center justify-center font-mono text-xs text-zinc-400">
-                    Initializing Motion Kit...
-                  </div>
-                }
-              >
+              <Suspense fallback={<PageLoader />}>
                 <MotionKitDemo />
               </Suspense>
             }
           />
 
-          {/* Route 404 ngoài layout */}
-          <Route path="*" element={<NotFound />} />
+          {/* 404 Route outside main layout */}
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <NotFound />
+              </Suspense>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </SmoothScrollProvider>
