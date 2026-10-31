@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Suspense } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import type { AppContextType } from "../../types/AppContext";
@@ -11,6 +11,7 @@ import CommandPalette from "../CommandPalette";
 import MatrixRain from "../MatrixRain";
 import InteractiveCursorGlow from "../ui/InteractiveCursorGlow";
 import IDEStatusBar from "./IDEStatusBar";
+import PageLoader from "../ui/PageLoader";
 
 const SiteLayout = () => {
   const { switchTheme } = useContext<AppContextType>(AppContext);
@@ -57,7 +58,9 @@ const SiteLayout = () => {
         onOpenPalette={() => setIsPaletteOpen(true)}
       />
       <main key={location.pathname} className="page-transition flex-1 w-full relative z-10">
-        <Outlet />
+        <Suspense fallback={<PageLoader />}>
+          <Outlet />
+        </Suspense>
       </main>
       <SiteFooter />
       <BackToTop />

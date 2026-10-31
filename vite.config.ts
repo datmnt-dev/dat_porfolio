@@ -6,11 +6,21 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-motion': ['gsap', 'lenis'],
+          'vendor-three': ['three'],
+          'vendor-icons': ['react-icons'],
+        },
+      },
+    },
   },
-    preview: {
-    allowedHosts: ["dat-porfolio-web.onrender.com"], // 👈 thêm dòng này
+  preview: {
+    allowedHosts: ["dat-porfolio-web.onrender.com"],
   },
   server: {
-    allowedHosts: ["dat-porfolio-web.onrender.com"], // 👈 thêm dòng này cho môi trường dev
+    allowedHosts: ["dat-porfolio-web.onrender.com"],
   },
 })
