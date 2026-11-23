@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import {
   FaTimes,
@@ -14,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { VscGitPullRequest, VscInspect } from "react-icons/vsc";
 import type { Project } from "../../data/userdata";
+import ProjectVisualFrame from "./ProjectVisualFrame";
 
 interface ProjectDrawerProps {
   project: Project | null;
@@ -24,18 +26,18 @@ interface ProjectDrawerProps {
 const statusConfig: Record<Project["status"], { label: string; bg: string; text: string }> = {
   "in-progress": {
     label: "In Progress",
-    bg: "bg-amber-500/10 border-amber-500/30",
-    text: "text-amber-400",
+    bg: "bg-amber-500/12 border-amber-500/35",
+    text: "text-amber-700 dark:text-amber-400",
   },
   completed: {
     label: "Shipped / Live",
-    bg: "bg-emerald-500/10 border-emerald-500/30",
-    text: "text-emerald-400",
+    bg: "bg-emerald-500/12 border-emerald-500/35",
+    text: "text-emerald-700 dark:text-emerald-400",
   },
   archived: {
     label: "Archived",
-    bg: "bg-zinc-500/10 border-zinc-500/30",
-    text: "text-zinc-400",
+    bg: "bg-slate-500/12 border-slate-500/30",
+    text: "text-slate-600 dark:text-zinc-400",
   },
 };
 
@@ -78,15 +80,15 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
     setTimeout(() => setCopied(false), 2000);
   };
 
-  return (
+  return createPortal(
     <div
-      className={`fixed inset-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-0 z-[70] transition-all duration-300 ${
         isOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
       }`}
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/65 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-slate-950/45 dark:bg-black/65 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
@@ -97,11 +99,11 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
         }`}
       >
         {/* Drawer Header (Linear Issue Style) */}
-        <div className="p-4 sm:p-5 border-b border-[var(--ide-border)] flex items-center justify-between bg-[var(--color-bg-component)]/40">
+        <div className="p-4 sm:p-5 border-b border-[var(--ide-border)] flex items-center justify-between bg-[var(--color-bg-component)]/70">
           <div className="flex items-center gap-3 min-w-0">
             <div className="ide-badge text-xs">
               <VscInspect className="text-sm" />
-              <span>#{project.slug.toUpperCase().slice(0, 6)}</span>
+              <span>#{project.slug.split("-")[0].toUpperCase()}</span>
             </div>
 
             <span
@@ -112,21 +114,21 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
 
             <button
               onClick={handleCopyLink}
-              className="hidden sm:inline-flex items-center gap-1 text-[11px] font-code text-[var(--color-subtext)] hover:text-[var(--color-accent)] transition"
+              className="hidden sm:inline-flex items-center gap-1 text-[11px] font-code text-[var(--color-subtext)] hover:text-[var(--color-accent)] transition cursor-pointer"
               title="Copy link"
             >
-              {copied ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+              {copied ? <FaCheck className="text-emerald-600 dark:text-emerald-400" /> : <FaCopy />}
               <span>{copied ? "Copied" : "Share"}</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2">
-            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-code rounded border border-[var(--ide-border)] text-[var(--color-subtext)]">
+            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-code rounded border border-[var(--ide-border)] bg-[var(--color-card)] text-[var(--color-subtext)]">
               ESC
             </kbd>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] transition"
+              className="p-2 rounded-lg text-[var(--color-subtext)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] transition cursor-pointer"
               aria-label="Close drawer"
             >
               <FaTimes className="text-base" />
@@ -135,16 +137,9 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
         </div>
 
         {/* Project Title Banner */}
-        <div className="p-6 border-b border-[var(--ide-border)] bg-[var(--color-card)]/30">
+        <div className="p-6 border-b border-[var(--ide-border)] bg-[var(--color-card)]">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-xl bg-black/40 border border-white/15 overflow-hidden flex-shrink-0 grid place-items-center">
-              <img
-                src={project.cover}
-                alt={project.title}
-                className="w-full h-full object-cover"
-                onError={(e) => ((e.currentTarget.style.display = "none"))}
-              />
-            </div>
+            <ProjectVisualFrame project={project} variant="badge" className="w-14 h-14" />
             <div className="min-w-0 flex-1">
               <h2 className="font-display font-bold text-2xl text-[var(--color-text)]">
                 {project.title}
@@ -156,7 +151,7 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-0.5 rounded text-[10px] font-code bg-white/5 border border-[var(--ide-border)] text-[var(--color-subtext)]"
+                    className="px-2 py-0.5 rounded text-[10px] font-code bg-[var(--color-bg-component)] border border-[var(--ide-border)] text-[var(--color-subtext)]"
                   >
                     {tech}
                   </span>
@@ -205,6 +200,16 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
           {/* TAB 1: OVERVIEW & TASKS */}
           {activeTab === "overview" && (
             <div className="space-y-6">
+              {project.screenshot && (
+                <div className="rounded-xl overflow-hidden border border-[var(--ide-border)] bg-slate-100 dark:bg-[#080c14] shadow-sm">
+                  <img
+                    src={project.screenshot}
+                    alt={`${project.title} UI preview`}
+                    className="w-full aspect-[16/10] object-cover object-top"
+                  />
+                </div>
+              )}
+
               <div>
                 <h4 className="text-xs font-code uppercase text-[var(--color-subtext)] tracking-wider mb-2">
                   Project Description
@@ -241,14 +246,14 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
 
                   {showDiff ? (
                     <div className="ide-code-block text-[11px] leading-relaxed max-h-72 custom-scrollbar">
-                      <div className="text-zinc-500 mb-1 border-b border-zinc-800 pb-1">
+                      <div className="text-slate-500 dark:text-zinc-500 mb-1 border-b border-slate-200 dark:border-zinc-800 pb-1">
                         commit {project.slug.slice(0, 7)}... (responsibilities.diff)
                       </div>
-                      <div className="text-emerald-400/80">+++ b/delivered_features.md</div>
-                      <div className="text-zinc-500">@@ -0,0 +1,{project.responsibilities.length} @@</div>
+                      <div className="text-emerald-700 dark:text-emerald-400/90 font-semibold">+++ b/delivered_features.md</div>
+                      <div className="text-slate-500 dark:text-zinc-500">@@ -0,0 +1,{project.responsibilities.length} @@</div>
                       {project.responsibilities.map((resp, i) => (
-                        <div key={i} className="flex items-start gap-1 py-0.5 text-emerald-300">
-                          <span className="text-emerald-500 font-bold select-none">+</span>
+                        <div key={i} className="flex items-start gap-1 py-0.5 text-emerald-800 dark:text-emerald-300">
+                          <span className="text-emerald-600 dark:text-emerald-500 font-bold select-none">+</span>
                           <span>{resp}</span>
                         </div>
                       ))}
@@ -300,7 +305,7 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
                   <h4 className="text-xs font-code uppercase text-[var(--color-subtext)] tracking-wider mb-3">
                     Codebase Distribution
                   </h4>
-                  <div className="h-2.5 rounded-full overflow-hidden flex mb-3 bg-zinc-800">
+                  <div className="h-2.5 rounded-full overflow-hidden flex mb-3 bg-[var(--color-bg-component)]">
                     {project.languageBreakdown.map((lang, i) => (
                       <div
                         key={i}
@@ -399,7 +404,7 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
                 </div>
                 <div className="flex justify-between py-1">
                   <span className="text-[var(--color-subtext)]">Status:</span>
-                  <span className="text-emerald-400">Production Ready</span>
+                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold">Production Ready</span>
                 </div>
               </div>
             </div>
@@ -443,7 +448,8 @@ const ProjectDrawer: React.FC<ProjectDrawerProps> = ({ project, isOpen, onClose 
           </Link>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

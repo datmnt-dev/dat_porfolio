@@ -20,7 +20,7 @@ const PageHero: React.FC<PageHeroProps> = ({
   return (
     <section className="page-hero relative overflow-hidden">
       <div className="absolute inset-0 bg-mesh pointer-events-none" />
-      <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
+      <div className="absolute inset-0 bg-grid bg-grid-masked pointer-events-none opacity-80" />
       <div
         className={`relative max-w-7xl mx-auto px-4 lg:px-8 pt-16 pb-12 ${
           align === "center" ? "text-center" : "text-left"

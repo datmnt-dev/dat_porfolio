@@ -28,6 +28,7 @@ export interface Project {
     link: string;
     duration: string;
     cover: string;
+    screenshot?: string;
     accent: string;
     status: ProjectStatus;
     category: ProjectCategory;
@@ -181,6 +182,7 @@ const info = {
             link: "https://fe-jobfinder.vercel.app",
             duration: "10/2024 - Hiện tại",
             cover: "/jobfinder.ico",
+            screenshot: "/projects/jobfinder.webp",
             accent: "from-cyan-500 to-indigo-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
@@ -281,6 +283,7 @@ const info = {
             link: "https://thread-learn-web-fe.vercel.app",
             duration: "05/2026 - Hiện tại",
             cover: "/fpt.png",
+            screenshot: "/projects/threadlearn.webp",
             accent: "from-violet-500 to-cyan-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
@@ -323,6 +326,7 @@ const info = {
             link: "#",
             duration: "06/2026 - Hiện tại",
             cover: "https://raw.githubusercontent.com/AgriLinkVN/agrilink-frontend/develop/public/logo.png",
+            screenshot: "/projects/agrilink-vietnam.webp",
             accent: "from-emerald-500 to-lime-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
@@ -374,6 +378,7 @@ const info = {
             link: "#",
             duration: "2026",
             cover: "/jobfinder.ico",
+            screenshot: "/projects/music-web.webp",
             accent: "from-rose-500 to-violet-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
@@ -429,6 +434,7 @@ const info = {
             link: "#",
             duration: "2025 - Hiện tại",
             cover: "/fpt.png",
+            screenshot: "/projects/library-management.webp",
             accent: "from-emerald-500 to-cyan-500",
             status: "in-progress" as ProjectStatus,
             category: "fullstack" as ProjectCategory,
@@ -653,6 +659,7 @@ const info = {
             link: "https://dat-portfolio.onrender.com",
             duration: "2024 - Hiện tại",
             cover: "/dat_img.jpg",
+            screenshot: "/projects/portfolio-website.webp",
             accent: "from-fuchsia-500 to-purple-500",
             status: "in-progress" as ProjectStatus,
             category: "frontend" as ProjectCategory,

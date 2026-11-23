@@ -2,8 +2,9 @@ import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaArrowRight, FaCodeBranch, FaCheck } from "react-icons/fa";
 import user_info from "../data/userdata";
-import { Reveal } from "../motion";
+import { Reveal, VisualReveal } from "../motion";
 import SectionDivider from "../components/ui/SectionDivider";
+import ProjectVisualFrame from "../components/ui/ProjectVisualFrame";
 
 const statusLabel = {
   "in-progress": "In progress",
@@ -98,6 +99,13 @@ const ProjectDetail: React.FC = () => {
       </header>
 
       <SectionDivider />
+
+      {/* Crisp Visual Product Showcase */}
+      <div className="pt-10">
+        <VisualReveal scale={0.985} distance={20} duration={720}>
+          <ProjectVisualFrame project={project} variant="showcase" />
+        </VisualReveal>
+      </div>
 
       {/* Case Study Body */}
       <div className="py-12 space-y-16">

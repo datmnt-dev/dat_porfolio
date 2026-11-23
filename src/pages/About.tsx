@@ -31,16 +31,28 @@ const About: React.FC = () => {
         {/* Editorial Portrait (Enters from left x: -24px, scale .99) */}
         <div className="md:col-span-5 space-y-6">
           <Reveal direction="right" distance={24} scale={0.99} duration={720} delay={60}>
-            <div className="relative rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-card)] shadow-lg aspect-[4/5]">
-              <img
-                src={user_info.main.photo}
-                alt={user_info.main.name}
-                className="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 text-white font-mono text-xs">
-                <span className="text-white/80">Software Engineer</span>
-                <div className="text-sm font-display font-bold">Mai Nguyen Tien Dat</div>
+            <div className="group relative rounded-3xl p-2 border border-[var(--color-border)] bg-[var(--color-card)] shadow-[var(--shadow-medium)]">
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-[var(--color-bg-component)]">
+                <img
+                  src={user_info.main.photo}
+                  alt={user_info.main.name}
+                  className="w-full h-full object-cover object-[50%_75%] brightness-[1.04] contrast-[1.04] saturate-[1.02] transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-2xl pointer-events-none" />
+              </div>
+              <div className="px-3 pt-3 pb-1.5 flex items-center justify-between gap-2">
+                <div>
+                  <div className="text-sm font-display font-bold text-[var(--color-text)] leading-tight">
+                    Mai Nguyen Tien Dat
+                  </div>
+                  <span className="text-[11px] font-mono text-[var(--color-subtext)]">
+                    Software Engineer
+                  </span>
+                </div>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-accent-soft)] border border-[rgba(var(--color-accent-rgb),0.22)] font-mono text-[10px] font-medium text-[var(--color-accent)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  Đà Nẵng
+                </span>
               </div>
             </div>
           </Reveal>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import type { AccentTheme } from "../types/AppContext";
-import user_info from "../data/userdata";
+import user_info, { type Project } from "../data/userdata";
+import ProjectVisualFrame from "./ui/ProjectVisualFrame";
 import {
   FaSearch,
   FaTerminal,
@@ -16,6 +18,7 @@ import {
   FaEnvelope,
   FaGithub,
   FaLinkedin,
+  FaCrosshairs,
 } from "react-icons/fa";
 import { VscInspect, VscCode } from "react-icons/vsc";
 
@@ -37,6 +40,7 @@ interface CommandItem {
     title?: string;
     description?: string;
     image?: string;
+    project?: Project;
     badges?: string[];
     meta?: { label: string; value: string }[];
     hint?: string;
@@ -44,7 +48,7 @@ interface CommandItem {
 }
 
 const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpenMatrix }) => {
-  const { theme, switchTheme, accent, setAccent } = useContext(AppContext);
+  const { theme, switchTheme, accent, setAccent, customCursor, toggleCustomCursor } = useContext(AppContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -153,7 +157,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
       title: "Goto Motion Kit (~/motion-kit)",
       subtitle: "Creative motion suite, Lenis scroll, 3D tilt, and scenes",
       category: "Navigation",
-      icon: <FaEye className="text-xs text-[var(--color-accent)]" />,
+      icon: <FaEye className="text-xs" />,
       action: () => {
         navigate("/motion-kit");
         onClose();
@@ -194,7 +198,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
       title: `inspect --project ${project.slug}`,
       subtitle: `${project.title} · ${project.technologies.slice(0, 40)}...`,
       category: "Projects" as const,
-      icon: <VscInspect className="text-xs text-[var(--color-accent)]" />,
+      icon: <VscInspect className="text-xs" />,
       action: () => {
         navigate(`/projects/${project.slug}`);
         onClose();
@@ -203,7 +207,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
         type: "project" as const,
         title: project.title,
         description: project.description,
-        image: project.cover,
+        project,
         badges: project.techStack.slice(0, 4),
         meta: [
           { label: "Status", value: project.status },
@@ -237,6 +241,24 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
         description: `Chuyển đổi giao diện sang chế độ ${theme === "dark" ? "Sáng (Studio Clean)" : "Tối (Obsidian Dark)"}.`,
         badges: [theme === "dark" ? "Light Mode" : "Dark Mode"],
         meta: [{ label: "Current Theme", value: theme }],
+      },
+    },
+    {
+      id: "cursor-toggle",
+      title: `toggle-cursor (${customCursor ? "Default Pointer" : "Dev Crosshair"})`,
+      subtitle: `${customCursor ? "Disable" : "Enable"} custom Dev Crosshair reticle`,
+      category: "Theme & Accent",
+      icon: <FaCrosshairs className="text-xs" />,
+      action: () => {
+        toggleCustomCursor();
+        onClose();
+      },
+      previewData: {
+        type: "theme",
+        title: "Dev Crosshair Cursor",
+        description: "Bật hoặc tắt con trỏ tâm ngắm kỹ thuật [ + ] kèm tọa độ X/Y và khóa mục tiêu khi hover.",
+        badges: [customCursor ? "Active" : "Disabled", "Desktop Fine Pointer"],
+        meta: [{ label: "Current Mode", value: customCursor ? "Dev Crosshair" : "System Default" }],
       },
     },
     ...([
@@ -424,30 +446,30 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
 
   const categories = ["All", "Navigation", "Projects", "Theme & Accent", "Quick Actions", "Dev Tools"];
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] sm:pt-[12vh] px-4">
+  return createPortal(
+    <div className="fixed inset-0 z-[70] flex items-start justify-center pt-[8vh] sm:pt-[10vh] px-4">
       {/* Overlay background */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-slate-950/45 dark:bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Main Raycast Box (Split Pane: Left List, Right Preview) */}
-      <div className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-[var(--ide-border)] bg-[var(--ide-surface)] shadow-2xl backdrop-blur-xl flex flex-col max-h-[75vh] animate-scaleIn duration-200">
+      <div className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-[var(--ide-border)] bg-[var(--ide-surface)] shadow-2xl backdrop-blur-xl flex flex-col max-h-[80vh] animate-scaleIn duration-200">
         {/* Top Window Titlebar */}
-        <div className="ide-titlebar !py-2 !px-4 flex items-center justify-between border-b border-[var(--ide-border)]">
+        <div className="ide-titlebar !py-2.5 !px-4 flex items-center justify-between border-b border-[var(--ide-border)] flex-shrink-0">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-400/85 dark:bg-red-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400/85 dark:bg-yellow-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/85 dark:bg-green-500/80" />
             <span className="ml-2 text-[11px] font-code text-[var(--color-subtext)]">
               raycast-spotlight: ~/commands · TienDat OS
             </span>
           </div>
           <div className="flex items-center gap-2 text-[10px] font-code text-[var(--color-subtext)]">
-            <kbd className="px-1.5 py-0.5 rounded border border-[var(--ide-border)]">ESC to close</kbd>
+            <kbd className="px-1.5 py-0.5 rounded border border-[var(--ide-border)] bg-[var(--color-card)]">ESC to close</kbd>
           </div>
         </div>
 
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--ide-border)] bg-[var(--color-bg-component)]/30">
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--ide-border)] bg-[var(--color-bg-component)]/55 flex-shrink-0">
           <FaSearch className="text-[var(--color-accent)] text-sm flex-shrink-0" />
           <input
             ref={inputRef}
@@ -458,12 +480,12 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
               setSearch(e.target.value);
               setSelectedIndex(0);
             }}
-            className="w-full text-sm bg-transparent outline-none border-none text-[var(--color-text)] placeholder:text-[var(--color-subtext)] font-sans"
+            className="w-full text-sm bg-transparent outline-none border-none text-[var(--color-text)] placeholder:text-[var(--color-muted)] font-sans"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="text-[10px] font-code text-[var(--color-subtext)] hover:text-[var(--color-text)]"
+              className="text-[10px] font-code text-[var(--color-subtext)] hover:text-[var(--color-text)] cursor-pointer"
             >
               Clear
             </button>
@@ -471,7 +493,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
         </div>
 
         {/* Category Pills Bar */}
-        <div className="flex items-center gap-1.5 px-4 py-2 border-b border-[var(--ide-border)] overflow-x-auto bg-[var(--color-card)]/40 text-[11px] font-code custom-scrollbar">
+        <div className="flex items-center gap-1.5 px-4 py-2 border-b border-[var(--ide-border)] overflow-x-auto bg-[var(--color-card)] text-[11px] font-code custom-scrollbar flex-shrink-0">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -479,7 +501,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
                 setActiveCategory(cat);
                 setSelectedIndex(0);
               }}
-              className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap cursor-pointer ${
                 activeCategory === cat
                   ? "bg-[var(--color-accent)] text-white font-semibold"
                   : "text-[var(--color-subtext)] hover:bg-[var(--color-bg-component)] hover:text-[var(--color-text)]"
@@ -490,12 +512,12 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
           ))}
         </div>
 
-        {/* Split Body: Left List (60%), Right Preview (40%) */}
-        <div className="grid md:grid-cols-12 flex-1 min-h-[380px] max-h-[50vh] overflow-hidden">
+        {/* Split Body: Left List (58%), Right Preview (42%) */}
+        <div className="grid md:grid-cols-12 flex-1 min-h-[380px] overflow-hidden">
           {/* Left Column: Command Items */}
           <div
             ref={listRef}
-            className="md:col-span-7 overflow-y-auto p-2 space-y-1 border-r border-[var(--ide-border)] custom-scrollbar"
+            className="md:col-span-7 overflow-y-auto p-2.5 space-y-1 border-r border-[var(--ide-border)] custom-scrollbar"
           >
             {filteredCommands.length > 0 ? (
               filteredCommands.map((cmd, index) => {
@@ -508,14 +530,14 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
                     className={`flex items-center justify-between gap-3 p-2.5 rounded-xl cursor-pointer transition-all border ${
                       isSelected
                         ? "border-[var(--color-accent)] bg-[rgba(var(--color-accent-rgb),0.12)] text-[var(--color-text)]"
-                        : "border-transparent hover:bg-[var(--color-card)] text-[var(--color-text)]"
+                        : "border-transparent hover:bg-[var(--color-bg-component)]/70 text-[var(--color-text)]"
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div
                         className={`w-8 h-8 rounded-lg grid place-items-center flex-shrink-0 text-xs transition-colors ${
                           isSelected
-                            ? "bg-[var(--color-accent)] text-white shadow"
+                            ? "bg-[var(--color-accent)] text-white [&_svg]:!text-white shadow-xs"
                             : "bg-[var(--color-bg-component)] text-[var(--color-subtext)]"
                         }`}
                       >
@@ -532,11 +554,11 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
                     </div>
 
                     <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <span className="text-[9px] font-code px-1.5 py-0.5 rounded bg-[var(--color-bg-component)] text-[var(--color-subtext)] border border-[var(--ide-border)]">
+                      <span className="text-[9px] font-code px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-subtext)] border border-[var(--ide-border)]">
                         {cmd.category}
                       </span>
                       {isSelected && (
-                        <FaArrowRight className="text-[10px] text-[var(--color-accent)] animate-pulse" />
+                        <FaArrowRight className="text-[10px] text-[var(--color-accent)]" />
                       )}
                     </div>
                   </div>
@@ -551,69 +573,67 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
           </div>
 
           {/* Right Column: Raycast Live Preview Pane (Hidden on Mobile) */}
-          <div className="hidden md:flex md:col-span-5 p-5 flex-col justify-between bg-[var(--color-bg-component)]/20 overflow-y-auto custom-scrollbar">
-            {selectedCommand && selectedCommand.previewData ? (
-              <div className="space-y-4">
-                {/* Image if project */}
-                {selectedCommand.previewData.image && (
-                  <div className="w-full h-32 rounded-xl overflow-hidden border border-[var(--ide-border)] bg-black/40 relative">
-                    <img
-                      src={selectedCommand.previewData.image}
-                      alt=""
-                      className="w-full h-full object-cover"
-                      onError={(e) => ((e.currentTarget.style.display = "none"))}
+          <div className="hidden md:flex md:col-span-5 flex-col min-h-0 bg-[var(--color-bg-component)]/45">
+            <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
+              {selectedCommand && selectedCommand.previewData ? (
+                <div className="space-y-4">
+                  {/* Crisp Real UI / Vector Visual Banner if Project */}
+                  {selectedCommand.previewData.project && (
+                    <ProjectVisualFrame
+                      project={selectedCommand.previewData.project}
+                      variant="compact"
+                      className="h-[150px]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  )}
+
+                  <div>
+                    <span className="text-[10px] font-code uppercase tracking-wider font-semibold text-[var(--color-accent)]">
+                      Inspector Preview
+                    </span>
+                    <h3 className="font-display font-bold text-lg text-[var(--color-text)] mt-0.5">
+                      {selectedCommand.previewData.title || selectedCommand.title}
+                    </h3>
+                    <p className="text-xs text-[var(--color-subtext)] mt-1.5 leading-relaxed">
+                      {selectedCommand.previewData.description || selectedCommand.subtitle}
+                    </p>
                   </div>
-                )}
 
-                <div>
-                  <span className="text-[10px] font-code uppercase tracking-wider text-[var(--color-accent)]">
-                    Inspector Preview
-                  </span>
-                  <h3 className="font-display font-bold text-lg text-[var(--color-text)] mt-0.5">
-                    {selectedCommand.previewData.title || selectedCommand.title}
-                  </h3>
-                  <p className="text-xs text-[var(--color-subtext)] mt-2 leading-relaxed">
-                    {selectedCommand.previewData.description || selectedCommand.subtitle}
-                  </p>
-                </div>
-
-                {/* Badges */}
-                {selectedCommand.previewData.badges && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedCommand.previewData.badges.map((b) => (
-                      <span key={b} className="ide-badge text-[10px]">
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Meta details */}
-                {selectedCommand.previewData.meta && (
-                  <div className="space-y-2 pt-3 border-t border-[var(--ide-border)] text-xs font-code">
-                    {selectedCommand.previewData.meta.map((m, i) => (
-                      <div key={i} className="flex justify-between py-1 border-b border-[var(--ide-border)]/50">
-                        <span className="text-[var(--color-subtext)]">{m.label}:</span>
-                        <span className="text-[var(--color-text)] font-semibold truncate max-w-[160px]">
-                          {m.value}
+                  {/* Badges */}
+                  {selectedCommand.previewData.badges && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedCommand.previewData.badges.map((b) => (
+                        <span key={b} className="ide-badge text-[10px]">
+                          {b}
                         </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="text-center py-12 text-[var(--color-subtext)] text-xs font-code">
-                Select a command to view details
-              </div>
-            )}
+                      ))}
+                    </div>
+                  )}
 
-            {/* Quick action footer */}
-            <div className="pt-4 border-t border-[var(--ide-border)] flex items-center justify-between text-[11px] font-code text-[var(--color-subtext)]">
-              <span className="text-[var(--color-accent)]">Press [Enter] to run</span>
-              <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-card)] border border-[var(--ide-border)]">
+                  {/* Meta details */}
+                  {selectedCommand.previewData.meta && (
+                    <div className="space-y-1.5 pt-3 border-t border-[var(--ide-border)] text-xs font-code">
+                      {selectedCommand.previewData.meta.map((m, i) => (
+                        <div key={i} className="flex justify-between py-1 border-b border-[var(--ide-border)]/60 last:border-b-0">
+                          <span className="text-[var(--color-subtext)]">{m.label}:</span>
+                          <span className="text-[var(--color-text)] font-semibold truncate max-w-[170px]">
+                            {m.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-12 text-[var(--color-subtext)] text-xs font-code">
+                  Select a command to view details
+                </div>
+              )}
+            </div>
+
+            {/* Quick action footer (pinned cleanly, never clipped) */}
+            <div className="px-5 py-3 border-t border-[var(--ide-border)] bg-[var(--color-card)]/70 flex items-center justify-between text-[11px] font-code text-[var(--color-subtext)] flex-shrink-0">
+              <span className="text-[var(--color-accent)] font-medium">Press [Enter] to run</span>
+              <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)] text-[var(--color-text)]">
                 ↵
               </kbd>
             </div>
@@ -621,20 +641,21 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpen
         </div>
 
         {/* Footer Bar */}
-        <div className="px-4 py-2.5 bg-[var(--color-card)] border-t border-[var(--ide-border)] flex items-center justify-between text-[10px] text-[var(--color-subtext)] font-code">
+        <div className="px-4 py-2.5 bg-[var(--color-card)] border-t border-[var(--ide-border)] flex items-center justify-between text-[10px] text-[var(--color-subtext)] font-code flex-shrink-0">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)]">↑</kbd>{" "}
-              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)]">↓</kbd> Navigate
+              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)] text-[var(--color-text)]">↑</kbd>{" "}
+              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)] text-[var(--color-text)]">↓</kbd> Navigate
             </span>
             <span>
-              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)]">↵</kbd> Select
+              <kbd className="px-1 py-0.5 rounded bg-[var(--color-bg-component)] border border-[var(--ide-border)] text-[var(--color-text)]">↵</kbd> Select
             </span>
           </div>
           <span>Accent: <strong className="text-[var(--color-accent)]">{accent}</strong></span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

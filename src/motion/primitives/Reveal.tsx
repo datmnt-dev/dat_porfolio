@@ -44,48 +44,48 @@ export const Reveal: React.FC<RevealProps> = ({
       case "section":
         return {
           direction: "up" as RevealDirection,
-          distance: 28,
+          distance: 24,
           scale: 1,
-          duration: 680,
-          threshold: 0.12,
-          rootMargin: "0px 0px -8% 0px",
+          duration: 620,
+          threshold: 0.06,
+          rootMargin: "0px 0px -2% 0px",
         };
       case "visual":
         return {
           direction: "up" as RevealDirection,
-          distance: 26,
+          distance: 22,
           scale: 0.985,
-          duration: 820,
-          threshold: 0.12,
-          rootMargin: "0px 0px -8% 0px",
+          duration: 720,
+          threshold: 0.06,
+          rootMargin: "0px 0px -2% 0px",
         };
       case "card":
         return {
           direction: "up" as RevealDirection,
-          distance: 16,
+          distance: 14,
           scale: 1,
-          duration: 540,
-          threshold: 0.1,
-          rootMargin: "0px 0px -6% 0px",
+          duration: 480,
+          threshold: 0.05,
+          rootMargin: "0px 0px -2% 0px",
         };
       case "scale":
         return {
           direction: "up" as RevealDirection,
-          distance: 16,
+          distance: 14,
           scale: 0.985,
-          duration: 640,
-          threshold: 0.1,
-          rootMargin: "0px 0px -6% 0px",
+          duration: 560,
+          threshold: 0.05,
+          rootMargin: "0px 0px -2% 0px",
         };
       case "content":
       default:
         return {
           direction: "up" as RevealDirection,
-          distance: 18,
+          distance: 16,
           scale: 1,
-          duration: 580,
-          threshold: 0.1,
-          rootMargin: "0px 0px -6% 0px",
+          duration: 520,
+          threshold: 0.05,
+          rootMargin: "0px 0px -2% 0px",
         };
     }
   };

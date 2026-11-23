@@ -10,6 +10,7 @@ import BackToTop from "../BackToTop";
 import CommandPalette from "../CommandPalette";
 import MatrixRain from "../MatrixRain";
 import InteractiveCursorGlow from "../ui/InteractiveCursorGlow";
+import DevCrosshairCursor from "../ui/DevCrosshairCursor";
 import IDEStatusBar from "./IDEStatusBar";
 import PageLoader from "../ui/PageLoader";
 
@@ -53,6 +54,7 @@ const SiteLayout = () => {
       }}
     >
       <InteractiveCursorGlow />
+      <DevCrosshairCursor />
       <SiteHeader
         switchTheme={switchTheme}
         onOpenPalette={() => setIsPaletteOpen(true)}

@@ -6,4 +6,6 @@ export const AppContext = createContext<AppContextType>({
   switchTheme: () => {},
   accent: "cyan",
   setAccent: () => {},
+  customCursor: true,
+  toggleCustomCursor: () => {},
 });

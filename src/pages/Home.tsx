@@ -4,7 +4,6 @@ import {
   FaArrowRight,
   FaGithub,
   FaExternalLinkAlt,
-  FaCodeBranch,
 } from "react-icons/fa";
 import { AppContext } from "../context/AppContext";
 import user_info, { type Project } from "../data/userdata";
@@ -13,11 +12,12 @@ import GitHubActivity from "../components/GitHubActivity";
 import Magnetic from "../components/ui/Magnetic";
 import { useLenis, Reveal, VisualReveal } from "../motion";
 import SectionDivider from "../components/ui/SectionDivider";
+import ProjectVisualFrame from "../components/ui/ProjectVisualFrame";
 
 const HeroScene3D = lazy(() => import("../components/ui/HeroScene3D"));
 
 const Home = () => {
-  const { accent } = useContext(AppContext);
+  const { accent, theme } = useContext(AppContext);
   const { scrollTo } = useLenis();
 
   // Selected 3 flagship projects from real data
@@ -38,18 +38,19 @@ const Home = () => {
         id="hero"
         className="relative min-h-[calc(100svh-4rem)] flex items-center justify-center overflow-hidden border-b border-[var(--color-border)] py-16 sm:py-24"
       >
-        {/* Ambient Subtle Grids & 3D Software Topology Scene */}
-        <div className="absolute inset-0 bg-grid opacity-60 pointer-events-none" />
+        {/* Layered Atmospheric Backdrop, Masked Grid & Theme-Aware 3D Topology Scene */}
+        <div className="absolute inset-0 hero-backdrop-glow pointer-events-none" />
+        <div className="absolute inset-0 bg-grid bg-grid-masked opacity-80 pointer-events-none" />
         <Suspense fallback={null}>
-          <HeroScene3D accent={accent} />
+          <HeroScene3D accent={accent} theme={theme} />
         </Suspense>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="max-w-3xl">
+          <div className="max-w-2xl lg:max-w-[38rem]">
             {/* Status Chip */}
             <ScrollReveal delay={0}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/80 backdrop-blur-sm text-xs font-mono text-[var(--color-subtext)] shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/90 backdrop-blur-md text-xs font-mono text-[var(--color-subtext)] shadow-[var(--shadow-soft)]">
+                <span className="dot-status-pulse" />
                 <span>{user_info.main.availability}</span>
               </div>
             </ScrollReveal>
@@ -192,51 +193,14 @@ const Home = () => {
                     delay={0}
                     threshold={0.12}
                   >
-                    <div className="relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-card)] shadow-md group transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-lg hover:border-[var(--color-border-strong)]">
-                      {/* Browser/Window Header */}
-                      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-bg-component)] text-xs font-mono text-[var(--color-subtext)]">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-                          <span className="ml-2 text-[11px] text-[var(--color-subtext)]">
-                            {project.slug}.app
-                          </span>
-                        </div>
-                        <span className="text-[10px] uppercase font-semibold text-[var(--color-accent)]">
-                          {project.status}
-                        </span>
-                      </div>
-
-                      {/* Cover Area with Subtle 1.015 Scale on Hover */}
-                      <div className="relative aspect-[16/10] bg-[var(--color-bg-component)] overflow-hidden flex items-center justify-center p-8">
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-br ${project.accent} opacity-15`}
-                        />
-                        <div className="absolute inset-0 bg-grid opacity-30" />
-                        <div className="relative z-10 w-24 h-24 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)]/90 backdrop-blur-md p-4 flex items-center justify-center shadow-lg group-hover:scale-[1.015] transition-transform duration-500 ease-out">
-                          <img
-                            src={project.cover}
-                            alt={project.title}
-                            className="w-full h-full object-contain"
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Bottom Quick Info Bar */}
-                      <div className="p-4 border-t border-[var(--color-border)] bg-[var(--color-card)] flex items-center justify-between text-xs font-mono text-[var(--color-subtext)]">
-                        <span>{project.duration}</span>
-                        {project.githubContributions ? (
-                          <span className="inline-flex items-center gap-1.5 text-[var(--color-accent)] font-medium">
-                            <FaCodeBranch className="text-[10px]" />
-                            <span>{project.githubContributions} commits</span>
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
+                    <Link
+                      to={`/projects/${project.slug}`}
+                      data-cursor="CASE STUDY ↗"
+                      className="block"
+                      aria-label={`View ${project.title} case study`}
+                    >
+                      <ProjectVisualFrame project={project} variant="showcase" />
+                    </Link>
                   </VisualReveal>
                 </div>
 
@@ -529,7 +493,7 @@ const Home = () => {
             </Reveal>
             <Reveal direction="up" distance={16} duration={600} delay={120}>
               <p className="mt-3 text-sm sm:text-base text-[var(--color-subtext)] max-w-xl">
-                Ghi chép về quá trình chuyển đổi tư duy kiến trúc, themer kỹ thuật và bài học thực tế từ các dự án.
+                Ghi chép về quá trình chuyển đổi tư duy kiến trúc, thiết kế hệ thống và bài học thực tế từ các dự án.
               </p>
             </Reveal>
           </div>
@@ -592,8 +556,10 @@ const Home = () => {
       <SectionDivider />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <Reveal variant="scale" distance={24} scale={0.985} duration={700}>
-          <div className="p-8 sm:p-14 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] relative overflow-hidden">
-            <div className="max-w-2xl">
+          <div className="p-8 sm:p-14 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-[var(--shadow-medium)] relative overflow-hidden">
+            <div className="absolute inset-0 bg-mesh opacity-80 pointer-events-none" />
+            <div className="absolute inset-0 bg-grid bg-grid-masked opacity-40 pointer-events-none" />
+            <div className="relative z-10 max-w-2xl">
               <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-accent)]">
                 Get In Touch
               </span>

@@ -154,11 +154,11 @@ const Contact: React.FC = () => {
         <Reveal direction="left" distance={20} duration={650} delay={80}>
           <form
           onSubmit={handleSubmit}
-          className="p-6 sm:p-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] space-y-5"
+          className="p-6 sm:p-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-[var(--shadow-soft)] space-y-5"
         >
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label htmlFor="name" className="text-xs font-mono text-[var(--color-subtext)] block">
+              <label htmlFor="name" className="text-xs font-mono font-medium text-[var(--color-subtext)] block">
                 Họ và tên *
               </label>
               <input
@@ -171,12 +171,12 @@ const Contact: React.FC = () => {
                 required
                 minLength={CONTACT_LIMITS.nameMin}
                 maxLength={CONTACT_LIMITS.nameMax}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-input-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent-glow)] transition-all"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-mono text-[var(--color-subtext)] block">
+              <label htmlFor="email" className="text-xs font-mono font-medium text-[var(--color-subtext)] block">
                 Email liên hệ *
               </label>
               <input
@@ -187,13 +187,13 @@ const Contact: React.FC = () => {
                 onChange={handleChange}
                 placeholder="email@example.com"
                 required
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-input-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent-glow)] transition-all"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="subject" className="text-xs font-mono text-[var(--color-subtext)] block">
+            <label htmlFor="subject" className="text-xs font-mono font-medium text-[var(--color-subtext)] block">
               Tiêu đề trao đổi
             </label>
             <input
@@ -204,12 +204,12 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               placeholder="Trao đổi cơ hội việc làm / Hợp tác dự án"
               maxLength={CONTACT_LIMITS.subjectMax}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+              className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-input-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent-glow)] transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="message" className="text-xs font-mono text-[var(--color-subtext)] block">
+            <label htmlFor="message" className="text-xs font-mono font-medium text-[var(--color-subtext)] block">
               Nội dung tin nhắn *
             </label>
             <textarea
@@ -222,7 +222,7 @@ const Contact: React.FC = () => {
               required
               minLength={CONTACT_LIMITS.messageMin}
               maxLength={CONTACT_LIMITS.messageMax}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] transition-colors resize-none"
+              className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-input-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent-glow)] transition-all resize-none"
             />
           </div>
 

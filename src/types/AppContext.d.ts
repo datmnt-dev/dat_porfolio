@@ -5,4 +5,6 @@ export interface AppContextType {
   switchTheme: () => void;
   accent: AccentTheme;
   setAccent: (accent: AccentTheme) => void;
+  customCursor: boolean;
+  toggleCustomCursor: () => void;
 }

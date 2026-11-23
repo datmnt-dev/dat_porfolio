@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import { createPortal } from "react-dom";
 import { FaTerminal, FaPlay, FaSearch, FaPalette, FaKeyboard, FaEyeDropper } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi2";
 import user_info from "../data/userdata";
@@ -205,9 +206,9 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="bg-[#0a0f1d] border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
+  return createPortal(
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/60 dark:bg-black/75 backdrop-blur-sm animate-fade-in">
+      <div className="bg-[#0a0f1d] border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] text-zinc-200">
         <div className="flex items-center justify-between px-5 py-4 bg-[#111827] border-b border-zinc-800 select-none">
           <span className="font-mono text-xs text-[var(--color-accent)] flex items-center gap-1.5">
             <FaTerminal /> SNAKE_GAME.EXE
@@ -286,7 +287,8 @@ const SnakeGameModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
@@ -392,7 +394,7 @@ const Playground = () => {
           {/* Card 1: Matrix Rain */}
           <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 grid place-items-center text-sm mb-4 border border-emerald-500/20">
+              <div className="w-9 h-9 rounded-lg bg-emerald-500/12 text-emerald-600 dark:text-emerald-400 grid place-items-center text-sm mb-4 border border-emerald-500/25">
                 <FaTerminal />
               </div>
               <h3 className="font-display font-semibold text-base mb-2">Matrix Rain Easter Egg</h3>
@@ -402,7 +404,7 @@ const Playground = () => {
             </div>
             <button
               onClick={triggerMatrixRain}
-              className="btn-ghost mt-6 w-full justify-center text-xs font-mono"
+              className="btn-ghost mt-6 w-full justify-center text-xs font-mono cursor-pointer"
             >
               Launch Matrix Rain
             </button>
@@ -411,7 +413,7 @@ const Playground = () => {
           {/* Card 2: Command Palette */}
           <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 grid place-items-center text-sm mb-4 border border-cyan-500/20">
+              <div className="w-9 h-9 rounded-lg bg-sky-500/12 text-sky-600 dark:text-cyan-400 grid place-items-center text-sm mb-4 border border-sky-500/25">
                 <FaSearch />
               </div>
               <h3 className="font-display font-semibold text-base mb-2">Command Palette Controller</h3>
@@ -421,7 +423,7 @@ const Playground = () => {
             </div>
             <button
               onClick={triggerCommandPalette}
-              className="btn-ghost mt-6 w-full justify-center text-xs font-mono"
+              className="btn-ghost mt-6 w-full justify-center text-xs font-mono cursor-pointer"
             >
               Open Command Palette (Ctrl+K)
             </button>
@@ -430,7 +432,7 @@ const Playground = () => {
           {/* Card 3: Live Accent Themer */}
           <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 grid place-items-center text-sm mb-4 border border-purple-500/20">
+              <div className="w-9 h-9 rounded-lg bg-violet-500/12 text-violet-600 dark:text-purple-400 grid place-items-center text-sm mb-4 border border-violet-500/25">
                 <FaPalette />
               </div>
               <h3 className="font-display font-semibold text-base mb-2">Live Accent Themer</h3>
@@ -443,18 +445,18 @@ const Playground = () => {
                 {(["cyan", "green", "purple", "amber"] as AccentTheme[]).map((c) => {
                   const bg =
                     c === "cyan"
-                      ? "bg-cyan-500"
+                      ? "bg-sky-600 dark:bg-cyan-500"
                       : c === "green"
-                        ? "bg-emerald-500"
+                        ? "bg-emerald-600 dark:bg-emerald-500"
                         : c === "purple"
-                          ? "bg-purple-500"
-                          : "bg-amber-500";
+                          ? "bg-violet-600 dark:bg-purple-500"
+                          : "bg-amber-600 dark:bg-amber-500";
                   return (
                     <button
                       key={c}
                       onClick={() => setAccent(c)}
                       className={`flex-1 h-7 rounded-lg ${bg} transition-all cursor-pointer ${
-                        accent === c ? "ring-2 ring-offset-2 ring-offset-[var(--color-bg)] ring-[var(--color-accent)] scale-105" : "opacity-80 hover:opacity-100"
+                        accent === c ? "ring-2 ring-offset-2 ring-offset-[var(--color-card)] ring-[var(--color-accent)] scale-105" : "opacity-80 hover:opacity-100"
                       }`}
                       title={c}
                     />
@@ -470,7 +472,7 @@ const Playground = () => {
           {/* Card 4: Typewriter Roles */}
           <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 grid place-items-center text-sm mb-4 border border-amber-500/20">
+              <div className="w-9 h-9 rounded-lg bg-amber-500/12 text-amber-600 dark:text-amber-400 grid place-items-center text-sm mb-4 border border-amber-500/25">
                 <FaKeyboard />
               </div>
               <h3 className="font-display font-semibold text-base mb-2">Typewriter Hook Sandbox</h3>
@@ -493,7 +495,7 @@ const Playground = () => {
           {/* Card 5: Hex Color Convertor */}
           <div className="card-surface p-6 flex flex-col justify-between h-full">
             <div>
-              <div className="w-9 h-9 rounded-lg bg-pink-500/10 text-pink-400 grid place-items-center text-sm mb-4 border border-pink-500/20">
+              <div className="w-9 h-9 rounded-lg bg-rose-500/12 text-rose-600 dark:text-pink-400 grid place-items-center text-sm mb-4 border border-rose-500/25">
                 <FaEyeDropper />
               </div>
               <h3 className="font-display font-semibold text-base mb-2">Color Space Math</h3>

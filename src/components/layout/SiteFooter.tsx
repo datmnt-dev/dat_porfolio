@@ -39,7 +39,7 @@ const SiteFooter = () => {
       className="mt-28 border-t relative"
       style={{
         borderColor: "var(--color-border)",
-        backgroundColor: "var(--color-bg)",
+        backgroundColor: "var(--color-surface)",
       }}
     >
       <Reveal variant="content" distance={12} duration={500} className="max-w-7xl mx-auto px-4 lg:px-8 py-16">

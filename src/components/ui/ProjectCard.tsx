@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaCodeBranch, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import type { Project } from "../../data/userdata";
+import ProjectVisualFrame from "./ProjectVisualFrame";
 
 interface Props {
   project: Project;
@@ -17,9 +18,18 @@ const statusLabel: Record<Project["status"], string> = {
 
 const ProjectCard: React.FC<Props> = ({ project, onInspect }) => {
   return (
-    <div className="card-surface p-6 flex flex-col h-full rounded-2xl group">
+    <div className="card-surface p-5 flex flex-col h-full rounded-2xl group">
+      {/* Crisp Compact Visual Banner (Real Screenshot or Tailored UI Card) */}
+      <Link to={`/projects/${project.slug}`} data-cursor="CASE STUDY ↗" className="block mb-4">
+        <ProjectVisualFrame
+          project={project}
+          variant="compact"
+          className="aspect-[16/10] transition-transform duration-300 group-hover:scale-[1.01]"
+        />
+      </Link>
+
       {/* Top Meta Header */}
-      <div className="flex items-center justify-between text-xs font-mono text-[var(--color-subtext)] pb-4 mb-4 border-b border-[var(--color-border)]">
+      <div className="flex items-center justify-between text-xs font-mono text-[var(--color-subtext)] pb-3.5 mb-3.5 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
           <span className="capitalize">{project.category}</span>
@@ -36,7 +46,8 @@ const ProjectCard: React.FC<Props> = ({ project, onInspect }) => {
                 e.stopPropagation();
                 onInspect(project);
               }}
-              className="text-[10px] text-[var(--color-subtext)] hover:text-[var(--color-accent)] cursor-pointer"
+              data-cursor="INSPECT"
+              className="text-[10px] font-semibold text-[var(--color-accent)] hover:underline cursor-pointer"
               title="Quick inspect"
             >
               [inspect]

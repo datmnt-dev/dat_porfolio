@@ -4,6 +4,7 @@ import { FaArrowRight, FaGithub, FaExternalLinkAlt, FaCodeBranch } from "react-i
 import user_info, { ProjectCategory, type Project } from "../data/userdata";
 import ProjectCard from "../components/ui/ProjectCard";
 import ProjectDrawer from "../components/ui/ProjectDrawer";
+import ProjectVisualFrame from "../components/ui/ProjectVisualFrame";
 import SpotlightCard from "../components/ui/SpotlightCard";
 import { Reveal, VisualReveal } from "../motion";
 import SectionDivider from "../components/ui/SectionDivider";
@@ -136,37 +137,16 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-5">
-                    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-component)] p-6 space-y-4 font-mono text-xs text-[var(--color-subtext)]">
-                      <div className="flex justify-between border-b border-[var(--color-border)] pb-2">
-                        <span>Role:</span>
-                        <span className="text-[var(--color-text)] font-semibold">
-                          Full-stack Contributor
-                        </span>
-                      </div>
-                      <div className="flex justify-between border-b border-[var(--color-border)] pb-2">
-                        <span>Duration:</span>
-                        <span className="text-[var(--color-text)]">
-                          {featuredFlagship.duration}
-                        </span>
-                      </div>
+                  <div className="lg:col-span-5 space-y-4">
+                    <ProjectVisualFrame project={featuredFlagship} variant="showcase" />
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-component)]/75 px-4 py-3 flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[var(--color-subtext)]">
+                      <span>Role: <strong className="text-[var(--color-text)]">Full-stack Contributor</strong></span>
                       {featuredFlagship.githubContributions ? (
-                        <div className="flex justify-between border-b border-[var(--color-border)] pb-2">
-                          <span>Public Commits:</span>
-                          <span className="text-[var(--color-accent)] font-semibold flex items-center gap-1">
-                            <FaCodeBranch className="text-[10px]" />
-                            {featuredFlagship.githubContributions} commits
-                          </span>
-                        </div>
-                      ) : null}
-                      <div className="pt-1">
-                        <span className="block text-[10px] uppercase text-[var(--color-subtext)] mb-2">
-                          Key Modules:
+                        <span className="text-[var(--color-accent)] font-semibold inline-flex items-center gap-1">
+                          <FaCodeBranch className="text-[10px]" />
+                          {featuredFlagship.githubContributions} commits
                         </span>
-                        <p className="text-xs text-[var(--color-text)] leading-relaxed font-sans">
-                          Monaco IDE Sandbox, PayOS subscription reconciliation, live quiz attempt logic, JWT authentication.
-                        </p>
-                      </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>

@@ -11,6 +11,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     return (localStorage.getItem("accent") as AccentTheme) || "cyan";
   });
 
+  const [customCursor, setCustomCursor] = useState<boolean>(() => {
+    const saved = localStorage.getItem("custom_cursor");
+    return saved === null ? true : saved === "true";
+  });
+
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") {
@@ -39,11 +44,21 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setAccentState(newAccent);
   };
 
+  const toggleCustomCursor = () => {
+    setCustomCursor((prev) => {
+      const next = !prev;
+      localStorage.setItem("custom_cursor", String(next));
+      return next;
+    });
+  };
+
   const contextValue: AppContextType = {
     theme,
     switchTheme,
     accent,
     setAccent,
+    customCursor,
+    toggleCustomCursor,
   };
 
   return (

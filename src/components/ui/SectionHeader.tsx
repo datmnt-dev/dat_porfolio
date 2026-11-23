@@ -22,10 +22,12 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     <div className={`section-header flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10 ${wrap}`}>
       <div className={align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"}>
         {eyebrow && (
-          <span className="chip mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
-            <TextReveal wordDelay={36}>{eyebrow}</TextReveal>
-          </span>
+          <div className={align === "center" ? "mb-3 flex justify-center" : "mb-3"}>
+            <span className="chip">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+              <TextReveal wordDelay={36}>{eyebrow}</TextReveal>
+            </span>
+          </div>
         )}
         <h2 className="section-header-title font-display font-bold text-3xl sm:text-4xl tracking-normal leading-tight">
           <TextReveal>{title}</TextReveal>
